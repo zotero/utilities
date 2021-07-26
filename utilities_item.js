@@ -348,7 +348,7 @@ var Utilities_Item = {
 
 		// Special mapping for note title
 		if (zoteroItem.itemType == 'note' && zoteroItem.note) {
-			cslItem.title = Zotero.Notes.noteToTitle(zoteroItem.note);
+			cslItem.title = Zotero.Utilities.Item.noteToTitle(zoteroItem.note);
 		}
 
 		//this._cache[zoteroItem.id] = cslItem;
