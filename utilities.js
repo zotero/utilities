@@ -1532,11 +1532,6 @@ var Utilities = {
 		return Zotero.Utilities.Item.itemTypeExists(type);
 	},
 	
-	itemToExportFormat: function (zoteroItem, legacy, skipChildItems) {
-		Zotero.debug(`Zotero.Utilities.itemToExportFormat() is deprecated -- use Zotero.Utilities.Item.itemToExportFormat() instead`);
-		return Zotero.Utilities.Item.itemToExportFormat(zoteroItem, legacy, skipChildItems);
-	},
-
 	itemToCSLJSON: function(zoteroItem) {
 		Zotero.debug(`Zotero.Utilities.itemToCSLJSON() is deprecated -- use Zotero.Utilities.Item.itemToCSLJSON() instead`);
 		return Zotero.Utilities.Item.itemToCSLJSON(zoteroItem);
