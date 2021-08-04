@@ -368,7 +368,7 @@ var Utilities = {
 			}
 		}
 
-		// Finally try for PMID
+		// Next try PMID
 		if (!identifiers.length) {
 			// PMID; right now, the longest PMIDs are 8 digits, so it doesn't seem like we'll
 			// need to discriminate for a fairly long time
@@ -379,6 +379,19 @@ var Utilities = {
 					PMID: pmid[2]
 				});
 				foundIDs.add(pmid);
+			}
+		}
+
+		// Finally, try ADS bibcodes
+		if (!identifiers.length) {
+			// regex as in the ADS Bibcode translator
+			let adsBibcode_RE = /\b(\d{4}\D\S{13}[A-Z.:])\b/g;
+			let adsBibcode;
+			while ((adsBibcode = adsBibcode_RE.exec(text)) && !foundIDs.has(adsBibcode)) {
+				identifiers.push({
+					adsBibcode: adsBibcode[1]
+				});
+				foundIDs.add(adsBibcode);
 			}
 		}
 
