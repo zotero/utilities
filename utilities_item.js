@@ -569,6 +569,7 @@ var Utilities_Item = {
 	 * Return first line (or first MAX_LENGTH characters) of note content
 	 **/
 	noteToTitle: function(text) {
+		var MAX_TITLE_LENGTH = 120;
 		var origText = text;
 		text = text.trim();
 		text = text.replace(/<br\s*\/?>/g, ' ');
@@ -585,11 +586,9 @@ var Utilities_Item = {
 			text = text.trim();
 		}
 
-		var max = this.MAX_TITLE_LENGTH;
-
-		var t = text.substring(0, max);
+		var t = text.substring(0, MAX_TITLE_LENGTH);
 		var ln = t.indexOf("\n");
-		if (ln>-1 && ln<max) {
+		if (ln > -1 && ln < MAX_TITLE_LENGTH) {
 			t = t.substring(0, ln);
 		}
 		return t;
