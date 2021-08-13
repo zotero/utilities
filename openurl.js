@@ -26,67 +26,8 @@
 (function() {
 
 var OpenURL = new function() {
-	this.resolve = resolve;
-	this.discoverResolvers = discoverResolvers;
 	this.createContextObject = createContextObject;
 	this.parseContextObject = parseContextObject;
-	
-	/*
-	 * Returns a URL to look up an item in the OpenURL resolver
-	 */
-	function resolve(itemObject) {
-		var co = createContextObject(itemObject, Zotero.Prefs.get("openURL.version"));
-		if(co) {
-			var base = Zotero.Prefs.get("openURL.resolver");
-			// Add & if there's already a ?
-			var splice = base.indexOf("?") == -1 ? "?" : "&";
-			return base + splice + co;
-		}
-		return false;
-	}
-	
-	/*
-	 * Queries OCLC's OpenURL resolver registry and returns an address and version
-	 */
-	function discoverResolvers() {
-		var req = new XMLHttpRequest();
-		req.open("GET", "http://worldcatlibraries.org/registry/lookup?IP=requestor", false);
-		req.send(null);
-		
-		if(!req.responseXML) {
-			throw new Error("Could not access resolver registry");
-		}
-		
-		var resolverArray = new Array();
-		var resolvers = req.responseXML.getElementsByTagName("resolver");
-		for(var i=0; i<resolvers.length; i++) {
-			var resolver = resolvers[i];
-			
-			var name = resolver.parentNode.getElementsByTagName("institutionName");
-			if(!name.length) {
-				continue;
-			}
-			name = name[0].textContent;
-			
-			var url = resolver.getElementsByTagName("baseURL");
-			if(!url.length) {
-				continue;
-			}
-			url = url[0].textContent;
-			
-			if(resolver.getElementsByTagName("Z39.88-2004").length > 0) {
-				var version = "1.0";
-			} else if(resolver.getElementsByTagName("OpenURL_0.1").length > 0) {
-				var version = "0.1";
-			} else {
-				continue;
-			}
-			
-			resolverArray.push({name:name, url:url, version:version});
-		}
-		
-		return resolverArray;
-	}
 	
 	/*
 	 * Generates an OpenURL ContextObject from an item
