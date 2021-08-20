@@ -30,6 +30,9 @@ Zotero.Schema = {
 	 * 		https://api.zotero.org/schema
 	 */
 	init(data) {
+		if (typeof data == 'string') {
+			data = JSON.parse(data);
+		}
 		// CSL type/field mappings used by Utilities.Item.itemFromCSLJSON()
 		Zotero.Schema.CSL_TYPE_MAPPINGS = {};
 		Zotero.Schema.CSL_TYPE_MAPPINGS_REVERSE = {};

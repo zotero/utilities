@@ -41,35 +41,44 @@ var Utilities_Date = new function(){
 	var _months;
 	var _monthsWithEnglish;
 
-	this.init = function () {
-		if (!(Zotero.isFx || Zotero.isElectron) || Zotero.isBookmarklet) {
-			throw new Error("Unimplemented");
+	/**
+	 * Initializes localized months for strToDate month parsing
+	 * @param dateFormatsJSON {Object} the JSON from resource/dateFormats.json
+	 */
+	this.init = function (dateFormatsJSON) {
+		if ((Zotero.isFx || Zotero.isElectron) && !dateFormatsJSON) {
+			dateFormatsJSON = Zotero.File.getResource('resource://zotero/schema/dateFormats.json');
+		}
+		if (!dateFormatsJSON) {
+			throw new Error("Zotero.Date.init() must be called with dateFormats.json");
+		}
+		if (typeof dateFormatsJSON == 'string') {
+			dateFormatsJSON = JSON.parse(dateFormatsJSON);
 		}
 
-		var json = JSON.parse(Zotero.File.getResource('resource://zotero/schema/dateFormats.json'));
 		var locale = Zotero.locale;
 		var english = locale.startsWith('en');
 		// If no exact match, try first two characters ('de')
-		if (!json[locale]) {
+		if (!dateFormatsJSON[locale]) {
 			locale = locale.substr(0, 2);
 		}
 		// Try first two characters repeated ('de-DE')
-		if (!json[locale]) {
+		if (!dateFormatsJSON[locale]) {
 			locale = locale + "-" + locale.toUpperCase();
 		}
 		// Look for another locale with same first two characters
-		if (!json[locale]) {
-			let sameLang = Object.keys(json).filter(l => l.startsWith(locale.substr(0, 2)));
+		if (!dateFormatsJSON[locale]) {
+			let sameLang = Object.keys(dateFormatsJSON).filter(l => l.startsWith(locale.substr(0, 2)));
 			if (sameLang.length) {
 				locale = sameLang[0];
 			}
 		}
 		// If all else fails, use English
-		if (!json[locale]) {
+		if (!dateFormatsJSON[locale]) {
 			locale = 'en-US';
 			english = true;
 		}
-		_months = json[locale];
+		_months = dateFormatsJSON[locale];
 
 		// Add English versions if not already added
 		if (english) {
@@ -78,7 +87,7 @@ var Utilities_Date = new function(){
 		else {
 			_monthsWithEnglish = {};
 			for (let key in _months) {
-				_monthsWithEnglish[key] = _months[key].concat(json['en-US'][key]);
+				_monthsWithEnglish[key] = _months[key].concat(dateFormatsJSON['en-US'][key]);
 			}
 		}
 	};
@@ -96,15 +105,7 @@ var Utilities_Date = new function(){
 			if (_months) return _months;
 		}
 
-		if (Zotero.isFx && !Zotero.isBookmarklet) {
-			throw new Error("Months not cached");
-		}
-
-		// TODO: Use JSON file for connectors
-		return _months = _monthsWithEnglish = {
-			short: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-			long: ["January", "February", "March", "April", "May", "June", "July", "August",
-				"September", "October", "November", "December"]};
+		throw new Error("Zotero.Date: Zotero.Date.init() not called with resource/dateFormats.json");
 	}
 
 	/**

@@ -4,8 +4,8 @@ Zotero utility code common across various codebases such as the Zotero client,
 Zotero translation architecture and others.
 
 Item utility functions require:
-- Loading the Zotero `schema.json`.
-  You will need to call `Zotero.Schema.init(data)` with the `schema.json` for it to work.
+- Calling `Zotero.Schema.init(json)` with the JSON from `schema.json` from Zotero schema repo
+- Calling `Zotero.Date.init(json)` with the JSON from `resource/dateFormats.json`
 - Loading `resource/zoteroTypeSchemaData.js` before `cachedTypes.js` or in Node.js running
   ```
     let CachedTypes = require('./cachedTypes')
