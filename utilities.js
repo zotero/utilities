@@ -1368,6 +1368,9 @@ var Utilities = {
 		else if (type == 'string' || typeof obj.toJSON == 'function') {
 			return JSON.stringify(obj, false, '    ');
 		}
+		else if (type == 'symbol') {
+			return obj.toString();
+		}
 		else if (type == 'function') {
 			var funcStr = ('' + obj).trim();
 			if (!level) {
