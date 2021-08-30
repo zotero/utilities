@@ -1514,6 +1514,28 @@ var Utilities = {
 		return dumpedText;
 	},
 
+	/**
+	 * Gets the byte length of the UTF-8 representation of a given string
+	 * @param {String} string
+	 * @return {Integer}
+	 */
+	getStringByteLength: function(string) {
+		var length = 0, n = string.length;
+		for(var i=0; i<n; i++) {
+			var val = string.charCodeAt(i);
+			if(val >= 128) {
+				if(val >= 2048) {
+					length += 3;
+				} else {
+					length += 2;
+				}
+			} else {
+				length += 1;
+			}
+		}
+		return length;
+	},	
+
 	semverCompare(a, b) {
 		a = a.split('.').map(version => isNaN(parseInt(version)) ? version : parseInt(version));
 		b = b.split('.').map(version => isNaN(parseInt(version)) ? version : parseInt(version));
