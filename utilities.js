@@ -167,7 +167,7 @@ var Utilities = {
 			// Add spaces between periods
 			author = author.replace(/\.([^ ])/, ". $1");
 
-			var splitNames = author.split(/, ?/);
+			var splitNames = author.split(/[,،] ?/);
 			if(splitNames.length > 1) {
 				var lastName = splitNames[0];
 				var firstName = splitNames[1];
