@@ -1146,7 +1146,7 @@ var Utilities = {
 	 * @return {Object}
 	 */
 	deepCopy: function(obj) {
-		var obj2 = (obj instanceof Array ? [] : {});
+		var obj2 = (Array.isArray(obj) ? [] : {});
 		for(var i in obj) {
 			if(!obj.hasOwnProperty(i)) continue;
 
