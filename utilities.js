@@ -48,7 +48,7 @@ var Utilities = {
 	 * than once, if called multiple times. See
 	 * http://stackoverflow.com/questions/24004791/can-someone-explain-the-debounce-function-in-javascript
 	 * @param fn {Function} function to debounce
-	 * @param delay {Integer} number of miliseconds to delay the function execution
+	 * @param delay {Integer} number of milliseconds to delay the function execution
 	 * @returns {Function}
 	 */
 	debounce: function(fn, delay=500) {
@@ -1383,7 +1383,7 @@ var Utilities = {
 				return funcStr.replace(/\s*(\[native code\])\s*/i, ' $1 ');
 			}
 
-			// For non-native functions, display an elipsis
+			// For non-native functions, display an ellipsis
 			return ('' + obj).replace(/{[\s\S]*}/, '{...}');
 		}
 		else if (type != 'object') {
