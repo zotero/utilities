@@ -567,12 +567,24 @@ var Utilities_Item = {
 
 	/**
 	 * Return first line (or first MAX_LENGTH characters) of note content
-	 **/
-	noteToTitle: function(text) {
+	 *
+	 * @param {String} text
+	 * @param {Object} [options]
+	 * @param {Boolean} [options.stopAtLineBreak] - Stop at <br/> instead of converting to space
+	 * @return {String}
+	 */
+	noteToTitle: function (text, options = {}) {
 		var MAX_TITLE_LENGTH = 120;
 		var origText = text;
 		text = text.trim();
-		text = text.replace(/<br\s*\/?>/g, ' ');
+		// Add line breaks after block elements
+		text = text.replace(/(<\/(h\d|p|div)+>)/g, '$1\n');
+		if (options.stopAtLineBreak) {
+			text = text.replace(/<br\s*\/?>/g, '\n');
+		}
+		else {
+			text = text.replace(/<br\s*\/?>/g, ' ');
+		}
 		text = Zotero.Utilities.unescapeHTML(text);
 
 		// If first line is just an opening HTML tag, remove it
