@@ -1468,18 +1468,38 @@ var Utilities = {
 			path = ['ROOT'];
 		}
 
-		var isArray = objType == '[object Array]'
+		var dumpedText;
+		var rawProps = false;
+		var isArray = objType == '[object Array]';
+		var dumpKey = key => (typeof key == 'symbol'
+			? key.toString()
+			: JSON.stringify(key));
 		if (isArray) {
-			var dumpedText = '[';
+			dumpedText = '[';
+		}
+		else if (objType == '[object Set]') {
+			dumpedText = 'Set {';
+			obj = Array.from(obj);
+		}
+		else if (objType == '[object Map]') {
+			dumpedText = 'Map {';
+			rawProps = true;
+			let newObj = {};
+			for (let [key, value] of obj.entries()) {
+				newObj[dumpKey(key)] = value;
+			}
+			obj = newObj;
 		}
 		else if (objType == '[object Object]') {
-			var dumpedText = '{';
+			dumpedText = '{';
 		}
 		else {
-			var dumpedText = objType + ' {';
+			dumpedText = objType + ' {';
 		}
 		for (var prop in obj) {
-			dumpedText += '\n' + level_padding + JSON.stringify(prop) + ": ";
+			dumpedText += '\n' + level_padding
+				+ (rawProps ? prop : dumpKey(prop))
+				+ ": ";
 
 			try {
 				var value = obj[prop];
