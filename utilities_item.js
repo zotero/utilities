@@ -955,6 +955,60 @@ var Utilities_Item = {
 		}
 
 		return item;
+	},
+
+	/**
+	 * Compare two call numbers. Handles Dewey and LC specially,
+	 * compares numbers as numbers, uses string comparison for everything else.
+	 *
+	 * @param {String} fieldA
+	 * @param {String} fieldB
+	 * @returns {Number} Negative if A < B, 0 if A == B, positive if A > B
+	 */
+	compareCallNumbers: function (fieldA, fieldB) {
+		let onlyNumbersRe = /^\d*$/;
+		let deweyRe = /^(\d{3})(?:\.(\d+))?(?:\/([a-zA-Z]{3}))?$/;
+		let lcWithClassificationRe = /^([a-zA-Z]{1,3}\d+\s*\.)(?=[a-zA-Z])/;
+
+		if (onlyNumbersRe.test(fieldA) && onlyNumbersRe.test(fieldB)) {
+			return parseInt(fieldA) - parseInt(fieldB);
+		}
+
+		let splitA = fieldA.toLowerCase().replace(/\s/g, '').match(deweyRe);
+		let splitB = fieldB.toLowerCase().replace(/\s/g, '').match(deweyRe);
+		if (splitA && splitB) {
+			// Looks like Dewey Decimal, so we'll compare by parts
+			let i;
+			for (i = 1; i < splitA.length && i < splitB.length; i++) {
+				if (splitA[i] < splitB[i]) {
+					return -1;
+				}
+				else if (splitA[i] > splitB[i]) {
+					return 1;
+				}
+			}
+			return (i < splitA.length) ? 1 : (i < splitB.length) ? -1 : 0;
+		}
+		
+		let classificationA = fieldA.match(lcWithClassificationRe);
+		let classificationB = fieldB.match(lcWithClassificationRe);
+		if (classificationA && classificationB) {
+			// Looks like a LC call number, so we'll first compare
+			// by classification field using locale collation
+			let classificationComp = Zotero.localeCompare(classificationA[1], classificationB[1]);
+
+			if (classificationComp == 0) {
+				// If they match, we'll compare the rest using
+				// basic string comparison
+				fieldA = fieldA.substring(classificationA[1].length);
+				fieldB = fieldB.substring(classificationB[1].length);
+			}
+			else {
+				return classificationComp;
+			}
+		}
+
+		return (fieldA > fieldB) ? 1 : (fieldA < fieldB) ? -1 : 0;
 	}
 }
 
