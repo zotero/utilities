@@ -129,7 +129,10 @@ var Utilities_Item = {
 				if(!creatorType) continue;
 
 				var nameObj;
-				if (creator.lastName || creator.firstName) {
+				if (creator.name || (creator.fieldMode === 1 && creator.lastName && !creator.firstName)) {
+					nameObj = {'literal': creator.name || creator.lastName};
+				}
+				else if (creator.lastName || creator.firstName) {
 					nameObj = {
 						family: creator.lastName || '',
 						given: creator.firstName || ''
@@ -149,8 +152,6 @@ var Utilities_Item = {
 							Zotero.Utilities.Item.parseParticles(nameObj);
 						}
 					}
-				} else if (creator.name) {
-					nameObj = {'literal': creator.name};
 				}
 
 				if(cslItem[creatorType]) {
