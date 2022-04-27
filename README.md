@@ -21,3 +21,5 @@ Item utility functions require:
   ```
 
 Please bundle the [Zotero schema](https://github.com/zotero/zotero-schema) file with your repository, do not load it remotely.
+
+To run tests: `npm i && npm test`.
