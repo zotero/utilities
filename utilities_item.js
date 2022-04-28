@@ -966,9 +966,22 @@ var Utilities_Item = {
 	 * @returns {Number} Negative if A < B, 0 if A == B, positive if A > B
 	 */
 	compareCallNumbers: function (fieldA, fieldB) {
+		function compareStringArrays(a, b) {
+			let i;
+			for (i = 0; i < a.length && i < b.length; i++) {
+				if (a[i] < b[i]) {
+					return -1;
+				}
+				else if (a[i] > b[i]) {
+					return 1;
+				}
+			}
+			return (i < a.length) ? 1 : (i < b.length) ? -1 : 0;
+		}
+
 		let onlyNumbersRe = /^\d*$/;
 		let deweyRe = /^(\d{3})(?:\.(\d+))?(?:\/([a-zA-Z]{3}))?$/;
-		let lcWithClassificationRe = /^([a-zA-Z]{1,3}\d+\s*\.)(?=[a-zA-Z])/;
+		let lcWithClassificationRe = /^[a-zA-Z]{1,3}\d+($|(?=\s*[.\d]))/;
 
 		if (onlyNumbersRe.test(fieldA) && onlyNumbersRe.test(fieldB)) {
 			return parseInt(fieldA) - parseInt(fieldB);
@@ -978,16 +991,9 @@ var Utilities_Item = {
 		let splitB = fieldB.toLowerCase().replace(/\s/g, '').match(deweyRe);
 		if (splitA && splitB) {
 			// Looks like Dewey Decimal, so we'll compare by parts
-			let i;
-			for (i = 1; i < splitA.length && i < splitB.length; i++) {
-				if (splitA[i] < splitB[i]) {
-					return -1;
-				}
-				else if (splitA[i] > splitB[i]) {
-					return 1;
-				}
-			}
-			return (i < splitA.length) ? 1 : (i < splitB.length) ? -1 : 0;
+			splitA.shift();
+			splitB.shift();
+			return compareStringArrays(splitA, splitB);
 		}
 		
 		let classificationA = fieldA.match(lcWithClassificationRe);
@@ -995,13 +1001,17 @@ var Utilities_Item = {
 		if (classificationA && classificationB) {
 			// Looks like a LC call number, so we'll first compare
 			// by classification field using locale collation
-			let classificationComp = Zotero.localeCompare(classificationA[1], classificationB[1]);
+			let classificationComp = Zotero.localeCompare(
+				classificationA[0].replace(/[\s.]/g, ''),
+				classificationB[0].replace(/[\s.]/g, '')
+			);
 
 			if (classificationComp == 0) {
 				// If they match, we'll compare the rest using
 				// basic string comparison
-				fieldA = fieldA.substring(classificationA[1].length);
-				fieldB = fieldB.substring(classificationB[1].length);
+				fieldA = fieldA.substring(classificationA[0].length).replace(/[\s.]+/g, ' ');
+				fieldB = fieldB.substring(classificationB[0].length).replace(/[\s.]+/g, ' ');
+				return compareStringArrays(fieldA.split(' '), fieldB.split(' '));
 			}
 			else {
 				return classificationComp;
