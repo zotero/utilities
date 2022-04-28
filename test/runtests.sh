@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd "$(dirname "${BASH_SOURCE[0]}")"
+SCRIPT_DIR="$(dirname "${BASH_SOURCE[0]}")"
 
 function usage {
 	cat >&2 <<DONE
@@ -13,7 +13,7 @@ DONE
 	exit 1
 }
 
-export UTILITIES_SCHEMA_PATH="../resource/schema/global/schema.json"
+export UTILITIES_SCHEMA_PATH="$SCRIPT_DIR/../resource/schema/global/schema.json"
 
 while getopts "g:hj:" opt; do
 	case $opt in
@@ -35,6 +35,6 @@ done
 
 mocha \
 	--recursive \
-	--file init.js \
+	--file "$SCRIPT_DIR/init.js" \
 	--grep "$GREP" \
-	-- tests
+	-- "$SCRIPT_DIR/tests"
