@@ -1,19 +1,40 @@
 #!/bin/bash
 
-SCRIPT_DIR=$(dirname "$0")
-PARENT_REPO_DIR=$(git rev-parse --show-superproject-working-tree)
-export UTILITIES_RESOURCE_DIR="$SCRIPT_DIR/../resource"
-export TEST_DATA_DIR="$SCRIPT_DIR/data"
-if [ ! -f "$UTILITIES_RESOURCE_DIR/schema.json" ]; then
-	if [ -f "$PARENT_REPO_DIR/resource/schema/global/schema.json" ]; then
-		cp "$PARENT_REPO_DIR/resource/schema/global/schema.json" "$UTILITIES_RESOURCE_DIR/schema.json"
-	else
-		wget -O "$UTILITIES_RESOURCE_DIR/schema.json" -- https://api.zotero.org/schema
-	fi
-fi
+cd "$(dirname "${BASH_SOURCE[0]}")"
+
+function usage {
+	cat >&2 <<DONE
+Usage: $0 [option]
+Options
+ -g PATTERN          only run tests matching the given pattern (grep)
+ -h                  display this help
+ -j PATH             path to schema.json (default: from resource/schema/global)
+DONE
+	exit 1
+}
+
+export UTILITIES_SCHEMA_PATH="../resource/schema/global/schema.json"
+
+while getopts "g:hj:" opt; do
+	case $opt in
+		g)
+			GREP="$OPTARG"
+			;;
+		h)
+			usage
+			;;
+		j)
+			UTILITIES_SCHEMA_PATH="$OPTARG"
+			;;
+		*)
+			usage
+			;;
+	esac
+	shift $((OPTIND-1)); OPTIND=1
+done
 
 mocha \
 	--recursive \
-	--file "$SCRIPT_DIR/init.js" \
-	--grep "$1" \
-	test/tests
+	--file init.js \
+	--grep "$GREP" \
+	-- tests
