@@ -1715,9 +1715,15 @@ var Utilities = {
 			doc = new JSDOM(wrappedNote).window.document;
 		}
 		else {
-			let parser = typeof Cc !== 'undefined'
-				? Cc['@mozilla.org/xmlextras/domparser;1'].createInstance(Ci.nsIDOMParser)
-				: new DOMParser();
+			let parser;
+			try {
+				parser = new DOMParser();
+			}
+			catch {
+				// Fx60 defines DOMParser but throws an error when you construct
+				// it from this context
+				parser = Cc['@mozilla.org/xmlextras/domparser;1'].createInstance(Ci.nsIDOMParser);
+			}
 			doc = parser.parseFromString(wrappedNote, 'text/html');
 		}
 
