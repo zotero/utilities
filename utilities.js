@@ -1708,11 +1708,20 @@ var Utilities = {
 			}
 		}
 
-		let parser = typeof Cc !== 'undefined'
-			? Cc['@mozilla.org/xmlextras/domparser;1'].createInstance(Ci.nsIDOMParser)
-			: new DOMParser();
-		let root = parser.parseFromString('<div id="note-body">' + note + '</div>', 'text/html')
-			.getElementById('note-body');
+		let wrappedNote = '<div id="note-body">' + note + '</div>';
+		let doc;
+		if (Zotero.isNode) {
+			let { JSDOM } = require('jsdom');
+			doc = new JSDOM(wrappedNote).window.document;
+		}
+		else {
+			let parser = typeof Cc !== 'undefined'
+				? Cc['@mozilla.org/xmlextras/domparser;1'].createInstance(Ci.nsIDOMParser)
+				: new DOMParser();
+			doc = parser.parseFromString(wrappedNote, 'text/html');
+		}
+
+		let root = doc.getElementById('note-body');
 		for (let child of root.children) {
 			visit(child);
 		}

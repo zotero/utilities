@@ -41,8 +41,13 @@ Zotero.localeCompare = (a, b) => collator.compare(a, b);
 globalThis.assert = require('chai').assert;
 
 let testDataDir = path.join(__dirname, 'data');
+
+globalThis.loadTestData = function (filename) {
+    return fs.readFileSync(path.join(testDataDir, filename)).toString('utf-8');
+}
+
 globalThis.loadSampleData = function (name) {
-    return JSON.parse(fs.readFileSync(path.join(testDataDir, name + '.js')).toString('utf-8'));
+    return JSON.parse(loadTestData(name + '.js'));
 }
 
 /**
