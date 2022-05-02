@@ -1632,6 +1632,108 @@ var Utilities = {
 	resolveIntermediateURL: movedToUtilitiesInternal("resolveIntermediateURL"),
 	determineAttachmentIcon: movedToUtilitiesInternal('determineAttachmentIcon'),
 
+	/**
+	 * Walk the DOM and the contents of JSON data attributes in the HTML representation
+	 * of a note, calling visitor functions that might modify it and returning
+	 * the resulting HTML.
+	 *
+	 * Elements are visited in depth-first order. First the element itself is visited,
+	 * then its data attributes, then the URIs in its JSON attributes, then its subtree.
+	 *
+	 * @param {String} note Note HTML
+	 * @param {Object} visitors
+	 * @param {Function} [visitors.visitContainer]
+	 * @param {Function} [visitors.visitAnnotation]
+	 * @param {Function} [visitors.visitCitation]
+	 * @param {Function} [visitors.visitOtherElement]
+	 * @param {Function} [visitors.visitDataAttribute]
+	 * @param {Function} [visitors.visitURI] Return a replacement for the passed URI
+	 * @return {String} Potentially modified note HTML
+	 */
+	walkNoteDOM: function (note, visitors) {
+		function visit(elem) {
+			if (elem.hasAttribute('data-schema-version')) {
+				visitors.visitContainer?.(elem);
+			}
+			else if (elem.hasAttribute('data-annotation')) {
+				visitors.visitAnnotation?.(elem);
+			}
+			else if (elem.hasAttribute('data-citation')) {
+				visitors.visitCitation?.(elem);
+			}
+			else {
+				visitors.visitOtherElement?.(elem);
+			}
+
+			if (visitors.visitDataAttribute || visitors.visitURI) {
+				for (let attr of ['data-citation', 'data-citation-items', 'data-annotation']) {
+					if (elem.hasAttribute(attr)) {
+						let json;
+						try {
+							json = JSON.parse(decodeURIComponent(elem.getAttribute(attr)));
+						}
+						catch (e) {
+							continue;
+						}
+
+						visitors.visitDataAttribute?.(attr, json);
+						if (visitors.visitURI) visitURIs(json);
+
+						elem.setAttribute(attr, JSON.stringify(json));
+					}
+				}
+			}
+
+			for (let child of elem.children) {
+				visit(child);
+			}
+		}
+
+		function visitURIs(json) {
+			if (Array.isArray(json)) {
+				json.forEach(visitURIs);
+			}
+			else if (typeof json === 'object') {
+				for (let [key, value] of Object.entries(json)) {
+					if (key == 'id' || key == 'attachmentURI') {
+						json[key] = visitors.visitURI(value);
+					}
+					else if (key == 'uris') {
+						json[key] = value.map(visitors.visitURI)
+					}
+					else {
+						visitURIs(value);
+					}
+				}
+			}
+		}
+
+		let wrappedNote = '<div id="note-body">' + note + '</div>';
+		let doc;
+		if (Zotero.isNode) {
+			let { JSDOM } = require('jsdom');
+			doc = new JSDOM(wrappedNote).window.document;
+		}
+		else {
+			let parser;
+			try {
+				parser = new DOMParser();
+			}
+			catch {
+				// Fx60 defines DOMParser but throws an error when you construct
+				// it from this context
+				parser = Cc['@mozilla.org/xmlextras/domparser;1'].createInstance(Ci.nsIDOMParser);
+			}
+			doc = parser.parseFromString(wrappedNote, 'text/html');
+		}
+
+		let root = doc.getElementById('note-body');
+		for (let child of root.children) {
+			visit(child);
+		}
+		return root.innerHTML;
+	},
+
 	// /**
 	//  * Provides unicode support and other additional features for regular expressions
 	//  * See https://github.com/slevithan/xregexp for usage
