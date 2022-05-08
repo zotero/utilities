@@ -47,7 +47,7 @@ globalThis.loadTestData = function (filename) {
 }
 
 globalThis.loadSampleData = function (name) {
-    return JSON.parse(loadTestData(name + '.js'));
+    return JSON.parse(loadTestData(name + '.json'));
 }
 
 /**
