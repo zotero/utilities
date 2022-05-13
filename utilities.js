@@ -1454,12 +1454,17 @@ var Utilities = {
 			return header + ': ' + msg;
 		}
 
-		// Only dump single level for nsIDOMNode objects (including document)
-		if (Zotero.isFx && !Zotero.isBookmarklet
-			&& (obj instanceof Components.interfaces.nsIDOMNode
-				|| obj instanceof Components.interfaces.nsIDOMWindow)
-		) {
-			level = maxLevel;
+		// Only dump single level for Node objects (including document)
+		if (Zotero.isFx && !Zotero.isBookmarklet) {
+			if (Zotero.platformMajorVersion > 60) {
+				if (obj instanceof Node || obj instanceof Window) {
+					level = maxLevel;
+				}
+			}
+			else if (obj instanceof Components.interfaces.nsIDOMNode
+					|| obj instanceof Components.interfaces.nsIDOMWindow) {
+				level = maxLevel;
+			}
 		}
 
 		// Recursion checking
