@@ -408,7 +408,7 @@ var Utilities_Date = new function(){
 
 			if(!_monthRe) {
 				// TODO: Switch back to native RegExp in Fx102 when Unicode property escapes are supported
-				_monthRe = new XRegExp("^(.*)(?=^|[^\\p{L}])(" + months.join("|") + ")[^ ]*(?: (.*)$|$)", "iu");
+				_monthRe = new Zotero.Utilities.XRegExp("^(.*)(?=^|[^\\p{L}])(" + months.join("|") + ")[^ ]*(?: (.*)$|$)", "iu");
 			}
 
 			for (var i in parts) {
