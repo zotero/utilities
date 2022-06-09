@@ -407,7 +407,8 @@ var Utilities_Date = new function(){
 				.concat(months.long.map(m => m.toLowerCase()));
 
 			if(!_monthRe) {
-				_monthRe = new RegExp("^(.*)\\b("+months.join("|")+")[^ ]*(?: (.*)$|$)", "i");
+				// TODO: Switch back to native RegExp in Fx102 when Unicode property escapes are supported
+				_monthRe = new XRegExp("^(.*)(?=^|[^\\p{L}])(" + months.join("|") + ")[^ ]*(?: (.*)$|$)", "iu");
 			}
 
 			for (var i in parts) {
