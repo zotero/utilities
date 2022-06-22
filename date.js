@@ -94,7 +94,7 @@ var Utilities_Date = new function(){
 		let months = _monthsWithEnglish.short.map(m => m.toLowerCase())
 			.concat(_monthsWithEnglish.long.map(m => m.toLowerCase()));
 		// TODO: Switch back to native RegExp in Fx102 when Unicode property escapes are supported
-		_monthRe = new Zotero.Utilities.XRegExp("^(.*)(?=^|[^\\p{L}])(" + months.join("|") + ")[^ ]*(?: (.*)$|$)", "iu");
+		_monthRe = Zotero.Utilities.XRegExp("(.*)(?:^|[^\\p{L}])(" + months.join("|") + ")[^ ]*(?: (.*)$|$)", "iu");
 	};
 
 
