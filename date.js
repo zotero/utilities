@@ -90,6 +90,11 @@ var Utilities_Date = new function(){
 				_monthsWithEnglish[key] = _months[key].concat(dateFormatsJSON['en-US'][key]);
 			}
 		}
+		
+		let months = _monthsWithEnglish.short.map(m => m.toLowerCase())
+			.concat(_monthsWithEnglish.long.map(m => m.toLowerCase()));
+		// TODO: Switch back to native RegExp in Fx102 when Unicode property escapes are supported
+		_monthRe = new Zotero.Utilities.XRegExp("^(.*)(?=^|[^\\p{L}])(" + months.join("|") + ")[^ ]*(?: (.*)$|$)", "iu");
 	};
 
 
@@ -405,12 +410,6 @@ var Utilities_Date = new function(){
 			let months = Utilities_Date.getMonths(true); // no 'this' for translator sandbox
 			months = months.short.map(m => m.toLowerCase())
 				.concat(months.long.map(m => m.toLowerCase()));
-
-			if(!_monthRe) {
-				// TODO: Switch back to native RegExp in Fx102 when Unicode property escapes are supported
-				_monthRe = new Zotero.Utilities.XRegExp("^(.*)(?=^|[^\\p{L}])(" + months.join("|") + ")[^ ]*(?: (.*)$|$)", "iu");
-			}
-
 			for (var i in parts) {
 				var m = _monthRe.exec(parts[i].part);
 				if (m) {
