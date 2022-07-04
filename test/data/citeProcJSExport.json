@@ -57,15 +57,6 @@
 		},
 		"archive": "Archive",
 		"archive_location": "Archive location",
-		"author": [
-			{
-				"family": "performerLast",
-				"given": "performerFirst"
-			},
-			{
-				"literal": "Institutional Author"
-			}
-		],
 		"call-number": "Call number",
 		"collection-title": "Series title",
 		"composer": [
@@ -90,6 +81,15 @@
 		"medium": "Medium",
 		"note": "Extra",
 		"number-of-volumes": "7",
+		"performer": [
+			{
+				"family": "performerLast",
+				"given": "performerFirst"
+			},
+			{
+				"literal": "Institutional Author"
+			}
+		],
 		"publisher": "Publisher",
 		"publisher-place": "Place",
 		"source": "Library catalog",
@@ -415,7 +415,7 @@
 		"source": "Library catalog",
 		"title": "Title",
 		"title-short": "Short title",
-		"type": "book",
+		"type": "software",
 		"version": "Version number"
 	},
 	"conferencePaper": {
@@ -458,8 +458,8 @@
 				"given": "editorFirst"
 			}
 		],
-		"event": "Conference name",
 		"event-place": "Place",
+		"event-title": "Conference name",
 		"id": 45,
 		"issued": {
 			"date-parts": [
@@ -744,7 +744,9 @@
 		},
 		"archive": "Archive",
 		"archive_location": "Archive location",
-		"author": [
+		"call-number": "Call number",
+		"dimensions": "1:22:33",
+		"director": [
 			{
 				"family": "directorLast",
 				"given": "directorFirst"
@@ -753,8 +755,6 @@
 				"literal": "Institutional Author"
 			}
 		],
-		"call-number": "Call number",
-		"dimensions": "1:22:33",
 		"genre": "Type",
 		"id": 50,
 		"issued": {
@@ -826,7 +826,9 @@
 				]
 			]
 		},
-		"author": [
+		"authority": "Legislative body",
+		"chapter-number": "Session",
+		"contributor": [
 			{
 				"family": "contributorLast",
 				"given": "contributorFirst"
@@ -835,8 +837,6 @@
 				"literal": "Institutional Author"
 			}
 		],
-		"authority": "Legislative body",
-		"chapter-number": "Session",
 		"event-place": "Place",
 		"id": 52,
 		"issued": {
@@ -859,7 +859,7 @@
 		"section": "Committee",
 		"title": "Title",
 		"title-short": "Short title",
-		"type": "bill"
+		"type": "hearing"
 	},
 	"instantMessage": {
 		"URL": "http://www.example.com",
@@ -1471,8 +1471,8 @@
 				"literal": "Institutional Author"
 			}
 		],
-		"event": "Meeting name",
 		"event-place": "Place",
+		"event-title": "Meeting name",
 		"genre": "Type",
 		"id": 63,
 		"issued": {
@@ -1505,7 +1505,10 @@
 		},
 		"archive": "Archive",
 		"archive_location": "Archive location",
-		"author": [
+		"call-number": "Call number",
+		"container-title": "Publication title",
+		"dimensions": "1:22:33",
+		"director": [
 			{
 				"family": "directorLast",
 				"given": "directorFirst"
@@ -1514,9 +1517,6 @@
 				"literal": "Institutional Author"
 			}
 		],
-		"call-number": "Call number",
-		"container-title": "Publication title",
-		"dimensions": "1:22:33",
 		"event-place": "Place",
 		"id": 64,
 		"issued": {
@@ -1703,7 +1703,10 @@
 		},
 		"archive": "Archive",
 		"archive_location": "Archive location",
-		"author": [
+		"call-number": "Call number",
+		"container-title": "Publication title",
+		"dimensions": "1:22:33",
+		"director": [
 			{
 				"family": "directorLast",
 				"given": "directorFirst"
@@ -1712,9 +1715,6 @@
 				"literal": "Institutional Author"
 			}
 		],
-		"call-number": "Call number",
-		"container-title": "Publication title",
-		"dimensions": "1:22:33",
 		"event-place": "Place",
 		"id": 68,
 		"issued": {
@@ -1752,7 +1752,10 @@
 		},
 		"archive": "Archive",
 		"archive_location": "Archive location",
-		"author": [
+		"call-number": "Call number",
+		"collection-title": "Series title",
+		"dimensions": "1:22:33",
+		"director": [
 			{
 				"family": "directorLast",
 				"given": "directorFirst"
@@ -1761,9 +1764,6 @@
 				"literal": "Institutional Author"
 			}
 		],
-		"call-number": "Call number",
-		"collection-title": "Series title",
-		"dimensions": "1:22:33",
 		"event-place": "Place",
 		"id": 69,
 		"issued": {

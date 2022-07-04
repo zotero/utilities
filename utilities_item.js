@@ -116,17 +116,16 @@ var Utilities_Item = {
 
 		// separate name variables
 		if (zoteroItem.type != "attachment" && zoteroItem.type != "note") {
-			var author = Zotero.CreatorTypes.getName(Zotero.CreatorTypes.getPrimaryIDForType(itemTypeID));
+			let primaryCreatorType = Zotero.CreatorTypes.getName(Zotero.CreatorTypes.getPrimaryIDForType(itemTypeID));
 			var creators = zoteroItem.creators;
 			for(var i=0; creators && i<creators.length; i++) {
 				var creator = creators[i];
 				var creatorType = creator.creatorType;
-				if(creatorType == author) {
-					creatorType = "author";
+				let cslCreatorType = Zotero.Schema.CSL_NAME_MAPPINGS[creatorType];
+				if (!cslCreatorType && creatorType == primaryCreatorType) {
+					cslCreatorType = "author";
 				}
-
-				creatorType = Zotero.Schema.CSL_NAME_MAPPINGS[creatorType];
-				if(!creatorType) continue;
+				if (!cslCreatorType) continue;
 
 				var nameObj;
 				if (creator.name || (creator.fieldMode === 1 && creator.lastName && !creator.firstName)) {
@@ -154,10 +153,10 @@ var Utilities_Item = {
 					}
 				}
 
-				if(cslItem[creatorType]) {
-					cslItem[creatorType].push(nameObj);
+				if(cslItem[cslCreatorType]) {
+					cslItem[cslCreatorType].push(nameObj);
 				} else {
-					cslItem[creatorType] = [nameObj];
+					cslItem[cslCreatorType] = [nameObj];
 				}
 			}
 		}
