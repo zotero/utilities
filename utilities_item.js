@@ -103,6 +103,9 @@ var Utilities_Item = {
 					else if (field == 'extra') {
 						value = Zotero.Utilities.Item.extraToCSL(value);
 					}
+					else if (field == 'language') {
+						value = Zotero.Utilities.Item.languageToCSL(value);
+					}
 
 					// Strip enclosing quotes
 					if(value.charAt(0) == '"' && value.indexOf('"', 1) == value.length - 1) {
@@ -721,6 +724,52 @@ var Utilities_Item = {
 			}
 			return field + value;
 		});
+	},
+
+	/**
+	 * Map a user-provided language name to an ISO 639-1 language code.
+	 * Language names are matched against languages' English names and native
+	 * names. Case and diacritics are ignored.
+	 *
+	 * @param {String} language
+	 * @return {String}
+	 */
+	languageToCSL: function (language) {
+		if (!language) {
+			return '';
+		}
+
+		if (!globalThis.Intl || !globalThis.Intl.DisplayNames) {
+			Zotero.debug('Intl.DisplayNames not available: returning language as-is');
+			return language;
+		}
+
+		let originalLanguage = language;
+		// Lowercase and remove diacritics
+		language = language.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+		let languageMap = Utilities_Item._languageMap;
+		if (!languageMap) {
+			languageMap = Utilities_Item._languageMap = new Map();
+
+			let allLocales = ["ab", "aa", "af", "ak", "sq", "am", "ar", "an", "hy", "as", "av", "ae", "ay", "az", "bm", "ba", "eu", "be", "bn", "bi", "bs", "br", "bg", "my", "ca", "ch", "ce", "ny", "zh", "cu", "cv", "kw", "co", "cr", "hr", "cs", "da", "dv", "nl", "dz", "en", "eo", "et", "ee", "fo", "fj", "fi", "fr", "fy", "ff", "gd", "gl", "lg", "ka", "de", "el", "kl", "gn", "gu", "ht", "ha", "he", "hz", "hi", "ho", "hu", "is", "io", "ig", "id", "ia", "ie", "iu", "ik", "ga", "it", "ja", "jv", "kn", "kr", "ks", "kk", "km", "ki", "rw", "ky", "kv", "kg", "ko", "kj", "ku", "lo", "la", "lv", "li", "ln", "lt", "lu", "lb", "mk", "mg", "ms", "ml", "mt", "gv", "mi", "mr", "mh", "mn", "na", "nv", "nd", "nr", "ng", "ne", "no", "nb", "nn", "ii", "oc", "oj", "or", "om", "os", "pi", "ps", "fa", "pl", "pt", "pa", "qu", "ro", "rm", "rn", "ru", "se", "sm", "sg", "sa", "sc", "sr", "sn", "sd", "si", "sk", "sl", "so", "st", "es", "su", "sw", "ss", "sv", "tl", "ty", "tg", "ta", "tt", "te", "th", "bo", "ti", "to", "ts", "tn", "tr", "tk", "tw", "ug", "uk", "ur", "uz", "ve", "vi", "vo", "wa", "cy", "wo", "xh", "yi", "yo", "za", "zu"];
+			let englishLanguageNames = new Intl.DisplayNames('en', { type: 'language' });
+			for (let locale of Intl.DisplayNames.supportedLocalesOf(allLocales)) {
+				let inEnglish = englishLanguageNames.of(locale);
+				if (inEnglish) {
+					languageMap.set(inEnglish.toLowerCase(), locale);
+				}
+			
+				let localeLanguageNames = new Intl.DisplayNames(locale, { type: 'language' });
+				let inLocale = localeLanguageNames.of(locale);
+				if (inLocale) {
+					inLocale = inLocale.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+					languageMap.set(inLocale, locale);
+				}
+			}
+		}
+
+		return languageMap.get(language) || originalLanguage;
 	},
 
 	/**
