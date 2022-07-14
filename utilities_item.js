@@ -103,9 +103,6 @@ var Utilities_Item = {
 					else if (field == 'extra') {
 						value = Zotero.Utilities.Item.extraToCSL(value);
 					}
-					else if (field == 'language') {
-						value = Zotero.Utilities.Item.languageToCSL(value);
-					}
 
 					// Strip enclosing quotes
 					if(value.charAt(0) == '"' && value.indexOf('"', 1) == value.length - 1) {
@@ -734,7 +731,7 @@ var Utilities_Item = {
 	 * @param {String} language
 	 * @return {String}
 	 */
-	languageToCSL: function (language) {
+	languageToISO6391: function (language) {
 		if (!language) {
 			return '';
 		}
