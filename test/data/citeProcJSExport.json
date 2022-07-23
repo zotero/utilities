@@ -57,6 +57,15 @@
 		},
 		"archive": "Archive",
 		"archive_location": "Archive location",
+		"author": [
+			{
+				"family": "performerLast",
+				"given": "performerFirst"
+			},
+			{
+				"literal": "Institutional Author"
+			}
+		],
 		"call-number": "Call number",
 		"collection-title": "Series title",
 		"composer": [
@@ -81,15 +90,6 @@
 		"medium": "Medium",
 		"note": "Extra",
 		"number-of-volumes": "7",
-		"performer": [
-			{
-				"family": "performerLast",
-				"given": "performerFirst"
-			},
-			{
-				"literal": "Institutional Author"
-			}
-		],
 		"publisher": "Publisher",
 		"publisher-place": "Place",
 		"source": "Library catalog",
