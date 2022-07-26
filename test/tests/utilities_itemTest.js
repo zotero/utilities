@@ -236,6 +236,38 @@ describe("Zotero.Utilities.Item", function () {
 			assert.equal(accessed['date-parts'][0][1], 1);
 			assert.equal(accessed['date-parts'][0][2], 9);
 		});
+
+		it("should convert localized language names to ISO 639-1", function () {
+			let item = newItem('journalArticle');
+
+			item.language = 'French';
+			let language = Zotero.Utilities.Item.itemToCSLJSON(item).language;
+			assert.equal(language, 'fr');
+
+			item.language = 'francais'; // Diacritics are ignored
+			language = Zotero.Utilities.Item.itemToCSLJSON(item).language;
+			assert.equal(language, 'fr');
+
+			item.language = 'foobar';
+			language = Zotero.Utilities.Item.itemToCSLJSON(item).language;
+			assert.equal(language, 'foobar');
+
+			item.language = 'zh-Hans';
+			language = Zotero.Utilities.Item.itemToCSLJSON(item).language;
+			assert.equal(language, 'zh-Hans');
+
+			item.language = 'العربية';
+			language = Zotero.Utilities.Item.itemToCSLJSON(item).language;
+			assert.equal(language, 'ar');
+
+			// If Intl is unavailable, should return the input value
+			let Intl = globalThis.Intl;
+			globalThis.Intl = undefined;
+			item.language = 'French';
+			language = Zotero.Utilities.Item.itemToCSLJSON(item).language;
+			assert.equal(language, 'French');
+			globalThis.Intl = Intl;
+		});
 	});
 
 
