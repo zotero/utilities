@@ -120,24 +120,38 @@ var Utilities = {
 
 	/**
 	 * Fixes author name capitalization.
-	 * Currently for all uppercase names only
+	 * Splits names into space-separated parts and only changes parts either in all uppercase
+	 * or all lowercase.
 	 *
 	 * JOHN -> John
 	 * GUTIÉRREZ-ALBILLA -> Gutiérrez-Albilla
 	 * O'NEAL -> O'Neal
+	 * o'neal -> O'Neal
+	 * O'neal -> O'neal
+	 * John MacGregor O'NEILL -> John MacGregor O'Neill
+	 * martha McMiddlename WASHINGTON -> Martha McMiddlename Washington
 	 *
 	 * @param {String} string Uppercase author name
 	 * @return {String} Title-cased author name
 	 */
 	capitalizeName: function (string) {
-		if (typeof string === "string" && string.toUpperCase() === string) {
-			string = Utilities.XRegExp.replace(
-				string.toLowerCase(),
-				Utilities.XRegExp('(^|[^\\pL])\\pL', 'g'),
-				m => m.toUpperCase()
-			);
+		if (!(typeof string === 'string')) {
+			return string;
 		}
-		return string;
+		return string.split(' ')
+			.map((part) => {
+				if (part.toUpperCase() === part || part.toLowerCase() === part) {
+					return Utilities.XRegExp.replace(
+						part.toLowerCase(),
+						Utilities.XRegExp('(^|[^\\pL])\\pL', 'g'),
+						m => m.toUpperCase()
+					);
+				}
+				else {
+					return part;
+				}
+			})
+			.join(' ');
 	},
 
 	/**
