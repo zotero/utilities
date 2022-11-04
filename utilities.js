@@ -1872,7 +1872,9 @@ var Utilities = {
 	//  */
 	XRegExp: typeof XRegExp !== "undefined" ? XRegExp : null,
 	
-	JSONLD: typeof JSONLD !== "undefined" ? JSONLD : null,
+	// Prefix with underscore to prevent from being included in the translation sandbox
+	// The library has circular references that don't play well with our cloning routine
+	_JSONLD: typeof JSONLD !== "undefined" ? JSONLD : null,
 
 	/**
 	 * Convert JSON-LD to RDF quads
@@ -1882,7 +1884,7 @@ var Utilities = {
 	 * @return {Promise<Array>}
 	 */
 	jsonldToQuads: async function (baseURL, jsonld) {
-		return Zotero.Utilities.JSONLD.toRDF(jsonld, { base: baseURL });
+		return Zotero.Utilities._JSONLD.toRDF(jsonld, { base: baseURL });
 	},
 
 	/**
@@ -2161,9 +2163,9 @@ if (!Utilities.XRegExp) {
 	}
 }
 
-if (!Utilities.JSONLD) {
+if (!Utilities._JSONLD) {
 	if (typeof module != 'undefined') {
-		Utilities.JSONLD = require('./jsonld');
+		Utilities._JSONLD = require('./jsonld');
 	}
 }
 
