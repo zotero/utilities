@@ -9,6 +9,9 @@ let b = browserify(path.join(__dirname, '..', 'node_modules', 'jsonld', 'lib', '
 	builtins: ['timers', '_process'],
 	standalone: 'JSONLD'
 });
+let stream = b.bundle();
 let outputPath = path.join(__dirname, '..', 'jsonld.js');
-b.bundle().pipe(fs.createWriteStream(outputPath));
-console.log(`Wrote browserified jsonld.js to ${outputPath}`);
+stream.pipe(fs.createWriteStream(outputPath));
+stream.on('end', () => {
+	console.log(`Wrote browserified jsonld.js to ${outputPath}`);
+});
