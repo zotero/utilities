@@ -2148,12 +2148,12 @@ var Utilities = {
 	 * @param {String} text
 	 * @return {String}
 	 */
-	normalize: function (text) {
+	asciify: function (text) {
 		let re = Zotero.Utilities.XRegExp('[^\\pL0-9]', 'g');
 		text = Zotero.Utilities.XRegExp.replace(text, re, '');
 		text = text.normalize('NFKD');
 		text = Zotero.Utilities.XRegExp.replace(text, re, '');
-		return text.toLowerCase();
+		return text;
 	},
 }
 
