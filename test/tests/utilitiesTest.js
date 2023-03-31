@@ -336,4 +336,48 @@ describe("Zotero.Utilities", function() {
 			assert.equal(newHTML, html);
 		});
 	});
+
+	describe("allSerial()", function () {
+		it("should pass each array entry to fn", async function () {
+			let stub = sinon.stub();
+			stub.resolves();
+			await Zotero.Utilities.allSerial(['Hello', 'world'], stub);
+			sinon.assert.calledWith(stub, 'Hello');
+			sinon.assert.calledWith(stub, 'world');
+		});
+
+		it("should pass each array entry as arguments to fn when spread is true", async function () {
+			let stub = sinon.stub();
+			stub.resolves();
+			await Zotero.Utilities.allSerial([[1, 2], [3, 4]], stub, { spread: true });
+			sinon.assert.calledWith(stub, 1, 2);
+			sinon.assert.calledWith(stub, 3, 4);
+		});
+		
+		it("should reject early when requireSuccess is true", async function () {
+			let fn = async (shouldThrow) => {
+				if (shouldThrow) {
+					throw new Error();
+				}
+				else {
+					return 'did not throw';
+				}
+			};
+			await assert.isRejected(Zotero.Utilities.allSerial([false, true], fn, { requireSuccess: true }));
+			await assert.eventually.deepEqual(Zotero.Utilities.allSerial([false, true], fn), ['did not throw']);
+		});
+		
+		it("should run serially", async function () {
+			let caller = async (fn) => {
+				await new Promise(resolve => setTimeout(resolve, 10));
+				await fn();
+			};
+			let fns = [
+				sinon.stub(),
+				sinon.stub()
+			];
+			await Zotero.Utilities.allSerial(fns, caller);
+			assert.isTrue(fns[0].calledBefore(fns[1]));
+		});
+	});
 });

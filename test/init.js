@@ -5,6 +5,7 @@ const path = require('path');
 globalThis.Zotero = {
     locale: 'en-US',
     debug: (s) => console.log(s),
+    logError: (e) => console.error(e),
     isNode: true
 };
 
@@ -38,7 +39,10 @@ let collator = new Intl.Collator(['en-US'], {
 });
 Zotero.localeCompare = (a, b) => collator.compare(a, b);
 
-globalThis.assert = require('chai').assert;
+let chai = require('chai');
+chai.use(require('chai-as-promised'));
+globalThis.assert = chai.assert;
+globalThis.sinon = require('sinon');
 
 let testDataDir = path.join(__dirname, 'data');
 
