@@ -23,8 +23,14 @@
 			}
 		],
 		"call-number": "Call number",
+		"contributor": [
+			{
+				"family": "contributorLast",
+				"given": "contributorFirst"
+			}
+		],
 		"dimensions": "Artwork size",
-		"id": 37,
+		"id": 38,
 		"issued": {
 			"date-parts": [
 				[
@@ -35,6 +41,7 @@
 			]
 		},
 		"language": "en-US",
+		"license": "Rights",
 		"medium": "Medium",
 		"note": "Extra",
 		"source": "Library catalog",
@@ -74,9 +81,15 @@
 				"given": "composerFirst"
 			}
 		],
+		"contributor": [
+			{
+				"family": "contributorLast",
+				"given": "contributorFirst"
+			}
+		],
 		"dimensions": "1:22:33",
 		"event-place": "Place",
-		"id": 38,
+		"id": 39,
 		"issued": {
 			"date-parts": [
 				[
@@ -87,6 +100,7 @@
 			]
 		},
 		"language": "en-US",
+		"license": "Rights",
 		"medium": "Medium",
 		"note": "Extra",
 		"number-of-volumes": "7",
@@ -122,7 +136,13 @@
 		"authority": "Legislative body",
 		"chapter-number": "Session",
 		"container-title": "Code",
-		"id": 39,
+		"contributor": [
+			{
+				"family": "contributorLast",
+				"given": "contributorFirst"
+			}
+		],
+		"id": 40,
 		"issued": {
 			"date-parts": [
 				[
@@ -133,6 +153,7 @@
 			]
 		},
 		"language": "en-US",
+		"license": "Rights",
 		"note": "Extra",
 		"number": "3",
 		"page": "1-10",
@@ -165,8 +186,14 @@
 			}
 		],
 		"container-title": "Publication title",
+		"contributor": [
+			{
+				"family": "contributorLast",
+				"given": "contributorFirst"
+			}
+		],
 		"genre": "Type",
-		"id": 40,
+		"id": 41,
 		"issued": {
 			"date-parts": [
 				[
@@ -177,6 +204,7 @@
 			]
 		},
 		"language": "en-US",
+		"license": "Rights",
 		"note": "Extra",
 		"title": "Title",
 		"title-short": "Short title",
@@ -215,6 +243,12 @@
 		],
 		"collection-number": "9",
 		"collection-title": "Series",
+		"contributor": [
+			{
+				"family": "contributorLast",
+				"given": "contributorFirst"
+			}
+		],
 		"edition": "8",
 		"editor": [
 			{
@@ -223,7 +257,7 @@
 			}
 		],
 		"event-place": "Place",
-		"id": 41,
+		"id": 42,
 		"issued": {
 			"date-parts": [
 				[
@@ -234,6 +268,7 @@
 			]
 		},
 		"language": "en-US",
+		"license": "Rights",
 		"note": "Extra",
 		"number-of-pages": "4",
 		"number-of-volumes": "7",
@@ -291,6 +326,12 @@
 			}
 		],
 		"container-title": "Publication title",
+		"contributor": [
+			{
+				"family": "contributorLast",
+				"given": "contributorFirst"
+			}
+		],
 		"edition": "8",
 		"editor": [
 			{
@@ -299,7 +340,7 @@
 			}
 		],
 		"event-place": "Place",
-		"id": 42,
+		"id": 43,
 		"issued": {
 			"date-parts": [
 				[
@@ -310,6 +351,7 @@
 			]
 		},
 		"language": "en-US",
+		"license": "Rights",
 		"note": "Extra",
 		"number-of-volumes": "7",
 		"page": "1-10",
@@ -348,9 +390,15 @@
 				"literal": "Institutional Author"
 			}
 		],
-		"authority": "Court",
+		"authority": "Authority",
 		"container-title": "Reporter",
-		"id": 43,
+		"contributor": [
+			{
+				"family": "contributorLast",
+				"given": "contributorFirst"
+			}
+		],
+		"id": 44,
 		"issued": {
 			"date-parts": [
 				[
@@ -361,6 +409,7 @@
 			]
 		},
 		"language": "en-US",
+		"license": "Rights",
 		"note": "Extra",
 		"number": "3",
 		"page": "1-10",
@@ -396,9 +445,15 @@
 		],
 		"call-number": "Call number",
 		"collection-title": "Series title",
+		"contributor": [
+			{
+				"family": "contributorLast",
+				"given": "contributorFirst"
+			}
+		],
 		"event-place": "Place",
 		"genre": "Programming language",
-		"id": 44,
+		"id": 45,
 		"issued": {
 			"date-parts": [
 				[
@@ -408,6 +463,7 @@
 				]
 			]
 		},
+		"license": "Rights",
 		"medium": "System",
 		"note": "Extra",
 		"publisher": "Publisher",
@@ -452,6 +508,12 @@
 		],
 		"collection-title": "Series",
 		"container-title": "Publication title",
+		"contributor": [
+			{
+				"family": "contributorLast",
+				"given": "contributorFirst"
+			}
+		],
 		"editor": [
 			{
 				"family": "editorLast",
@@ -460,7 +522,7 @@
 		],
 		"event-place": "Place",
 		"event-title": "Conference name",
-		"id": 45,
+		"id": 46,
 		"issued": {
 			"date-parts": [
 				[
@@ -471,6 +533,7 @@
 			]
 		},
 		"language": "en-US",
+		"license": "Rights",
 		"note": "Extra",
 		"page": "1-10",
 		"publisher": "Publisher",
@@ -486,6 +549,61 @@
 		],
 		"type": "paper-conference",
 		"volume": "6"
+	},
+	"dataset": {
+		"DOI": "10.1234/example.doi",
+		"URL": "http://www.example.com",
+		"abstract": "Abstract note",
+		"accessed": {
+			"date-parts": [
+				[
+					"1997",
+					6,
+					13
+				]
+			]
+		},
+		"archive": "Archive",
+		"archive_location": "Archive location",
+		"author": [
+			{
+				"family": "authorLast",
+				"given": "authorFirst"
+			},
+			{
+				"literal": "Institutional Author"
+			}
+		],
+		"call-number": "Call number",
+		"contributor": [
+			{
+				"family": "contributorLast",
+				"given": "contributorFirst"
+			}
+		],
+		"event-place": "Place",
+		"genre": "Type",
+		"id": 47,
+		"issued": {
+			"date-parts": [
+				[
+					"1999",
+					12,
+					31
+				]
+			]
+		},
+		"language": "en-US",
+		"license": "Rights",
+		"medium": "Medium",
+		"note": "Extra",
+		"publisher": "Publisher",
+		"publisher-place": "Place",
+		"source": "Library catalog",
+		"title": "Title",
+		"title-short": "Short title",
+		"type": "dataset",
+		"version": "Version number"
 	},
 	"dictionaryEntry": {
 		"ISBN": "978-1-234-56789-7",
@@ -521,6 +639,12 @@
 		"collection-number": "9",
 		"collection-title": "Series",
 		"container-title": "Publication title",
+		"contributor": [
+			{
+				"family": "contributorLast",
+				"given": "contributorFirst"
+			}
+		],
 		"edition": "8",
 		"editor": [
 			{
@@ -529,7 +653,7 @@
 			}
 		],
 		"event-place": "Place",
-		"id": 46,
+		"id": 48,
 		"issued": {
 			"date-parts": [
 				[
@@ -540,6 +664,7 @@
 			]
 		},
 		"language": "en-US",
+		"license": "Rights",
 		"note": "Extra",
 		"number-of-volumes": "7",
 		"page": "1-10",
@@ -581,13 +706,19 @@
 			}
 		],
 		"call-number": "Call number",
+		"contributor": [
+			{
+				"family": "contributorLast",
+				"given": "contributorFirst"
+			}
+		],
 		"editor": [
 			{
 				"family": "editorLast",
 				"given": "editorFirst"
 			}
 		],
-		"id": 47,
+		"id": 49,
 		"issued": {
 			"date-parts": [
 				[
@@ -598,6 +729,7 @@
 			]
 		},
 		"language": "en-US",
+		"license": "Rights",
 		"note": "Extra",
 		"publisher": "Publisher",
 		"reviewed-author": [
@@ -638,7 +770,13 @@
 				"literal": "Institutional Author"
 			}
 		],
-		"id": 48,
+		"contributor": [
+			{
+				"family": "contributorLast",
+				"given": "contributorFirst"
+			}
+		],
+		"id": 50,
 		"issued": {
 			"date-parts": [
 				[
@@ -649,6 +787,7 @@
 			]
 		},
 		"language": "en-US",
+		"license": "Rights",
 		"note": "Extra",
 		"recipient": [
 			{
@@ -694,6 +833,12 @@
 		"collection-number": "9",
 		"collection-title": "Series",
 		"container-title": "Publication title",
+		"contributor": [
+			{
+				"family": "contributorLast",
+				"given": "contributorFirst"
+			}
+		],
 		"edition": "8",
 		"editor": [
 			{
@@ -702,7 +847,7 @@
 			}
 		],
 		"event-place": "Place",
-		"id": 49,
+		"id": 51,
 		"issued": {
 			"date-parts": [
 				[
@@ -713,6 +858,7 @@
 			]
 		},
 		"language": "en-US",
+		"license": "Rights",
 		"note": "Extra",
 		"number-of-volumes": "7",
 		"page": "1-10",
@@ -745,6 +891,12 @@
 		"archive": "Archive",
 		"archive_location": "Archive location",
 		"call-number": "Call number",
+		"contributor": [
+			{
+				"family": "contributorLast",
+				"given": "contributorFirst"
+			}
+		],
 		"dimensions": "1:22:33",
 		"director": [
 			{
@@ -756,7 +908,7 @@
 			}
 		],
 		"genre": "Type",
-		"id": 50,
+		"id": 52,
 		"issued": {
 			"date-parts": [
 				[
@@ -767,9 +919,22 @@
 			]
 		},
 		"language": "en-US",
+		"license": "Rights",
 		"medium": "Medium",
 		"note": "Extra",
+		"producer": [
+			{
+				"family": "producerLast",
+				"given": "producerFirst"
+			}
+		],
 		"publisher": "Publisher",
+		"script-writer": [
+			{
+				"family": "scriptwriterLast",
+				"given": "scriptwriterFirst"
+			}
+		],
 		"source": "Library catalog",
 		"title": "Title",
 		"title-short": "Short title",
@@ -797,8 +962,14 @@
 			}
 		],
 		"container-title": "Publication title",
+		"contributor": [
+			{
+				"family": "contributorLast",
+				"given": "contributorFirst"
+			}
+		],
 		"genre": "Type",
-		"id": 51,
+		"id": 53,
 		"issued": {
 			"date-parts": [
 				[
@@ -809,6 +980,7 @@
 			]
 		},
 		"language": "en-US",
+		"license": "Rights",
 		"note": "Extra",
 		"title": "Title",
 		"title-short": "Short title",
@@ -826,7 +998,7 @@
 				]
 			]
 		},
-		"authority": "Legislative body",
+		"authority": "Authority",
 		"chapter-number": "Session",
 		"contributor": [
 			{
@@ -838,7 +1010,7 @@
 			}
 		],
 		"event-place": "Place",
-		"id": 52,
+		"id": 54,
 		"issued": {
 			"date-parts": [
 				[
@@ -849,6 +1021,7 @@
 			]
 		},
 		"language": "en-US",
+		"license": "Rights",
 		"note": "Extra",
 		"number": "3",
 		"number-of-volumes": "7",
@@ -882,7 +1055,13 @@
 				"literal": "Institutional Author"
 			}
 		],
-		"id": 53,
+		"contributor": [
+			{
+				"family": "contributorLast",
+				"given": "contributorFirst"
+			}
+		],
+		"id": 55,
 		"issued": {
 			"date-parts": [
 				[
@@ -893,6 +1072,7 @@
 			]
 		},
 		"language": "en-US",
+		"license": "Rights",
 		"note": "Extra",
 		"recipient": [
 			{
@@ -928,7 +1108,13 @@
 			}
 		],
 		"call-number": "Call number",
-		"id": 54,
+		"contributor": [
+			{
+				"family": "contributorLast",
+				"given": "contributorFirst"
+			}
+		],
+		"id": 56,
 		"interviewer": [
 			{
 				"family": "interviewerLast",
@@ -945,6 +1131,7 @@
 			]
 		},
 		"language": "en-US",
+		"license": "Rights",
 		"medium": "Medium",
 		"note": "Extra",
 		"source": "Library catalog",
@@ -986,13 +1173,19 @@
 		"call-number": "Call number",
 		"collection-title": "Series title",
 		"container-title": "Publication title",
+		"contributor": [
+			{
+				"family": "contributorLast",
+				"given": "contributorFirst"
+			}
+		],
 		"editor": [
 			{
 				"family": "editorLast",
 				"given": "editorFirst"
 			}
 		],
-		"id": 55,
+		"id": 57,
 		"issue": "5",
 		"issued": {
 			"date-parts": [
@@ -1005,6 +1198,7 @@
 		},
 		"journalAbbreviation": "Journal abbreviation",
 		"language": "en-US",
+		"license": "Rights",
 		"note": "Extra",
 		"page": "1-10",
 		"reviewed-author": [
@@ -1049,8 +1243,14 @@
 			}
 		],
 		"call-number": "Call number",
+		"contributor": [
+			{
+				"family": "contributorLast",
+				"given": "contributorFirst"
+			}
+		],
 		"genre": "Type",
-		"id": 56,
+		"id": 58,
 		"issued": {
 			"date-parts": [
 				[
@@ -1061,6 +1261,7 @@
 			]
 		},
 		"language": "en-US",
+		"license": "Rights",
 		"note": "Extra",
 		"recipient": [
 			{
@@ -1099,7 +1300,13 @@
 		],
 		"call-number": "Call number",
 		"container-title": "Publication title",
-		"id": 57,
+		"contributor": [
+			{
+				"family": "contributorLast",
+				"given": "contributorFirst"
+			}
+		],
+		"id": 59,
 		"issue": "5",
 		"issued": {
 			"date-parts": [
@@ -1111,6 +1318,7 @@
 			]
 		},
 		"language": "en-US",
+		"license": "Rights",
 		"note": "Extra",
 		"page": "1-10",
 		"reviewed-author": [
@@ -1155,9 +1363,15 @@
 			}
 		],
 		"call-number": "Call number",
+		"contributor": [
+			{
+				"family": "contributorLast",
+				"given": "contributorFirst"
+			}
+		],
 		"event-place": "Place",
 		"genre": "Type",
-		"id": 58,
+		"id": 60,
 		"issued": {
 			"date-parts": [
 				[
@@ -1168,6 +1382,7 @@
 			]
 		},
 		"language": "en-US",
+		"license": "Rights",
 		"note": "Extra",
 		"number-of-pages": "4",
 		"publisher-place": "Place",
@@ -1214,10 +1429,16 @@
 			}
 		],
 		"collection-title": "Series title",
+		"contributor": [
+			{
+				"family": "contributorLast",
+				"given": "contributorFirst"
+			}
+		],
 		"edition": "8",
 		"event-place": "Place",
 		"genre": "Type",
-		"id": 59,
+		"id": 61,
 		"issued": {
 			"date-parts": [
 				[
@@ -1228,6 +1449,7 @@
 			]
 		},
 		"language": "en-US",
+		"license": "Rights",
 		"note": "Extra",
 		"publisher": "Publisher",
 		"publisher-place": "Place",
@@ -1263,9 +1485,15 @@
 		],
 		"call-number": "Call number",
 		"container-title": "Publication title",
+		"contributor": [
+			{
+				"family": "contributorLast",
+				"given": "contributorFirst"
+			}
+		],
 		"edition": "8",
 		"event-place": "Place",
-		"id": 60,
+		"id": 62,
 		"issued": {
 			"date-parts": [
 				[
@@ -1276,6 +1504,7 @@
 			]
 		},
 		"language": "en-US",
+		"license": "Rights",
 		"note": "Extra",
 		"page": "1-10",
 		"publisher-place": "Place",
@@ -1318,10 +1547,16 @@
 				"literal": "Institutional Author"
 			}
 		],
-		"authority": "Issuing authority",
+		"authority": "Authority",
 		"call-number": "Application number",
+		"contributor": [
+			{
+				"family": "contributorLast",
+				"given": "contributorFirst"
+			}
+		],
 		"event-place": "Place",
-		"id": 61,
+		"id": 63,
 		"issue": "Priority numbers",
 		"issued": {
 			"date-parts": [
@@ -1333,12 +1568,13 @@
 			]
 		},
 		"language": "en-US",
+		"license": "Rights",
 		"note": "Extra",
 		"number": "3",
 		"page": "1-10",
 		"publisher-place": "Place",
 		"references": "References",
-		"status": "Legal status",
+		"status": "Status",
 		"submitted": {
 			"date-parts": [
 				[
@@ -1374,9 +1610,22 @@
 			}
 		],
 		"collection-title": "Series title",
+		"contributor": [
+			{
+				"family": "contributorLast",
+				"given": "contributorFirst"
+			}
+		],
 		"dimensions": "1:22:33",
-		"id": 62,
+		"guest": [
+			{
+				"family": "guestLast",
+				"given": "guestFirst"
+			}
+		],
+		"id": 64,
 		"language": "en-US",
+		"license": "Rights",
 		"medium": "Medium",
 		"note": "Extra",
 		"number": "3",
@@ -1411,6 +1660,12 @@
 		"call-number": "Call number",
 		"collection-number": "9",
 		"collection-title": "Series",
+		"contributor": [
+			{
+				"family": "contributorLast",
+				"given": "contributorFirst"
+			}
+		],
 		"editor": [
 			{
 				"family": "editorLast",
@@ -1419,7 +1674,7 @@
 		],
 		"event-place": "Place",
 		"genre": "Type",
-		"id": 62,
+		"id": 65,
 		"issued": {
 			"date-parts": [
 				[
@@ -1430,7 +1685,9 @@
 			]
 		},
 		"language": "en-US",
+		"license": "Rights",
 		"note": "Extra",
+		"number": "3",
 		"publisher": "Publisher",
 		"publisher-place": "Place",
 		"reviewed-author": [
@@ -1471,10 +1728,16 @@
 				"literal": "Institutional Author"
 			}
 		],
+		"contributor": [
+			{
+				"family": "contributorLast",
+				"given": "contributorFirst"
+			}
+		],
 		"event-place": "Place",
 		"event-title": "Meeting name",
 		"genre": "Type",
-		"id": 63,
+		"id": 66,
 		"issued": {
 			"date-parts": [
 				[
@@ -1485,6 +1748,7 @@
 			]
 		},
 		"language": "en-US",
+		"license": "Rights",
 		"note": "Extra",
 		"publisher-place": "Place",
 		"title": "Title",
@@ -1507,6 +1771,12 @@
 		"archive_location": "Archive location",
 		"call-number": "Call number",
 		"container-title": "Publication title",
+		"contributor": [
+			{
+				"family": "contributorLast",
+				"given": "contributorFirst"
+			}
+		],
 		"dimensions": "1:22:33",
 		"director": [
 			{
@@ -1518,7 +1788,13 @@
 			}
 		],
 		"event-place": "Place",
-		"id": 64,
+		"guest": [
+			{
+				"family": "guestLast",
+				"given": "guestFirst"
+			}
+		],
+		"id": 67,
 		"issued": {
 			"date-parts": [
 				[
@@ -1529,11 +1805,30 @@
 			]
 		},
 		"language": "en-US",
+		"license": "Rights",
 		"medium": "Medium",
 		"note": "Extra",
 		"number": "3",
+		"performer": [
+			{
+				"family": "castMemberLast",
+				"given": "castMemberFirst"
+			}
+		],
+		"producer": [
+			{
+				"family": "producerLast",
+				"given": "producerFirst"
+			}
+		],
 		"publisher": "Publisher",
 		"publisher-place": "Place",
+		"script-writer": [
+			{
+				"family": "scriptwriterLast",
+				"given": "scriptwriterFirst"
+			}
+		],
 		"source": "Library catalog",
 		"title": "Title",
 		"title-short": "Short title",
@@ -1570,9 +1865,15 @@
 			}
 		],
 		"collection-title": "Series title",
+		"contributor": [
+			{
+				"family": "contributorLast",
+				"given": "contributorFirst"
+			}
+		],
 		"event-place": "Place",
 		"genre": "Type",
-		"id": 65,
+		"id": 68,
 		"issued": {
 			"date-parts": [
 				[
@@ -1583,6 +1884,7 @@
 			]
 		},
 		"language": "en-US",
+		"license": "Rights",
 		"note": "Extra",
 		"number": "3",
 		"page": "1-10",
@@ -1598,6 +1900,65 @@
 			}
 		],
 		"type": "report"
+	},
+	"standard": {
+		"DOI": "10.1234/example.doi",
+		"URL": "http://www.example.com",
+		"abstract": "Abstract note",
+		"accessed": {
+			"date-parts": [
+				[
+					"1997",
+					6,
+					13
+				]
+			]
+		},
+		"archive": "Archive",
+		"archive_location": "Archive location",
+		"author": [
+			{
+				"family": "authorLast",
+				"given": "authorFirst"
+			},
+			{
+				"literal": "Institutional Author"
+			}
+		],
+		"authority": "Authority",
+		"call-number": "Call number",
+		"contributor": [
+			{
+				"family": "contributorLast",
+				"given": "contributorFirst"
+			}
+		],
+		"event-place": "Place",
+		"genre": "Type",
+		"id": 69,
+		"issued": {
+			"date-parts": [
+				[
+					"1999",
+					12,
+					31
+				]
+			]
+		},
+		"language": "en-US",
+		"license": "Rights",
+		"note": "Extra",
+		"number": "3",
+		"number-of-pages": "4",
+		"publisher": "Publisher",
+		"publisher-place": "Place",
+		"section": "Committee",
+		"source": "Library catalog",
+		"status": "Status",
+		"title": "Title",
+		"title-short": "Short title",
+		"type": "standard",
+		"version": "Version number"
 	},
 	"statute": {
 		"URL": "http://www.example.com",
@@ -1622,7 +1983,13 @@
 		],
 		"chapter-number": "Session",
 		"container-title": "Code",
-		"id": 66,
+		"contributor": [
+			{
+				"family": "contributorLast",
+				"given": "contributorFirst"
+			}
+		],
+		"id": 70,
 		"issued": {
 			"date-parts": [
 				[
@@ -1633,6 +2000,7 @@
 			]
 		},
 		"language": "en-US",
+		"license": "Rights",
 		"note": "Extra",
 		"number": "3",
 		"page": "1-10",
@@ -1667,9 +2035,15 @@
 			}
 		],
 		"call-number": "Call number",
+		"contributor": [
+			{
+				"family": "contributorLast",
+				"given": "contributorFirst"
+			}
+		],
 		"event-place": "Place",
 		"genre": "Type",
-		"id": 67,
+		"id": 71,
 		"issued": {
 			"date-parts": [
 				[
@@ -1680,6 +2054,7 @@
 			]
 		},
 		"language": "en-US",
+		"license": "Rights",
 		"note": "Extra",
 		"number-of-pages": "4",
 		"publisher": "Publisher",
@@ -1705,6 +2080,12 @@
 		"archive_location": "Archive location",
 		"call-number": "Call number",
 		"container-title": "Publication title",
+		"contributor": [
+			{
+				"family": "contributorLast",
+				"given": "contributorFirst"
+			}
+		],
 		"dimensions": "1:22:33",
 		"director": [
 			{
@@ -1716,7 +2097,13 @@
 			}
 		],
 		"event-place": "Place",
-		"id": 68,
+		"guest": [
+			{
+				"family": "guestLast",
+				"given": "guestFirst"
+			}
+		],
+		"id": 72,
 		"issued": {
 			"date-parts": [
 				[
@@ -1727,11 +2114,30 @@
 			]
 		},
 		"language": "en-US",
+		"license": "Rights",
 		"medium": "Medium",
 		"note": "Extra",
 		"number": "3",
+		"performer": [
+			{
+				"family": "castMemberLast",
+				"given": "castMemberFirst"
+			}
+		],
+		"producer": [
+			{
+				"family": "producerLast",
+				"given": "producerFirst"
+			}
+		],
 		"publisher": "Publisher",
 		"publisher-place": "Place",
+		"script-writer": [
+			{
+				"family": "scriptwriterLast",
+				"given": "scriptwriterFirst"
+			}
+		],
 		"source": "Library catalog",
 		"title": "Title",
 		"title-short": "Short title",
@@ -1754,6 +2160,12 @@
 		"archive_location": "Archive location",
 		"call-number": "Call number",
 		"collection-title": "Series title",
+		"contributor": [
+			{
+				"family": "contributorLast",
+				"given": "contributorFirst"
+			}
+		],
 		"dimensions": "1:22:33",
 		"director": [
 			{
@@ -1765,7 +2177,7 @@
 			}
 		],
 		"event-place": "Place",
-		"id": 69,
+		"id": 73,
 		"issued": {
 			"date-parts": [
 				[
@@ -1776,11 +2188,30 @@
 			]
 		},
 		"language": "en-US",
+		"license": "Rights",
 		"medium": "Medium",
 		"note": "Extra",
 		"number-of-volumes": "7",
+		"performer": [
+			{
+				"family": "castMemberLast",
+				"given": "castMemberFirst"
+			}
+		],
+		"producer": [
+			{
+				"family": "producerLast",
+				"given": "producerFirst"
+			}
+		],
 		"publisher": "Publisher",
 		"publisher-place": "Place",
+		"script-writer": [
+			{
+				"family": "scriptwriterLast",
+				"given": "scriptwriterFirst"
+			}
+		],
 		"source": "Library catalog",
 		"title": "Title",
 		"title-short": "Short title",
@@ -1809,8 +2240,14 @@
 			}
 		],
 		"container-title": "Publication title",
+		"contributor": [
+			{
+				"family": "contributorLast",
+				"given": "contributorFirst"
+			}
+		],
 		"genre": "Type",
-		"id": 70,
+		"id": 74,
 		"issued": {
 			"date-parts": [
 				[
@@ -1821,6 +2258,7 @@
 			]
 		},
 		"language": "en-US",
+		"license": "Rights",
 		"note": "Extra",
 		"title": "Title",
 		"title-short": "Short title",
