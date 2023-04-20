@@ -133,7 +133,7 @@
 				"literal": "Institutional Author"
 			}
 		],
-		"authority": "Legislative body",
+		"authority": "Authority",
 		"chapter-number": "Session",
 		"container-title": "Code",
 		"contributor": [
@@ -597,6 +597,7 @@
 		"license": "Rights",
 		"medium": "Medium",
 		"note": "Extra",
+		"number": "3",
 		"publisher": "Publisher",
 		"publisher-place": "Place",
 		"source": "Library catalog",
