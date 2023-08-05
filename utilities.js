@@ -133,7 +133,7 @@ var Utilities = {
 		});
 
 		// sub-sentence start
-		text.replace(/([.?!][\s]+)(<[^>]+>)?[\p{Lu}]/ug, (match, end, markup, char, i) => {
+		text.replace(/([.?!][\s]+)(<[^>]+>)?([\p{Lu}])/ug, (match, end, markup, char, i) => {
 			markup = markup || "";
 			if (!text.substring(0, i + 1).match(/(\p{Lu}[.]){2,}$/u)) { // prevent "U.S. Taxes" from starting a new sub-sentence
 				preserve.push({ start: i + end.length + markup.length, end: i + end.length + markup.length + char.length });
@@ -153,7 +153,7 @@ var Utilities = {
 
 		// mask html tags with characters so the sentence-casing can deal with them as simple words
 		let masked = text.replace(/<[^>]+>/g, (match, i) => {
-			preserve.push({ start: i + 1, end: i + match.length, description: 'markup' });
+			preserve.push({ start: i, end: i + match.length, description: 'markup' });
 			return '\uFFFD'.repeat(match.length);
 		});
 
