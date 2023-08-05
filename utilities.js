@@ -161,7 +161,7 @@ var Utilities = {
 			.replace(/[;:]\uFFFD*\s+\uFFFD*A\s/g, match => match.toLowerCase())
 			.replace(/[–—]\uFFFD*\s*\uFFFD*A\s/g, match => match.toLowerCase())
 			// words, compound words, and acronyms (latter also catches U.S.A.)
-			.replace(/([\uFFFD\p{L}\p{N}\p{No}]+([\uFFFD\p{L}\p{N}\p{No}\p{Pc}]*))|(\s(\p{Lu}+[.]){2.})?/ug, word => {
+			.replace(/([\u{FFFD}\p{L}\p{N}\p{No}]+([\u{FFFD}\p{L}\p{N}\p{No}\p{Pc}]*))|(\s(\p{Lu}+[.]){2,})?/ug, word => {
 				const unmasked = word.replace(/\uFFFD/g, '');
 
 				if (unmasked.length === 1) {
