@@ -141,9 +141,9 @@ var Utilities = {
 		});
 
 		// protect leading capital
-		text.replace(/^\p{Lu}/u, (match, markup, char) => {
+		text.replace(/^(<[^>]+>)?([\p{Lu}])/u, (match, markup, char) => {
 			markup = markup || "";
-			preserve.push({ start: i + end.length + markup.length, end: i + end.length + markup.length + char.length });
+			preserve.push({ start: markup.length, end: markup.length + char.length });
 		});
 
 		// protect nocase
