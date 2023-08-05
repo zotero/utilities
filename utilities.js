@@ -167,6 +167,7 @@ var Utilities = {
 					return unmasked === 'A' ? word.toLowerCase() : word
 				}
 
+				// inner capital somewhere
 				if (unmasked.match(/.\p{Lu}/u)) {
 					return word
 				}
