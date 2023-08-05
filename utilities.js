@@ -134,7 +134,7 @@ var Utilities = {
 
 		// sub-sentence start
 		text.replace(/([.?!][\s]+)[\p{Lu}]/ug, (match: string, period: string, i: number) => {
-			if (!text.substring(0, i + 1).match(/(\p{Lu}[.]){2,}$/u)) { // prevent "U.S. taxes" from starting a new sub-sentence
+			if (!text.substring(0, i + 1).match(/(\p{Lu}[.]){2,}$/u)) { // prevent "U.S. Taxes" from starting a new sub-sentence
 				preserve.push({ start: i + period.length, end: i + match.length })
 			}
 		})
