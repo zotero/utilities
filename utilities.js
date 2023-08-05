@@ -118,6 +118,76 @@ var Utilities = {
 		};
 	},
 
+	sentenceCase: function (text) {
+		const preserve = []
+
+		// quoted text
+		text.replace(/“.*?”/g, (match, i) => {
+			preserve.push({ start: i, end: i + match.length })
+		})
+		text.replace(/‘.*?’/g, (match, i) => {
+			preserve.push({ start: i, end: i + match.length })
+		})
+		text.replace(/(["]).*?\1/g, (match, quote, i) => {
+			preserve.push({ start: i, end: i + match.length })
+		})
+
+		// sub-sentence start
+		text.replace(/([.?!][\s]+)[\p{Lu}]/ug, (match: string, period: string, i: number) => {
+			if (!text.substring(0, i + 1).match(/(\p{Lu}[.]){2,}$/u)) { // prevent "U.S. taxes" from starting a new sub-sentence
+				preserve.push({ start: i + period.length, end: i + match.length })
+			}
+		})
+
+		// protect leading capital
+		text.replace(/^\p{Lu}/u, (match, i) => {
+			preserve.push({ start: i, end: i + match.length })
+		})
+
+		// protect nocase
+		text.replace(/<span class="nocase">.*?<\/span>|<nc>.*?<\/nc>/gi, (match: string, i: number) => {
+			preserve.push({ start: i, end: i + match.length, description: 'nocase' })
+			return ''
+		})
+
+		// mask html tags with characters so the sentence-casing can deal with them as simple words
+		let masked = text.replace(/[^<>]<[^>]+>/g, (match: string, i: number) => {
+			preserve.push({ start: i + 1, end: i + match.length, description: 'markup' })
+			// replace markup by the preceding char
+			return match[0].repeat(match.length)
+		})
+		.replace(/<[^>]+>[^<>]/g, (match: string, i: number) => {
+			preserve.push({ start: i, end: i + match.length - 1, description: 'markup' })
+			// replace markup by the following char
+			return match[match.length - 1].repeat(match.length)
+		})
+
+		masked = masked
+			.replace(/[;:]\s+A\s/g, match => match.toLowerCase())
+			.replace(/[–—]\s*A\s/g, match => match.toLowerCase())
+			.replace(/[\p{L}\p{N}\p{No}]+/ug, word => {
+				if (word.length === 1) {
+					return word === 'A' ? word.toLowerCase() : word
+				}
+
+				if (word.match(/.\p{Lu}/u)) {
+					return word
+				}
+
+				if (word.match(/^\p{L}\p{L}*[\p{N}\p{No}][\p{L}\p{N}\p{No}]*$/u) || word.match(/^[\p{Lu}\p{N}\p{No}]+$/u)) {
+					return word
+				}
+
+				return word.toLowerCase()
+			})
+
+		for (const { start, end } of preserve) {
+			masked = masked.substring(0, start) + text.substring(start, end) + masked.substring(end)
+		}
+
+		return masked
+	}
+
 	/**
 	 * Fixes author name capitalization.
 	 * Splits names into space-separated parts and only changes parts either in all uppercase
