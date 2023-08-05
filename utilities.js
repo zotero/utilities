@@ -154,12 +154,12 @@ var Utilities = {
 		let masked = text.replace(/[^<>]<[^>]+>/g, (match: string, i: number) => {
 			preserve.push({ start: i + 1, end: i + match.length, description: 'markup' })
 			// replace markup by the preceding char
-			return match[0].repeat(match.length)
+			return match[0].toLowerCase().repeat(match.length)
 		})
 		.replace(/<[^>]+>[^<>]/g, (match: string, i: number) => {
 			preserve.push({ start: i, end: i + match.length - 1, description: 'markup' })
 			// replace markup by the following char
-			return match[match.length - 1].repeat(match.length)
+			return match[match.length - 1].toLowerCase().repeat(match.length)
 		})
 
 		masked = masked
