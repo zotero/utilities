@@ -120,7 +120,7 @@ var Utilities = {
 
 	sentenceCase: function (text) {
 		const preserve = [];
-		const allcaps = text === text.toUpperCase() && text.match(/\s/)
+		const allcaps = text === text.toUpperCase()
 
 		// sub-sentence start
 		text.replace(/([.?!][\s]+)(<[^>]+>)?([\p{Lu}])/ug, (match, end, markup, char, i) => {
