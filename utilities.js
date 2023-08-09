@@ -121,17 +121,6 @@ var Utilities = {
 	sentenceCase: function (text) {
 		const preserve = [];
 
-		// quoted text
-		text.replace(/“.*?”/g, (match, i) => {
-			preserve.push({ start: i, end: i + match.length });
-		});
-		text.replace(/‘.*?’/g, (match, i) => {
-			preserve.push({ start: i, end: i + match.length });
-		});
-		text.replace(/(["]).*?\1/g, (match, quote, i) => {
-			preserve.push({ start: i, end: i + match.length });
-		});
-
 		// sub-sentence start
 		text.replace(/([.?!][\s]+)(<[^>]+>)?([\p{Lu}])/ug, (match, end, markup, char, i) => {
 			markup = markup || "";
