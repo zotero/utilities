@@ -120,6 +120,7 @@ var Utilities = {
 
 	sentenceCase: function (text) {
 		const preserve = [];
+		const allcaps = text === text.toUpperCase()
 
 		// sub-sentence start
 		text.replace(/([.?!][\s]+)(<[^>]+>)?([\p{Lu}])/ug, (match, end, markup, char, i) => {
@@ -151,6 +152,8 @@ var Utilities = {
 			.replace(/[–—]\uFFFD*\s*\uFFFD*A\s/g, match => match.toLowerCase())
 			// words, compound words, and acronyms (latter also catches U.S.A.)
 			.replace(/([\u{FFFD}\p{L}\p{N}\p{No}]+([\u{FFFD}\p{L}\p{N}\p{No}\p{Pc}]*))|(\s(\p{Lu}+[.]){2,})?/ug, word => {
+				if (allcaps) return word.toLowerCase()
+
 				const unmasked = word.replace(/\uFFFD/g, '');
 
 				if (unmasked.length === 1) {
