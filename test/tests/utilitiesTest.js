@@ -1,4 +1,15 @@
 describe("Zotero.Utilities", function() {
+	describe("sentenceCase", function() {
+		it("should stably perform sentence-casing", function () {
+			let data = loadSampleData('sentenceCase');
+
+			for (let tc in data) {
+				let sentenceCased = Zotero.Utilities.sentenceCase(tc);
+				assert.equal(sentenceCased, data[tc]);
+			}
+		});
+	});
+
 	describe("cleanAuthor", function() {
 		it('should parse author names', function() {
 			for(let useComma of [false, true]) {
