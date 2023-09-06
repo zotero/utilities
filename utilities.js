@@ -482,9 +482,37 @@ var Utilities = {
 		if(typeof(x) != "string") {
 			throw new Error("cleanDOI: argument must be a string");
 		}
-
+		// If it's a url, decode it
+		if (x.match(/^https?:/)) {
+			x = decodeURIComponent(x);
+		}
+		// Even if it's not a URL decode %3C followed by %3E as < >
+		if (x.indexOf("%3C") < x.indexOf("%3E") && x.indexOf("%3C") >= 0) {
+			x = x.replace(/%3C/g, "<");
+			x = x.replace(/%3E/g, ">");
+		}
 		var doi = x.match(/10(?:\.[0-9]{4,})?\/[^\s]*[^\s\.,]/);
-		return doi ? doi[0] : null;
+		if (!doi) {
+			return null;
+		}
+		var result = doi[0];
+
+		// Check if the DOI ends with a bracket
+		const trailingBracket = result.slice(-1);
+		if ([']', ')', '}'].includes(trailingBracket)) {
+			// Check the portion of the string before the matched DOI for an unclosed bracket
+			const beforeDOI = x.slice(0, doi.index);
+			const openingBracket = {
+				']': '[',
+				')': '(',
+				'}': '{'
+			}[trailingBracket];
+			if (beforeDOI.lastIndexOf(openingBracket) > beforeDOI.lastIndexOf(trailingBracket)) {
+				// Remove the trailing bracket from the DOI
+				result = result.slice(0, -1);
+			}
+		}
+		return result;
 	},
 
 	/**
