@@ -627,6 +627,7 @@ var Utilities_Item = {
 			case 'authority':
 			case 'call-number':
 			case 'chapter-number':
+			case 'citation-key':
 			case 'citation-label':
 			case 'citation-number':
 			case 'collection-editor':
