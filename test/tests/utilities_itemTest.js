@@ -318,6 +318,58 @@ describe("Zotero.Utilities.Item", function () {
 			];
 			checkSort(numbersInOrder);
 		});
+		
+		it("should correctly order RVK call numbers (Regensburger Verbundklassifikation)", function () {
+			let numbersInOrder = [
+				'NH 7000 T288-2,4,55',
+				'NH 7000 T288-2,32,5',
+				'NH 7000 T288-2,33,1',
+				'NH 7000 T288-2,33,2',
+				'NS 3293 W642-1',
+				'NS 3293 W642-1+1',
+				'NS 3293 W642-2',
+				'NS 3293 W828',
+				'NS 3293 W828(3)',
+				'NS 3293 W828(20)',
+				'PF 912',
+				'PF 912.307',
+				'PF 912.370'
+			];
+			checkSort(numbersInOrder);
+		});
+		
+		it("should correctly order BK call numbers (Basisklassifikation)", function () {
+			let numbersInOrder = [
+				'24.99',
+				'31',
+				'31.01',
+				'31.02',
+				'31.10'
+			];
+			checkSort(numbersInOrder);
+		});
+	
+		it("should correctly order call numbers containing a simple combination of a letter and an increasing number (numerus currens)", function () {
+			let numbersInOrder = [
+				'M 1',
+				'M 2',
+				'M 10',
+				'M 10a',
+				'M 11',
+				'M 100 b'
+			];
+			checkSort(numbersInOrder);
+			
+			numbersInOrder = [
+				'M1',
+				'M2',
+				'M10',
+				'M10a',
+				'M11',
+				'M100b'
+			];
+			checkSort(numbersInOrder);
+		});
 	});
 
 	describe("#languageToISO6391()", function () {
