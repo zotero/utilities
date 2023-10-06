@@ -1030,7 +1030,7 @@ var Utilities_Item = {
 
 		let onlyNumbersRe = /^\d*$/;
 		let deweyRe = /^(\d{3})(?:\.(\d+))?(?:\/([a-zA-Z]{3}))?$/;
-		let lcWithClassificationRe = /^[a-zA-Z]{1,3}\d+($|(?=\s*[.\d]))/;
+		let lcWithClassificationRe = /^[a-zA-Z]{1,3}\d+($|(?=\s*(.|\s\d)))/;
 
 		if (onlyNumbersRe.test(fieldA) && onlyNumbersRe.test(fieldB)) {
 			return parseInt(fieldA) - parseInt(fieldB);
@@ -1067,7 +1067,7 @@ var Utilities_Item = {
 			}
 		}
 
-		return (fieldA > fieldB) ? 1 : (fieldA < fieldB) ? -1 : 0;
+		return Zotero.localeCompare(fieldA, fieldB);
 	}
 }
 
