@@ -132,7 +132,7 @@ var Utilities = {
 
 		// protect leading capital
 		text.replace(/(^|[“"])(<[^>]+>)?([\p{Lu}])/gu, (match, prefix, markup, char, offset) => {
-			markup = markup || ''
+			markup = markup || ""
 			preserve.push({ start: offset + prefix.length + markup.length, end: offset + prefix.length + markup.length + char.length });
 		});
 
