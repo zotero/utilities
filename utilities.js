@@ -131,7 +131,7 @@ var Utilities = {
 		});
 
 		// protect leading capital
-		text.replace(/(^|[“"])(<[^>]+>)?([\p{Lu}])/gu, (match, prefix, markup, char, offset) => {
+		text.replace(/^([“"]?)(<[^>]+>)?([\p{Lu}])/gu, (match, prefix, markup, char, offset) => {
 			markup = markup || ""
 			preserve.push({ start: offset + prefix.length + markup.length, end: offset + prefix.length + markup.length + char.length });
 		});
