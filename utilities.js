@@ -456,7 +456,20 @@ var Utilities = {
 				foundIDs.add(adsBibcode);
 			}
 		}
+		// Next, try openalex
+		if (!identifier.length {
+			// openalex IDs start with a W followed by 2-10 digits. They may be preceded by the openalex namespace
 
+			let openalex_RE = /^(?:https?:\/\/openalex\.org\/)(W\d{2,10})$/
+			let openalex;
+			while ((openalex = openalex_RE.exec(text)) && !foundIDs.has(openalex)) {
+				identifiers.push({
+					openalex: openalex[1]
+				});
+				foundIDs.add(openalex);
+			}
+		}
+		
 		// Finally, try PMID
 		if (!identifiers.length) {
 			// PMID; right now, the longest PMIDs are 8 digits, so it doesn't seem like we'll
