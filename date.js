@@ -872,8 +872,8 @@ var Utilities_Date = new function(){
 	function isToday(date) {
 		var d = new Date();
 		return d.getDate() == date.getDate()
-			&& d.getMonth() == d.getMonth()
-			&& d.getFullYear() == d.getFullYear();
+			&& d.getMonth() == date.getMonth()
+			&& d.getFullYear() == date.getFullYear();
 	}
 
 
