@@ -1042,9 +1042,16 @@ var Utilities = {
 		if (Zotero.Prefs && !Zotero.Prefs.get('capitalizeTitles') && !force) return string;
 		if (!string) return "";
 
+		// Remove HTML tags but remember their positions
+		let htmlTags = [];
+		let cleanedString = string.replace(/<[^>]+>/g, (match, offset) => {
+			htmlTags.push({ match, offset });
+			return "";
+		});
+
 		// split words
-		var words = string.split(delimiterRegexp);
-		var isUpperCase = string.toUpperCase() == string;
+		var words = cleanedString.split(delimiterRegexp);
+		var isUpperCase = cleanedString.toUpperCase() == cleanedString;
 
 		var newString = "";
 		var delimiterOffset = words[0].length;
@@ -1083,6 +1090,11 @@ var Utilities = {
 
 			newString += words[i];
 		}
+
+		// Reinsert HTML tags into their original positions
+		htmlTags.forEach(tag => {
+			newString = newString.substring(0, tag.offset) + tag.match + newString.substring(tag.offset);
+		});
 
 		return newString;
 	},

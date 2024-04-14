@@ -291,7 +291,21 @@ describe("Zotero.Utilities", function() {
 			});
 		});
 	});
-
+	
+	describe("#capitalizeTitle()", function () {
+		it("should capitalize within HTML tags", function () {
+			let input = 'Foo <b>bar</b> foo <em>bar</em>';
+			let expected = 'Foo <b>Bar</b> Foo <em>Bar</em>';
+			assert.equal(Zotero.Utilities.capitalizeTitle(input, true), expected);
+		});
+		
+		it("shouldn't alter attributes within HTML tags", function () {
+			let input = 'Foo <span style="font-variant:small-caps;">bar</span> foo';
+			let expected = 'Foo <span style="font-variant:small-caps;">Bar</span> Foo';
+			assert.equal(Zotero.Utilities.capitalizeTitle(input, true), expected);
+		});
+	});
+	
 	describe("walkNoteDOM()", function () {
 		it("should iterate subtrees in depth-first order and allow modifications", function () {
 			let html = loadTestData('note.html');
