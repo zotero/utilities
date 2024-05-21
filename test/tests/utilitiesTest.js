@@ -361,4 +361,179 @@ describe("Zotero.Utilities", function() {
 			assert.equal(newHTML, html);
 		});
 	});
+	
+	describe("getAutomaticAttachmentPreferences()", function () {
+		describe("Zotero.Prefs unavailable", function () {
+			it("should return defaults", function () {
+				let { enabledTypes, typeOrder } = Zotero.Utilities.getAutomaticAttachmentPreferences();
+				assert.deepEqual(Array.from(enabledTypes), ['pdf', 'epub', 'html']);
+				assert.deepEqual(typeOrder, ['pdf', 'epub', 'html']);
+			});
+		});
+
+		describe("Zotero.Prefs available", function () {
+			let automaticAttachmentTypes = new Set(['epub']);
+			let automaticAttachmentTypesOrder = ['html', 'epub', 'pdf'];
+			
+			before(function () {
+				Zotero.Prefs = {
+					get: function (pref) {
+						if (pref === 'automaticAttachmentTypes') {
+							return Array.from(automaticAttachmentTypes).join(',');
+						}
+						else if (pref === 'automaticAttachmentTypes.order') {
+							return automaticAttachmentTypesOrder.join(',');
+						}
+						return null;
+					}
+				};
+			});
+			
+			after(function () {
+				delete Zotero.Prefs;
+			});
+
+			it("should return pref values", function () {
+				let { enabledTypes, typeOrder } = Zotero.Utilities.getAutomaticAttachmentPreferences();
+				assert.deepEqual(Array.from(enabledTypes), ['epub']);
+				assert.deepEqual(typeOrder, ['html', 'epub', 'pdf']);
+			});
+		});
+	});
+
+	describe("shouldSaveAttachmentOfType()", function () {
+		let automaticAttachmentTypes = new Set(['epub']);
+		let automaticAttachmentTypesOrder = ['html', 'epub', 'pdf'];
+
+		before(function () {
+			Zotero.Prefs = {
+				get: function (pref) {
+					if (pref === 'automaticAttachmentTypes') {
+						return Array.from(automaticAttachmentTypes).join(',');
+					}
+					else if (pref === 'automaticAttachmentTypes.order') {
+						return automaticAttachmentTypesOrder.join(',');
+					}
+					return null;
+				}
+			};
+		});
+
+		after(function () {
+			delete Zotero.Prefs;
+		});
+
+		it("should use pref values", function () {
+			assert.isTrue(Zotero.Utilities.shouldSaveAttachmentOfType('epub'));
+			assert.isFalse(Zotero.Utilities.shouldSaveAttachmentOfType('pdf'));
+			assert.isFalse(Zotero.Utilities.shouldSaveAttachmentOfType('html'));
+		});
+		
+		it("should throw on an unknown type", function () {
+			assert.throws(() => Zotero.Utilities.shouldSaveAttachmentOfType('nonexistent--type'));
+		});
+	});
+
+	describe("filterAttachmentsToSave()", function () {
+		let automaticAttachmentTypes = new Set(['html', 'epub']);
+		let automaticAttachmentTypesOrder = ['html', 'epub', 'pdf'];
+
+		before(function () {
+			Zotero.Prefs = {
+				get: function (pref) {
+					if (pref === 'automaticAttachmentTypes') {
+						return Array.from(automaticAttachmentTypes).join(',');
+					}
+					else if (pref === 'automaticAttachmentTypes.order') {
+						return automaticAttachmentTypesOrder.join(',');
+					}
+					return null;
+				}
+			};
+		});
+
+		after(function () {
+			delete Zotero.Prefs;
+		});
+
+		it("should keep non-attachments", function () {
+			assert.deepEqual(
+				Zotero.Utilities.filterAttachmentsToSave([
+					{ itemType: 'book', title: 'Other stuff' },
+					{ itemType: 'attachment', mimeType: 'application/pdf' }
+				]),
+				[
+					{ itemType: 'book', title: 'Other stuff' }
+				]
+			);
+		});
+
+		it("should keep attachments of unknown types", function () {
+			assert.deepEqual(
+				Zotero.Utilities.filterAttachmentsToSave([
+					{ itemType: 'attachment', mimeType: 'application/pdf' },
+					{ mimeType: 'text/x-unknown' }
+				]),
+				[
+					{ mimeType: 'text/x-unknown' }
+				]
+			);
+		});
+
+		it("should keep only attachments of the first matching type", function () {
+			assert.deepEqual(
+				Zotero.Utilities.filterAttachmentsToSave([
+					{ mimeType: 'application/pdf' },
+					{ mimeType: 'text/html' },
+					{ mimeType: 'text/html' },
+					{ mimeType: 'application/epub+zip' },
+					{ mimeType: 'application/epub+zip' }
+				]),
+				[
+					{ mimeType: 'text/html' },
+					{ mimeType: 'text/html' }
+				]
+			);
+		});
+
+		it("should recognize multiple HTML MIME types and keep unknown type", function () {
+			assert.deepEqual(
+				Zotero.Utilities.filterAttachmentsToSave([
+					{ mimeType: 'text/html' },
+					{ mimeType: 'text/html' },
+					{ mimeType: 'application/xhtml+xml' },
+					{ mimeType: 'application/epub+zip' },
+					{ mimeType: 'application/octet-stream' }
+				]),
+				[
+					{ mimeType: 'text/html' },
+					{ mimeType: 'text/html' },
+					{ mimeType: 'application/xhtml+xml' },
+					{ mimeType: 'application/octet-stream' }
+				]
+			);
+		});
+
+		it("should recognize attachment with 'document' property as HTML", function () {
+			assert.deepEqual(
+				Zotero.Utilities.filterAttachmentsToSave([
+					{ mimeType: 'text/html' },
+					{ document: {} },
+					{ mimeType: 'application/epub+zip' }
+				]),
+				[
+					{ mimeType: 'text/html' },
+					{ document: {} }
+				]
+			);
+		});
+		
+		it("should return the exact same objects", function () {
+			let obj = { mimeType: 'text/html' };
+			assert.equal(
+				Zotero.Utilities.filterAttachmentsToSave([obj])[0],
+				obj
+			);
+		});
+	});
 });

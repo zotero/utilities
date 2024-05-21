@@ -1830,6 +1830,81 @@ var Utilities = {
 		}
 		return root.innerHTML;
 	},
+	
+	getAutomaticAttachmentPreferences() {
+		let enabledTypes = Zotero.Prefs && Zotero.Prefs.get('automaticAttachmentTypes').split(',');
+		let typeOrder = Zotero.Prefs && Zotero.Prefs.get('automaticAttachmentTypes.order').split(',');
+
+		// If either pref isn't available (not just empty), use defaults
+		enabledTypes = new Set(enabledTypes || ['pdf', 'epub', 'html']);
+		typeOrder = typeOrder || ['pdf', 'epub', 'html'];
+		
+		return { enabledTypes, typeOrder };
+	},
+
+	shouldSaveAttachmentOfType(type) {
+		if (!['pdf', 'epub', 'html'].includes(type)) {
+			throw new Error('Unknown type: ' + type);
+		}
+		
+		let { enabledTypes } = this.getAutomaticAttachmentPreferences();
+		return enabledTypes.has(type);
+	},
+	
+	/**
+	 * Given an array of items in translator JSON format, return the items that
+	 * should be saved according to the user's preferences. Non-attachment items
+	 * are always returned.
+	 *
+	 * @typedef {{ mimeType: string, url?: string, document?: Document, itemType?: string }} TranslatorItem
+	 * @param {TranslatorItem[]} itemsJSON
+	 * @returns {TranslatorItem[]}
+	 */
+	filterAttachmentsToSave(itemsJSON) {
+		let { enabledTypes, typeOrder } = this.getAutomaticAttachmentPreferences();
+		
+		let attachmentTypes = itemsJSON.map((attachment) => {
+			if (typeof attachment.itemType === 'string' && attachment.itemType !== 'attachment') {
+				return null;
+			}
+			if (attachment.mimeType === 'application/pdf') {
+				return 'pdf';
+			}
+			if (attachment.mimeType === 'application/epub+zip') {
+				return 'epub';
+			}
+			if (attachment.document
+				|| (Zotero.MIME
+					? Zotero.MIME.isWebPageType(attachment.mimeType)
+					: ['text/html', 'application/xhtml+xml'].includes(attachment.mimeType))
+			) {
+				return 'html';
+			}
+			return null;
+		});
+
+		// We want to keep everything that isn't an identifiable file attachment
+		let isNotKnownTypeFileAttachment = (attachment, i) => {
+			return attachmentTypes[i] === null
+				|| attachmentTypes[i] === 'html' && attachment.snapshot === false;
+		};
+		
+		for (let type of typeOrder) {
+			if (!enabledTypes.has(type)) {
+				continue;
+			}
+			if (attachmentTypes.includes(type)) {
+				return itemsJSON.filter((attachment, i) => {
+					if (isNotKnownTypeFileAttachment(attachment, i)) {
+						return true;
+					}
+					return attachmentTypes[i] === type || attachmentTypes[i] === null;
+				});
+			}
+		}
+		
+		return itemsJSON.filter(isNotKnownTypeFileAttachment);
+	},
 
 	// /**
 	//  * Provides unicode support and other additional features for regular expressions
