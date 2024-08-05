@@ -482,11 +482,11 @@ var Utilities = {
 		if(typeof(x) != "string") {
 			throw new Error("cleanDOI: argument must be a string");
 		}
-		// If it's a url, decode it
+		// If it's a URL, decode it
 		if (x.match(/^https?:/)) {
 			x = decodeURIComponent(x);
 		}
-		// Even if it's not a URL decode %3C followed by %3E as < >
+		// Even if it's not a URL, decode %3C followed by %3E as < >
 		var openingPos = x.indexOf("%3C");
 		if (openingPos != -1 && openingPos < x.indexOf("%3E")) {
 			x = x.replace(/%3C/g, "<");
