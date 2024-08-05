@@ -99,7 +99,7 @@ describe("Zotero.Utilities", function() {
 			assert.equal(cleanDOI(`Foo bar ${encodedUri}. Foo bar`), expected);
 		});
 
-		it("should parse a DOI with url encoded params", function () {
+		it("should parse a DOI URL with encoded characters", function () {
 			const encodedUri = "https://doi.org/10.1002/1096-9128(200005)12:6%3C375::AID-CPE480%3E3.0.CO;2-M";
 			const expected = "10.1002/1096-9128(200005)12:6<375::AID-CPE480>3.0.CO;2-M";
 			assert.equal(cleanDOI(`Foo bar ${encodedUri}. Foo bar`), expected);

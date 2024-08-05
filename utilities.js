@@ -499,11 +499,11 @@ var Utilities = {
 		var result = doi[0];
 
 		// Check if the DOI ends with a bracket
-		const trailingBracket = result.slice(-1);
+		var trailingBracket = result.slice(-1);
 		if ([']', ')', '}'].includes(trailingBracket)) {
 			// Check the portion of the string before the matched DOI for an unclosed bracket
-			const beforeDOI = x.slice(0, doi.index);
-			const openingBracket = {
+			let beforeDOI = x.slice(0, doi.index);
+			let openingBracket = {
 				']': '[',
 				')': '(',
 				'}': '{'
