@@ -487,7 +487,8 @@ var Utilities = {
 			x = decodeURIComponent(x);
 		}
 		// Even if it's not a URL decode %3C followed by %3E as < >
-		if (x.indexOf("%3C") < x.indexOf("%3E") && x.indexOf("%3C") >= 0) {
+		var openingPos = x.indexOf("%3C");
+		if (openingPos != -1 && openingPos < x.indexOf("%3E")) {
 			x = x.replace(/%3C/g, "<");
 			x = x.replace(/%3E/g, ">");
 		}
