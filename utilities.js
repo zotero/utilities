@@ -488,7 +488,8 @@ var Utilities = {
 				x = decodeURIComponent(x);
 			}
 			catch (e) {
-				// URI contains an invalid escape sequence - ignore
+				// URI contains an invalid escape sequence
+				Zotero.debug("Not decoding URL-like DOI because of invalid escape sequence: " + x);
 			}
 		}
 		// Even if it's not a URL, decode %3C followed by %3E as < >
