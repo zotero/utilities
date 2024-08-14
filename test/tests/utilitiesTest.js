@@ -112,6 +112,10 @@ describe("Zotero.Utilities", function() {
 		it("should parse a DOI in brackets", function () {
 			assert.equal(cleanDOI(`Foo bar [${doi}] foo bar`), doi);
 		});
+
+		it("should parse a DOI with an invalid URI-encoded character", function () {
+			assert.equal(cleanDOI('https://doi.org/10.101/%E0%A4%A'))
+		});
 	});
 	
 	
