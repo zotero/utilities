@@ -482,9 +482,15 @@ var Utilities = {
 		if(typeof(x) != "string") {
 			throw new Error("cleanDOI: argument must be a string");
 		}
-		// If it's a URL, decode it
-		if (x.match(/^https?:/)) {
-			x = decodeURIComponent(x);
+		// If it's a URL, try to decode it
+		if (/^https?:/.test(x)) {
+			try {
+				x = decodeURIComponent(x);
+			}
+			catch (e) {
+				// URI contains an invalid escape sequence
+				Zotero.debug("Not decoding URL-like DOI because of invalid escape sequence: " + x);
+			}
 		}
 		// Even if it's not a URL, decode %3C followed by %3E as < >
 		var openingPos = x.indexOf("%3C");
