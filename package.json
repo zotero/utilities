@@ -7,7 +7,8 @@
     "test": "test"
   },
   "scripts": {
-    "test": "test/runtests.sh"
+    "test": "test/runtests.sh",
+    "build_jsonld": "node ./scripts/build_jsonld.js"
   },
   "repository": {
     "type": "git",
@@ -20,8 +21,10 @@
   },
   "homepage": "https://github.com/zotero/utilities#readme",
   "devDependencies": {
+    "browserify": "^17.0.0",
     "chai": "^4.3.6",
     "jsdom": "^19.0.0",
+    "jsonld": "^8.1.0",
     "mocha": "^9.2.2"
   }
 }
