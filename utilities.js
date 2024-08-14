@@ -1866,6 +1866,67 @@ var Utilities = {
 		return root.innerHTML;
 	},
 
+	/**
+	 * Provided an array of arguments and a function, call the function on each argument and await if it returns
+	 * a promise.
+	 *
+	 * @param {any[]} array
+	 * @param {Function} fn
+	 * @param {Boolean} [options.requireSuccess] If true, the returned promise will be rejected if any fn call rejects
+	 * 		or throws an exception
+	 * @param {Boolean} [options.spread] If true, treat the array as an array of arrays and spread each of its elements,
+	 * 		passing them as the arguments to fn
+	 * @return {Promise<any[]>}
+	 *
+	 * @example
+	 * 		let array = ["Hello", "world"];
+	 * 		let fn = async string => Zotero.debug(string);
+	 * 		await Zotero.Utilities.allSerial(array, fn);
+	 * 		// -> Hello
+	 * 		// -> world
+	 *
+	 * @example
+	 * 		let array = [["Hello", "world"], ["Hello", "Zotero"]];
+	 * 		let fn = async (string1, string2) => Zotero.debug(string1 + ", " + string2);
+	 * 		await Zotero.Utilities.allSerial(array, fn, { spread: true });
+	 * 		// -> Hello, world
+	 * 		// -> Hello, Zotero
+	 *
+	 * @example
+	 * 		let array = [false, true];
+	 * 		let fn = async (shouldThrow) => {
+	 * 			if (shouldThrow) {
+	 * 				throw new Error();
+	 * 			}
+	 * 			else {
+	 * 				Zotero.debug("did not throw");
+	 * 			}
+	 * 		};
+	 * 		await Zotero.Utilities.allSerial(array, fn, { requireSuccess: true });
+	 * 		// (Error is thrown!)
+	 *
+	 *		await Zotero.Utilities.allSerial(array, fn);
+	 *		// (Error is logged but not thrown)
+	 *		// -> did not throw
+	 */
+	allSerial: async function (array, fn, options = {}) {
+		let { requireSuccess = false, spread = false } = options;
+		
+		let results = [];
+		for (let item of array) {
+			try {
+				results.push(await (spread ? fn(...item) : fn(item)));
+			}
+			catch (e) {
+				if (requireSuccess) {
+					throw e;
+				}
+				Zotero.logError(e);
+			}
+		}
+		return results;
+	},
+
 	// /**
 	//  * Provides unicode support and other additional features for regular expressions
 	//  * See https://github.com/slevithan/xregexp for usage
