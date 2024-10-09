@@ -1590,7 +1590,7 @@ var Utilities = {
 			}
 		}
 		// Do the same for cross-context Node and Window objects
-		if (obj.hasOwnProperty('nodeType') || objType === '[object Window]') {
+		if ('nodeType' in obj || objType === '[object Window]') {
 			level = maxLevel;
 		}
 
