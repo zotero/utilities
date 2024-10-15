@@ -402,5 +402,21 @@ describe("Zotero.Utilities.Item", function () {
 			assert.equal(language, 'French');
 			globalThis.Intl = Intl;
 		});
+
+		it("should resolve underscore-separated codes", function () {
+			var language = 'en_US';
+			language = Zotero.Utilities.Item.languageToISO6391(language);
+			assert.equal(language, 'en-US');
+
+			language = 'zh_Hans';
+			language = Zotero.Utilities.Item.languageToISO6391(language)
+			assert.equal(language, 'zh-Hans');
+		});
+
+		it("should not modify input containing an underscore if it isn't a language code", function () {
+			var language = 'some_other_underscore_stuff';
+			language = Zotero.Utilities.Item.languageToISO6391(language)
+			assert.equal(language, 'some_other_underscore_stuff');
+		});
 	});
 });

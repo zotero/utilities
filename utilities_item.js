@@ -735,8 +735,8 @@ var Utilities_Item = {
 			return '';
 		}
 
-		if (!globalThis.Intl || !globalThis.Intl.DisplayNames) {
-			Zotero.debug('Intl.DisplayNames not available: returning language as-is');
+		if (!globalThis.Intl || !globalThis.Intl.DisplayNames || !globalThis.Intl.Locale) {
+			Zotero.debug('Intl not available: returning language as-is');
 			return language;
 		}
 
@@ -768,7 +768,29 @@ var Utilities_Item = {
 			}
 		}
 
-		return languageMap.get(normalize(language)) || language;
+		let normalized = normalize(language);
+		// If it's a localized language name, return the language's code
+		if (languageMap.has(normalized)) {
+			return languageMap.get(normalized);
+		}
+		
+		// Is the input a valid locale code?
+		try {
+			new Intl.Locale(language);
+		}
+		catch (e) {
+			try {
+				new Intl.Locale(language.replace(/_/g, '-'));
+				// No, but language with _ substituted for - (e.g. en_US -> en-US) is
+				// Return that
+				return language.replace(/_/g, '-');
+			}
+			catch (e) {
+			}
+			// All other cases: return the original input
+		}
+		
+		return language;
 	},
 
 	/**
