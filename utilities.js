@@ -170,6 +170,11 @@ var Utilities = {
 					return word
 				}
 
+				// If the word contains any non-letter character, retain its original case
+				if (unmasked.match(/[^a-zA-Z]/)) {
+					return word;
+				}
+
 				return word.toLowerCase()
 			});
 
