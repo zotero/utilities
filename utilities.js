@@ -171,7 +171,7 @@ var Utilities = {
 				}
 
 				// If the word contains any non-letter character, retain its original case
-				if (unmasked.match(/[^a-zA-Z]/)) {
+				if (unmasked.match(/[^a-z]/i)) {
 					return word;
 				}
 
