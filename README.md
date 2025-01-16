@@ -25,8 +25,8 @@ Please bundle the [Zotero schema](https://github.com/zotero/zotero-schema) file 
 To run tests:
 
 ```bash
-git clone --recursive https://github.com/zotero/utilities.git utilities/
-cd utilities/
+git clone --recursive https://github.com/zotero/utilities.git
+cd utilities
 npm i
 npm test
 ```
