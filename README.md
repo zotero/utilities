@@ -25,7 +25,6 @@ Please bundle the [Zotero schema](https://github.com/zotero/zotero-schema) file 
 To run tests:
 
 ```bash
-# Git submodule is required
 git clone --recursive https://github.com/zotero/utilities.git utilities/
 cd utilities/
 npm i
