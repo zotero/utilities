@@ -1625,6 +1625,15 @@
 			}
 		],
 		"id": 64,
+		"issued": {
+			"date-parts": [
+				[
+					"1999",
+					12,
+					31
+				]
+			]
+		},
 		"language": "en-US",
 		"license": "Rights",
 		"medium": "Medium",
