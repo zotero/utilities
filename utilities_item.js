@@ -55,7 +55,9 @@ var Utilities_Item = {
 		// (Zotero.Item won't be defined in translation-server)
 		if (typeof Zotero.Item !== 'undefined' && zoteroItem instanceof Zotero.Item) {
 			return Utilities_Item.itemToCSLJSON(
-				Zotero.Utilities.Internal.itemToExportFormat(zoteroItem, false, true)
+				Zotero.Utilities.Internal.itemToExportFormat(zoteroItem, {
+					skipChildItems: true
+				})
 			);
 		}
 
