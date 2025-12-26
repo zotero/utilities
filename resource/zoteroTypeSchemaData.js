@@ -8,7 +8,7 @@ var ZOTERO_TYPE_SCHEMA = {
 			],
 			[],
 			{},
-			"note.svg"
+			"note@2x.svg"
 		],
 		"2": [
 			"book",
@@ -28,24 +28,33 @@ var ZOTERO_TYPE_SCHEMA = {
 				4,
 				45,
 				6,
-				7,
-				8,
 				14,
+				8,
+				7,
+				134,
+				135,
+				136,
+				130,
 				118,
-				87,
 				11,
-				116,
+				26,
+				126,
 				1,
 				27,
+				13,
 				123,
 				19,
+				116,
+				87,
 				62,
 				18,
 				2,
 				22
 			],
-			{},
-			"book.svg"
+			{
+				"130": 109
+			},
+			"book@2x.svg"
 		],
 		"3": [
 			"bookSection",
@@ -67,26 +76,34 @@ var ZOTERO_TYPE_SCHEMA = {
 				4,
 				45,
 				6,
-				7,
-				8,
 				14,
+				8,
+				7,
+				134,
+				135,
+				136,
+				130,
 				10,
-				87,
 				11,
-				116,
+				26,
+				126,
 				1,
 				27,
+				13,
 				123,
 				19,
+				116,
+				87,
 				62,
 				18,
 				2,
 				22
 			],
 			{
-				"115": 12
+				"115": 12,
+				"130": 109
 			},
-			"book-section.svg"
+			"book-section@2x.svg"
 		],
 		"4": [
 			"journalArticle",
@@ -102,29 +119,38 @@ var ZOTERO_TYPE_SCHEMA = {
 				110,
 				90,
 				12,
+				8,
+				7,
+				14,
 				4,
 				5,
+				15,
+				137,
+				138,
 				10,
-				14,
 				3,
 				28,
 				29,
 				25,
-				87,
 				26,
-				13,
-				116,
+				126,
 				1,
 				27,
+				139,
+				140,
+				141,
+				13,
 				123,
 				19,
+				116,
+				87,
 				62,
 				18,
 				2,
 				22
 			],
 			{},
-			"journal-article.svg"
+			"journal-article@2x.svg"
 		],
 		"5": [
 			"magazineArticle",
@@ -139,24 +165,28 @@ var ZOTERO_TYPE_SCHEMA = {
 				110,
 				90,
 				12,
+				8,
+				7,
+				14,
 				4,
 				5,
-				14,
 				10,
-				87,
 				13,
-				116,
+				26,
+				126,
 				1,
 				27,
 				123,
 				19,
+				116,
+				87,
 				62,
 				18,
 				2,
 				22
 			],
 			{},
-			"magazine-article.svg"
+			"magazine-article@2x.svg"
 		],
 		"6": [
 			"newspaperArticle",
@@ -171,25 +201,30 @@ var ZOTERO_TYPE_SCHEMA = {
 				110,
 				90,
 				12,
+				8,
 				7,
-				6,
 				14,
+				4,
+				5,
+				6,
 				15,
 				10,
-				87,
-				116,
 				13,
+				26,
+				126,
 				1,
 				27,
 				123,
 				19,
+				116,
+				87,
 				62,
 				18,
 				2,
 				22
 			],
 			{},
-			"newspaper-article.svg"
+			"newspaper-article@2x.svg"
 		],
 		"7": [
 			"thesis",
@@ -205,13 +240,19 @@ var ZOTERO_TYPE_SCHEMA = {
 				89,
 				7,
 				14,
+				3,
+				30,
 				118,
-				87,
-				116,
+				26,
+				11,
+				126,
 				1,
 				27,
+				13,
 				123,
 				19,
+				116,
+				87,
 				62,
 				18,
 				2,
@@ -221,7 +262,7 @@ var ZOTERO_TYPE_SCHEMA = {
 				"69": 108,
 				"89": 8
 			},
-			"thesis.svg"
+			"thesis@2x.svg"
 		],
 		"8": [
 			"letter",
@@ -229,19 +270,23 @@ var ZOTERO_TYPE_SCHEMA = {
 			[
 				1,
 				2,
-				16
+				16,
+				4
 			],
 			[
 				110,
 				90,
 				65,
 				14,
-				87,
-				116,
+				133,
+				26,
+				126,
 				1,
 				27,
 				123,
 				19,
+				116,
+				87,
 				62,
 				18,
 				2,
@@ -250,7 +295,7 @@ var ZOTERO_TYPE_SCHEMA = {
 			{
 				"65": 108
 			},
-			"letter.svg"
+			"letter@2x.svg"
 		],
 		"9": [
 			"manuscript",
@@ -264,24 +309,29 @@ var ZOTERO_TYPE_SCHEMA = {
 				110,
 				90,
 				66,
+				31,
 				7,
 				14,
 				118,
-				87,
-				116,
+				60,
+				26,
+				126,
 				1,
 				27,
 				123,
 				19,
+				116,
+				87,
 				62,
 				18,
 				2,
 				22
 			],
 			{
+				"31": 8,
 				"66": 108
 			},
-			"manuscript.svg"
+			"manuscript@2x.svg"
 		],
 		"10": [
 			"interview",
@@ -295,14 +345,18 @@ var ZOTERO_TYPE_SCHEMA = {
 			[
 				110,
 				90,
-				14,
 				64,
-				87,
-				116,
+				14,
+				8,
+				7,
+				26,
+				126,
 				1,
 				27,
 				123,
 				19,
+				116,
+				87,
 				62,
 				18,
 				2,
@@ -311,31 +365,39 @@ var ZOTERO_TYPE_SCHEMA = {
 			{
 				"64": 109
 			},
-			"interview.svg"
+			"interview@2x.svg"
 		],
 		"11": [
 			"film",
 			"Film",
 			[
 				8,
+				11,
 				2,
+				25,
+				32,
+				33,
 				10,
-				9
+				9,
+				4
 			],
 			[
 				110,
 				90,
 				21,
+				7,
 				14,
 				122,
 				63,
 				77,
-				87,
-				116,
+				26,
+				126,
 				1,
 				27,
 				123,
 				19,
+				116,
+				87,
 				62,
 				18,
 				2,
@@ -346,7 +408,7 @@ var ZOTERO_TYPE_SCHEMA = {
 				"63": 109,
 				"122": 108
 			},
-			"film.svg"
+			"film@2x.svg"
 		],
 		"12": [
 			"artwork",
@@ -361,21 +423,24 @@ var ZOTERO_TYPE_SCHEMA = {
 				59,
 				61,
 				14,
-				87,
-				116,
-				123,
-				19,
-				62,
-				18,
+				133,
+				26,
+				126,
 				1,
 				27,
+				123,
+				19,
+				116,
+				87,
+				62,
+				18,
 				2,
 				22
 			],
 			{
 				"59": 109
 			},
-			"artwork.svg"
+			"artwork@2x.svg"
 		],
 		"13": [
 			"webpage",
@@ -391,9 +456,13 @@ var ZOTERO_TYPE_SCHEMA = {
 				91,
 				70,
 				14,
-				116,
+				8,
+				7,
+				26,
+				126,
 				1,
 				27,
+				116,
 				87,
 				2,
 				22
@@ -402,7 +471,7 @@ var ZOTERO_TYPE_SCHEMA = {
 				"70": 108,
 				"91": 12
 			},
-			"webpage.svg"
+			"webpage@2x.svg"
 		],
 		"14": [
 			"attachment",
@@ -416,7 +485,7 @@ var ZOTERO_TYPE_SCHEMA = {
 				1
 			],
 			{},
-			"document.svg"
+			"document@2x.svg"
 		],
 		"15": [
 			"report",
@@ -424,6 +493,7 @@ var ZOTERO_TYPE_SCHEMA = {
 			[
 				1,
 				2,
+				3,
 				5,
 				4
 			],
@@ -432,17 +502,22 @@ var ZOTERO_TYPE_SCHEMA = {
 				90,
 				92,
 				32,
-				28,
-				7,
 				31,
+				7,
 				14,
+				28,
+				30,
 				10,
-				87,
-				116,
+				26,
+				11,
+				126,
 				1,
 				27,
+				13,
 				123,
 				19,
+				116,
+				87,
 				62,
 				18,
 				2,
@@ -453,7 +528,7 @@ var ZOTERO_TYPE_SCHEMA = {
 				"32": 108,
 				"92": 60
 			},
-			"report.svg"
+			"report@2x.svg"
 		],
 		"16": [
 			"bill",
@@ -475,10 +550,12 @@ var ZOTERO_TYPE_SCHEMA = {
 				40,
 				42,
 				14,
-				87,
+				26,
+				126,
 				1,
 				27,
 				116,
+				87,
 				2,
 				22
 			],
@@ -488,7 +565,7 @@ var ZOTERO_TYPE_SCHEMA = {
 				"94": 4,
 				"95": 10
 			},
-			"bill.svg"
+			"bill@2x.svg"
 		],
 		"17": [
 			"case",
@@ -508,10 +585,12 @@ var ZOTERO_TYPE_SCHEMA = {
 				97,
 				98,
 				42,
-				87,
-				116,
+				26,
+				126,
 				1,
 				27,
+				116,
+				87,
 				2,
 				22
 			],
@@ -523,7 +602,7 @@ var ZOTERO_TYPE_SCHEMA = {
 				"111": 110,
 				"117": 60
 			},
-			"case.svg"
+			"case@2x.svg"
 		],
 		"18": [
 			"hearing",
@@ -535,7 +614,6 @@ var ZOTERO_TYPE_SCHEMA = {
 				110,
 				90,
 				46,
-				7,
 				8,
 				45,
 				99,
@@ -544,10 +622,13 @@ var ZOTERO_TYPE_SCHEMA = {
 				40,
 				42,
 				14,
-				87,
-				116,
+				7,
+				26,
+				126,
 				1,
 				27,
+				116,
+				87,
 				2,
 				22
 			],
@@ -555,7 +636,7 @@ var ZOTERO_TYPE_SCHEMA = {
 				"41": 127,
 				"99": 60
 			},
-			"hearing.svg"
+			"hearing@2x.svg"
 		],
 		"19": [
 			"patent",
@@ -578,12 +659,15 @@ var ZOTERO_TYPE_SCHEMA = {
 				103,
 				51,
 				52,
+				142,
 				53,
 				54,
-				87,
-				116,
+				26,
+				126,
 				1,
 				27,
+				116,
+				87,
 				2,
 				22
 			],
@@ -591,9 +675,10 @@ var ZOTERO_TYPE_SCHEMA = {
 				"50": 60,
 				"52": 14,
 				"54": 131,
-				"120": 127
+				"120": 127,
+				"142": 134
 			},
-			"patent.svg"
+			"patent@2x.svg"
 		],
 		"20": [
 			"statute",
@@ -613,10 +698,12 @@ var ZOTERO_TYPE_SCHEMA = {
 				15,
 				40,
 				42,
-				87,
-				116,
+				26,
+				126,
 				1,
 				27,
+				116,
+				87,
 				2,
 				22
 			],
@@ -625,7 +712,7 @@ var ZOTERO_TYPE_SCHEMA = {
 				"101": 60,
 				"112": 110
 			},
-			"statute.svg"
+			"statute@2x.svg"
 		],
 		"21": [
 			"email",
@@ -633,15 +720,18 @@ var ZOTERO_TYPE_SCHEMA = {
 			[
 				1,
 				2,
-				16
+				16,
+				4
 			],
 			[
 				113,
 				90,
 				14,
-				116,
+				26,
+				126,
 				1,
 				27,
+				116,
 				87,
 				2,
 				22
@@ -649,7 +739,7 @@ var ZOTERO_TYPE_SCHEMA = {
 			{
 				"113": 110
 			},
-			"email.svg"
+			"email@2x.svg"
 		],
 		"22": [
 			"map",
@@ -666,16 +756,18 @@ var ZOTERO_TYPE_SCHEMA = {
 				68,
 				28,
 				6,
-				7,
 				8,
+				7,
 				14,
-				87,
+				26,
 				11,
-				116,
+				126,
 				1,
 				27,
 				123,
 				19,
+				116,
+				87,
 				62,
 				18,
 				2,
@@ -684,7 +776,7 @@ var ZOTERO_TYPE_SCHEMA = {
 			{
 				"67": 108
 			},
-			"map.svg"
+			"map@2x.svg"
 		],
 		"23": [
 			"blogPost",
@@ -692,7 +784,8 @@ var ZOTERO_TYPE_SCHEMA = {
 			[
 				1,
 				23,
-				2
+				2,
+				4
 			],
 			[
 				110,
@@ -700,10 +793,13 @@ var ZOTERO_TYPE_SCHEMA = {
 				107,
 				70,
 				14,
+				26,
+				126,
 				1,
 				27,
-				87,
+				13,
 				116,
+				87,
 				2,
 				22
 			],
@@ -711,7 +807,7 @@ var ZOTERO_TYPE_SCHEMA = {
 				"70": 108,
 				"107": 12
 			},
-			"blog-post.svg"
+			"blog-post@2x.svg"
 		],
 		"24": [
 			"instantMessage",
@@ -725,15 +821,17 @@ var ZOTERO_TYPE_SCHEMA = {
 				110,
 				90,
 				14,
-				87,
-				116,
+				26,
+				126,
 				1,
 				27,
+				116,
+				87,
 				2,
 				22
 			],
 			{},
-			"instant-message.svg"
+			"instant-message@2x.svg"
 		],
 		"25": [
 			"forumPost",
@@ -748,10 +846,12 @@ var ZOTERO_TYPE_SCHEMA = {
 				104,
 				79,
 				14,
-				87,
-				116,
+				26,
+				126,
 				1,
 				27,
+				116,
+				87,
 				2,
 				22
 			],
@@ -759,7 +859,7 @@ var ZOTERO_TYPE_SCHEMA = {
 				"79": 108,
 				"104": 12
 			},
-			"forum-post.svg"
+			"forum-post@2x.svg"
 		],
 		"26": [
 			"audioRecording",
@@ -768,6 +868,9 @@ var ZOTERO_TYPE_SCHEMA = {
 				17,
 				18,
 				2,
+				30,
+				31,
+				4,
 				19
 			],
 			[
@@ -777,19 +880,21 @@ var ZOTERO_TYPE_SCHEMA = {
 				28,
 				4,
 				45,
-				7,
 				72,
+				7,
 				14,
 				77,
-				87,
 				11,
-				116,
-				123,
-				19,
-				62,
-				18,
+				26,
+				126,
 				1,
 				27,
+				123,
+				19,
+				116,
+				87,
+				62,
+				18,
 				2,
 				22
 			],
@@ -797,43 +902,58 @@ var ZOTERO_TYPE_SCHEMA = {
 				"71": 109,
 				"72": 8
 			},
-			"audio-recording.svg"
+			"audio-recording@2x.svg"
 		],
 		"27": [
 			"presentation",
 			"Presentation",
 			[
 				24,
-				2
+				36,
+				2,
+				37,
+				4
 			],
 			[
 				110,
 				90,
 				74,
 				14,
-				7,
 				75,
+				7,
+				3,
+				143,
+				26,
+				126,
 				1,
 				27,
-				87,
 				116,
+				87,
 				2,
 				22
 			],
 			{
-				"74": 108
+				"74": 108,
+				"143": 12
 			},
-			"presentation.svg"
+			"presentation@2x.svg"
 		],
 		"28": [
 			"videoRecording",
 			"Video Recording",
 			[
-				8,
+				38,
 				11,
 				2,
+				30,
+				8,
+				34,
+				25,
+				32,
+				33,
 				10,
-				9
+				9,
+				4
 			],
 			[
 				110,
@@ -842,17 +962,19 @@ var ZOTERO_TYPE_SCHEMA = {
 				28,
 				4,
 				45,
-				7,
 				76,
+				7,
 				14,
 				77,
-				87,
 				11,
-				116,
+				26,
+				126,
 				1,
 				27,
 				123,
 				19,
+				116,
+				87,
 				62,
 				18,
 				2,
@@ -862,7 +984,7 @@ var ZOTERO_TYPE_SCHEMA = {
 				"63": 109,
 				"76": 8
 			},
-			"video-recording.svg"
+			"video-recording@2x.svg"
 		],
 		"29": [
 			"tvBroadcast",
@@ -871,9 +993,14 @@ var ZOTERO_TYPE_SCHEMA = {
 				8,
 				11,
 				2,
+				34,
 				25,
+				32,
+				33,
 				10,
-				9
+				9,
+				35,
+				4
 			],
 			[
 				110,
@@ -881,16 +1008,18 @@ var ZOTERO_TYPE_SCHEMA = {
 				119,
 				105,
 				63,
-				7,
 				78,
+				7,
 				14,
 				77,
-				87,
-				116,
+				26,
+				126,
 				1,
 				27,
 				123,
 				19,
+				116,
+				87,
 				62,
 				18,
 				2,
@@ -902,18 +1031,23 @@ var ZOTERO_TYPE_SCHEMA = {
 				"105": 60,
 				"119": 12
 			},
-			"tv-broadcast.svg"
+			"tv-broadcast@2x.svg"
 		],
 		"30": [
 			"radioBroadcast",
 			"Radio Broadcast",
 			[
-				8,
+				30,
 				11,
 				2,
+				8,
+				34,
 				25,
+				32,
 				10,
-				9
+				9,
+				35,
+				4
 			],
 			[
 				110,
@@ -921,16 +1055,18 @@ var ZOTERO_TYPE_SCHEMA = {
 				119,
 				105,
 				71,
-				7,
 				78,
+				7,
 				14,
 				77,
-				87,
-				116,
+				26,
+				126,
 				1,
 				27,
 				123,
 				19,
+				116,
+				87,
 				62,
 				18,
 				2,
@@ -942,15 +1078,22 @@ var ZOTERO_TYPE_SCHEMA = {
 				"105": 60,
 				"119": 12
 			},
-			"radio-broadcast.svg"
+			"radio-broadcast@2x.svg"
 		],
 		"31": [
 			"podcast",
 			"Podcast",
 			[
 				26,
+				11,
 				2,
-				25
+				8,
+				34,
+				25,
+				10,
+				9,
+				35,
+				4
 			],
 			[
 				110,
@@ -959,11 +1102,15 @@ var ZOTERO_TYPE_SCHEMA = {
 				105,
 				80,
 				14,
+				8,
+				7,
 				77,
+				26,
+				126,
 				1,
 				27,
-				87,
 				116,
+				87,
 				2,
 				22
 			],
@@ -971,7 +1118,7 @@ var ZOTERO_TYPE_SCHEMA = {
 				"80": 109,
 				"105": 60
 			},
-			"podcast.svg"
+			"podcast@2x.svg"
 		],
 		"32": [
 			"computerProgram",
@@ -987,24 +1134,26 @@ var ZOTERO_TYPE_SCHEMA = {
 				81,
 				14,
 				82,
-				7,
 				83,
+				7,
 				88,
-				11,
-				116,
-				1,
 				2,
+				126,
+				1,
+				27,
+				26,
+				11,
 				123,
 				19,
 				62,
 				18,
-				27,
+				116,
 				22
 			],
 			{
 				"83": 8
 			},
-			"computer-program.svg"
+			"computer-program@2x.svg"
 		],
 		"33": [
 			"conferencePaper",
@@ -1019,22 +1168,24 @@ var ZOTERO_TYPE_SCHEMA = {
 			[
 				110,
 				90,
-				14,
 				114,
 				84,
-				7,
 				8,
+				7,
+				14,
 				4,
 				10,
 				3,
-				87,
 				26,
 				11,
-				116,
+				126,
 				1,
 				27,
+				13,
 				123,
 				19,
+				116,
+				87,
 				62,
 				18,
 				2,
@@ -1043,7 +1194,7 @@ var ZOTERO_TYPE_SCHEMA = {
 			{
 				"114": 12
 			},
-			"conference-paper.svg"
+			"conference-paper@2x.svg"
 		],
 		"34": [
 			"document",
@@ -1058,21 +1209,25 @@ var ZOTERO_TYPE_SCHEMA = {
 			[
 				110,
 				90,
-				8,
+				108,
 				14,
-				87,
-				116,
+				8,
+				7,
+				26,
+				126,
 				1,
 				27,
 				123,
 				19,
+				116,
+				87,
 				62,
 				18,
 				2,
 				22
 			],
 			{},
-			"document.svg"
+			"document@2x.svg"
 		],
 		"35": [
 			"encyclopediaArticle",
@@ -1093,17 +1248,19 @@ var ZOTERO_TYPE_SCHEMA = {
 				4,
 				45,
 				6,
-				7,
-				8,
 				14,
+				8,
+				7,
 				10,
 				11,
-				116,
+				26,
+				126,
 				1,
 				27,
-				87,
 				123,
 				19,
+				116,
+				87,
 				62,
 				18,
 				2,
@@ -1112,7 +1269,7 @@ var ZOTERO_TYPE_SCHEMA = {
 			{
 				"85": 12
 			},
-			"encyclopedia-article.svg"
+			"encyclopedia-article@2x.svg"
 		],
 		"36": [
 			"dictionaryEntry",
@@ -1133,17 +1290,19 @@ var ZOTERO_TYPE_SCHEMA = {
 				4,
 				45,
 				6,
-				7,
-				8,
 				14,
+				8,
+				7,
 				10,
-				87,
 				11,
-				116,
+				26,
+				126,
 				1,
 				27,
 				123,
 				19,
+				116,
+				87,
 				62,
 				18,
 				2,
@@ -1152,7 +1311,7 @@ var ZOTERO_TYPE_SCHEMA = {
 			{
 				"86": 12
 			},
-			"dictionary-entry.svg"
+			"dictionary-entry@2x.svg"
 		],
 		"37": [
 			"annotation",
@@ -1162,7 +1321,7 @@ var ZOTERO_TYPE_SCHEMA = {
 			],
 			[],
 			{},
-			"document.svg"
+			"document@2x.svg"
 		],
 		"38": [
 			"preprint",
@@ -1202,7 +1361,7 @@ var ZOTERO_TYPE_SCHEMA = {
 				"124": 8,
 				"125": 60
 			},
-			"preprint.svg"
+			"preprint@2x.svg"
 		],
 		"39": [
 			"dataset",
@@ -1240,7 +1399,7 @@ var ZOTERO_TYPE_SCHEMA = {
 				"129": 7,
 				"130": 109
 			},
-			"dataset.svg"
+			"dataset@2x.svg"
 		],
 		"40": [
 			"standard",
@@ -1278,7 +1437,7 @@ var ZOTERO_TYPE_SCHEMA = {
 			{
 				"132": 127
 			},
-			"standard.svg"
+			"standard@2x.svg"
 		],
 		"10001": [
 			"nsfReviewer",
@@ -1425,6 +1584,42 @@ var ZOTERO_TYPE_SCHEMA = {
 		"29": [
 			"bookAuthor",
 			"Book Author"
+		],
+		"30": [
+			"creator",
+			"Creator"
+		],
+		"31": [
+			"originalCreator",
+			"Original Creator"
+		],
+		"32": [
+			"host",
+			"Host"
+		],
+		"33": [
+			"narrator",
+			"Narrator"
+		],
+		"34": [
+			"executiveProducer",
+			"Executive Producer"
+		],
+		"35": [
+			"seriesCreator",
+			"Series Creator"
+		],
+		"36": [
+			"chair",
+			"Chair"
+		],
+		"37": [
+			"organizer",
+			"Organizer"
+		],
+		"38": [
+			"uploader",
+			"Uploader"
 		]
 	},
 	"fields": {
@@ -1991,6 +2186,61 @@ var ZOTERO_TYPE_SCHEMA = {
 		"132": [
 			"organization",
 			"organization",
+			false
+		],
+		"133": [
+			"eventPlace",
+			"eventPlace",
+			true
+		],
+		"134": [
+			"originalDate",
+			"originalDate",
+			true
+		],
+		"135": [
+			"originalPublisher",
+			"originalPublisher",
+			true
+		],
+		"136": [
+			"originalPlace",
+			"originalPlace",
+			true
+		],
+		"137": [
+			"partNumber",
+			"partNumber",
+			true
+		],
+		"138": [
+			"partTitle",
+			"partTitle",
+			true
+		],
+		"139": [
+			"PMID",
+			"PMID",
+			true
+		],
+		"140": [
+			"PMCID",
+			"PMCID",
+			true
+		],
+		"141": [
+			"arXivID",
+			"arXivID",
+			true
+		],
+		"142": [
+			"priorityDate",
+			"priorityDate",
+			false
+		],
+		"143": [
+			"sessionTitle",
+			"sessionTitle",
 			false
 		],
 		"10001": [
