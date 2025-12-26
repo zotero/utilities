@@ -138,7 +138,6 @@ var ZOTERO_TYPE_SCHEMA = {
 				27,
 				139,
 				140,
-				141,
 				13,
 				123,
 				19,
@@ -2226,11 +2225,6 @@ var ZOTERO_TYPE_SCHEMA = {
 		"140": [
 			"PMCID",
 			"PMCID",
-			true
-		],
-		"141": [
-			"arXivID",
-			"arXivID",
 			true
 		],
 		"142": [
