@@ -247,7 +247,11 @@ var Utilities_Item = {
 				|| cslItem['publisher']
 				|| cslItem['publisher-place']
 				|| cslItem['source'])) {
-			zoteroType = 'tvBroadcast';
+			// Only radioBroadcast has both Creator (Author) and Director, though there may not be
+			// a good reason for that. This is mostly to pass the CSL-JSON round-trip test.
+			zoteroType = cslItem['author'] && cslItem['director']
+				? 'radioBroadcast'
+				: 'tvBroadcast';
 		}
 		else if (cslItem.type == 'book' && cslItem.version) {
 			zoteroType = 'computerProgram';
@@ -256,9 +260,10 @@ var Utilities_Item = {
 			zoteroType = 'podcast';
 		}
 		else if (cslItem.type == 'motion_picture'
-			&& (cslItem['collection-title'] || cslItem['publisher-place']
-				|| cslItem['event-place'] || cslItem.volume
-				|| cslItem['number-of-volumes'] || cslItem.ISBN)) {
+			&& (cslItem['collection-title']
+				|| cslItem.volume
+				|| cslItem['number-of-volumes']
+				|| cslItem.ISBN)) {
 			zoteroType = 'videoRecording';
 		}
 		else if (Zotero.Schema.CSL_TYPE_MAPPINGS_REVERSE[cslItem.type]) {
@@ -307,7 +312,16 @@ var Utilities_Item = {
 		}
 
 		// separate name variables
+		let creatorsDone = new Set();
 		for (let field in Zotero.Schema.CSL_NAME_MAPPINGS) {
+			// `author` and `creator` are both mapped to CSL `author`, and `host` and `podcaster`
+			// are both mapped to CSL `host`, so only process the first one.
+			let cslCreatorType = Zotero.Schema.CSL_NAME_MAPPINGS[field];
+			if (creatorsDone.has(cslCreatorType)) {
+				continue;
+			}
+			creatorsDone.add(cslCreatorType);
+			
 			if (Zotero.Schema.CSL_NAME_MAPPINGS[field] in cslItem) {
 				var creatorTypeID = Zotero.CreatorTypes.getID(field);
 				if(!Zotero.CreatorTypes.isValidForItemType(creatorTypeID, itemTypeID)) {
