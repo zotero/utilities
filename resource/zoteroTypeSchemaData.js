@@ -658,7 +658,7 @@ var ZOTERO_TYPE_SCHEMA = {
 				103,
 				51,
 				52,
-				142,
+				141,
 				53,
 				54,
 				26,
@@ -675,7 +675,7 @@ var ZOTERO_TYPE_SCHEMA = {
 				"52": 14,
 				"54": 131,
 				"120": 127,
-				"142": 134
+				"141": 134
 			},
 			"patent@2x.svg"
 		],
@@ -921,7 +921,7 @@ var ZOTERO_TYPE_SCHEMA = {
 				75,
 				7,
 				3,
-				143,
+				142,
 				26,
 				126,
 				1,
@@ -933,7 +933,7 @@ var ZOTERO_TYPE_SCHEMA = {
 			],
 			{
 				"74": 108,
-				"143": 12
+				"142": 12
 			},
 			"presentation@2x.svg"
 		],
@@ -941,10 +941,9 @@ var ZOTERO_TYPE_SCHEMA = {
 			"videoRecording",
 			"Video Recording",
 			[
-				38,
+				30,
 				11,
 				2,
-				30,
 				8,
 				34,
 				25,
@@ -1615,10 +1614,6 @@ var ZOTERO_TYPE_SCHEMA = {
 		"37": [
 			"organizer",
 			"Organizer"
-		],
-		"38": [
-			"uploader",
-			"Uploader"
 		]
 	},
 	"fields": {
@@ -2227,12 +2222,12 @@ var ZOTERO_TYPE_SCHEMA = {
 			"PMCID",
 			true
 		],
-		"142": [
+		"141": [
 			"priorityDate",
 			"priorityDate",
 			false
 		],
-		"143": [
+		"142": [
 			"sessionTitle",
 			"sessionTitle",
 			false

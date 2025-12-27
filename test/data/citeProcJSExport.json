@@ -2468,10 +2468,6 @@
 		"archive_location": "Archive location",
 		"author": [
 			{
-				"family": "uploaderLast",
-				"given": "uploaderFirst"
-			},
-			{
 				"family": "creatorLast",
 				"given": "creatorFirst"
 			},
