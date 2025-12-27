@@ -73,10 +73,6 @@
 				"given": "performerFirst"
 			},
 			{
-				"family": "creatorLast",
-				"given": "creatorFirst"
-			},
-			{
 				"literal": "Institutional Author"
 			}
 		],
