@@ -867,7 +867,6 @@ var ZOTERO_TYPE_SCHEMA = {
 				17,
 				18,
 				2,
-				30,
 				31,
 				4,
 				19
