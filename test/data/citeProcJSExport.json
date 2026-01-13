@@ -32,6 +32,7 @@
 			}
 		],
 		"dimensions": "Artwork size",
+		"event-place": "Event place",
 		"id": 38,
 		"issued": {
 			"date-parts": [
@@ -92,7 +93,6 @@
 			}
 		],
 		"dimensions": "1:22:33",
-		"event-place": "Place",
 		"id": 39,
 		"issued": {
 			"date-parts": [
@@ -286,7 +286,6 @@
 				"given": "editorFirst"
 			}
 		],
-		"event-place": "Place",
 		"id": 42,
 		"issued": {
 			"date-parts": [
@@ -303,6 +302,11 @@
 		"note": "Extra",
 		"number-of-pages": "4",
 		"number-of-volumes": "7",
+		"original-date": {
+			"literal": "Original date"
+		},
+		"original-publisher": "Original publisher",
+		"original-publisher-place": "Original place",
 		"publisher": "Publisher",
 		"publisher-place": "Place",
 		"source": "Library catalog",
@@ -373,7 +377,6 @@
 				"given": "editorFirst"
 			}
 		],
-		"event-place": "Place",
 		"id": 43,
 		"issued": {
 			"date-parts": [
@@ -389,6 +392,11 @@
 		"medium": "Medium",
 		"note": "Extra",
 		"number-of-volumes": "7",
+		"original-date": {
+			"literal": "Original date"
+		},
+		"original-publisher": "Original publisher",
+		"original-publisher-place": "Original place",
 		"page": "1-10",
 		"publisher": "Publisher",
 		"publisher-place": "Place",
@@ -490,7 +498,6 @@
 				"given": "contributorFirst"
 			}
 		],
-		"event-place": "Place",
 		"genre": "Programming language",
 		"id": 45,
 		"issued": {
@@ -561,7 +568,6 @@
 				"given": "editorFirst"
 			}
 		],
-		"event-place": "Place",
 		"event-title": "Conference name",
 		"id": 46,
 		"issued": {
@@ -623,7 +629,6 @@
 				"given": "contributorFirst"
 			}
 		],
-		"event-place": "Place",
 		"genre": "Type",
 		"id": 47,
 		"issued": {
@@ -697,7 +702,6 @@
 				"given": "editorFirst"
 			}
 		],
-		"event-place": "Place",
 		"id": 48,
 		"issued": {
 			"date-parts": [
@@ -765,7 +769,6 @@
 				"given": "editorFirst"
 			}
 		],
-		"event-place": "Place",
 		"genre": "Type",
 		"id": 49,
 		"issued": {
@@ -906,7 +909,6 @@
 				"given": "editorFirst"
 			}
 		],
-		"event-place": "Place",
 		"id": 51,
 		"issued": {
 			"date-parts": [
@@ -969,7 +971,6 @@
 				"literal": "Institutional Author"
 			}
 		],
-		"event-place": "Place",
 		"genre": "Type",
 		"guest": [
 			{
@@ -1107,7 +1108,6 @@
 				"literal": "Institutional Author"
 			}
 		],
-		"event-place": "Place",
 		"id": 54,
 		"issued": {
 			"date-parts": [
@@ -1216,7 +1216,6 @@
 				"given": "contributorFirst"
 			}
 		],
-		"event-place": "Place",
 		"id": 56,
 		"interviewer": [
 			{
@@ -1293,7 +1292,6 @@
 				"given": "editorFirst"
 			}
 		],
-		"event-place": "Place",
 		"id": 57,
 		"issue": "5",
 		"issued": {
@@ -1365,6 +1363,7 @@
 				"given": "contributorFirst"
 			}
 		],
+		"event-place": "Event place",
 		"genre": "Type",
 		"id": 58,
 		"issued": {
@@ -1430,7 +1429,6 @@
 				"given": "contributorFirst"
 			}
 		],
-		"event-place": "Place",
 		"id": 59,
 		"issue": "5",
 		"issued": {
@@ -1498,7 +1496,6 @@
 				"given": "contributorFirst"
 			}
 		],
-		"event-place": "Place",
 		"genre": "Type",
 		"id": 60,
 		"issued": {
@@ -1569,7 +1566,6 @@
 			}
 		],
 		"edition": "8",
-		"event-place": "Place",
 		"genre": "Type",
 		"id": 61,
 		"issued": {
@@ -1627,7 +1623,6 @@
 			}
 		],
 		"edition": "8",
-		"event-place": "Place",
 		"id": 62,
 		"issue": "5",
 		"issued": {
@@ -1695,7 +1690,6 @@
 				"given": "contributorFirst"
 			}
 		],
-		"event-place": "Place",
 		"id": 63,
 		"issue": "Priority numbers",
 		"issued": {
@@ -1711,6 +1705,9 @@
 		"license": "Rights",
 		"note": "Extra",
 		"number": "3",
+		"original-date": {
+			"literal": "Original date"
+		},
 		"page": "1-10",
 		"publisher-place": "Place",
 		"references": "References",
@@ -1756,7 +1753,6 @@
 				"given": "directorFirst"
 			}
 		],
-		"event-place": "Place",
 		"executive-producer": [
 			{
 				"family": "executiveProducerLast",
@@ -1869,7 +1865,6 @@
 				"given": "editorFirst"
 			}
 		],
-		"event-place": "Place",
 		"genre": "Type",
 		"id": 65,
 		"issued": {
@@ -1941,7 +1936,6 @@
 				"given": "contributorFirst"
 			}
 		],
-		"event-place": "Place",
 		"event-title": "Meeting name",
 		"genre": "Type",
 		"id": 66,
@@ -2014,7 +2008,6 @@
 				"given": "directorFirst"
 			}
 		],
-		"event-place": "Place",
 		"executive-producer": [
 			{
 				"family": "executiveProducerLast",
@@ -2133,7 +2126,6 @@
 				"given": "editorFirst"
 			}
 		],
-		"event-place": "Place",
 		"genre": "Type",
 		"id": 68,
 		"issued": {
@@ -2196,7 +2188,6 @@
 				"given": "contributorFirst"
 			}
 		],
-		"event-place": "Place",
 		"genre": "Type",
 		"id": 69,
 		"issued": {
@@ -2312,7 +2303,6 @@
 				"given": "contributorFirst"
 			}
 		],
-		"event-place": "Place",
 		"genre": "Type",
 		"id": 71,
 		"issued": {
@@ -2369,7 +2359,6 @@
 				"literal": "Institutional Author"
 			}
 		],
-		"event-place": "Place",
 		"executive-producer": [
 			{
 				"family": "executiveProducerLast",
@@ -2487,7 +2476,6 @@
 				"given": "directorFirst"
 			}
 		],
-		"event-place": "Place",
 		"executive-producer": [
 			{
 				"family": "executiveProducerLast",
@@ -2589,7 +2577,6 @@
 				"given": "contributorFirst"
 			}
 		],
-		"event-place": "Place",
 		"genre": "Type",
 		"id": 74,
 		"issued": {
