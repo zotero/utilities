@@ -554,6 +554,7 @@
 				"given": "seriesEditorFirst"
 			}
 		],
+		"collection-number": "9",
 		"collection-title": "Series",
 		"container-title": "Publication title",
 		"contributor": [
@@ -568,8 +569,10 @@
 				"given": "editorFirst"
 			}
 		],
+		"event-place": "Event place",
 		"event-title": "Conference name",
 		"id": 46,
+		"issue": "5",
 		"issued": {
 			"date-parts": [
 				[
@@ -582,6 +585,7 @@
 		"language": "en-US",
 		"license": "Rights",
 		"note": "Extra",
+		"number-of-volumes": "7",
 		"page": "1-10",
 		"publisher": "Publisher",
 		"publisher-place": "Place",
@@ -2157,6 +2161,7 @@
 	},
 	"standard": {
 		"DOI": "10.1234/example.doi",
+		"ISBN": "978-1-234-56789-7",
 		"URL": "http://www.example.com",
 		"abstract": "Abstract note",
 		"accessed": {
@@ -2188,6 +2193,13 @@
 				"given": "contributorFirst"
 			}
 		],
+		"edition": "8",
+		"editor": [
+			{
+				"family": "editorLast",
+				"given": "editorFirst"
+			}
+		],
 		"genre": "Type",
 		"id": 69,
 		"issued": {
@@ -2204,6 +2216,8 @@
 		"note": "Extra",
 		"number": "3",
 		"number-of-pages": "4",
+		"part-number": "Part number",
+		"part-title": "Part title",
 		"publisher": "Publisher",
 		"publisher-place": "Place",
 		"section": "Committee",
