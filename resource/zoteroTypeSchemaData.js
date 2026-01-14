@@ -374,8 +374,8 @@ var ZOTERO_TYPE_SCHEMA = {
 				11,
 				2,
 				25,
+				31,
 				32,
-				33,
 				10,
 				9,
 				4
@@ -867,7 +867,7 @@ var ZOTERO_TYPE_SCHEMA = {
 				17,
 				18,
 				2,
-				31,
+				30,
 				4,
 				19
 			],
@@ -907,9 +907,9 @@ var ZOTERO_TYPE_SCHEMA = {
 			"Presentation",
 			[
 				24,
-				36,
+				35,
 				2,
-				37,
+				36,
 				4
 			],
 			[
@@ -940,14 +940,14 @@ var ZOTERO_TYPE_SCHEMA = {
 			"videoRecording",
 			"Video Recording",
 			[
-				30,
+				37,
 				11,
 				2,
 				8,
-				34,
-				25,
-				32,
 				33,
+				25,
+				31,
+				32,
 				10,
 				9,
 				4
@@ -990,13 +990,13 @@ var ZOTERO_TYPE_SCHEMA = {
 				8,
 				11,
 				2,
-				34,
-				25,
-				32,
 				33,
+				25,
+				31,
+				32,
 				10,
 				9,
-				35,
+				34,
 				4
 			],
 			[
@@ -1034,16 +1034,16 @@ var ZOTERO_TYPE_SCHEMA = {
 			"radioBroadcast",
 			"Radio Broadcast",
 			[
-				30,
+				37,
 				11,
 				2,
 				8,
-				34,
+				33,
 				25,
-				32,
+				31,
 				10,
 				9,
-				35,
+				34,
 				4
 			],
 			[
@@ -1085,11 +1085,11 @@ var ZOTERO_TYPE_SCHEMA = {
 				11,
 				2,
 				8,
-				34,
+				33,
 				25,
 				10,
 				9,
-				35,
+				34,
 				4
 			],
 			[
@@ -1170,9 +1170,13 @@ var ZOTERO_TYPE_SCHEMA = {
 				8,
 				7,
 				14,
+				133,
 				4,
+				5,
+				45,
 				10,
 				3,
+				30,
 				26,
 				11,
 				126,
@@ -1403,7 +1407,8 @@ var ZOTERO_TYPE_SCHEMA = {
 			"Standard",
 			[
 				1,
-				2
+				2,
+				3
 			],
 			[
 				110,
@@ -1413,10 +1418,14 @@ var ZOTERO_TYPE_SCHEMA = {
 				108,
 				60,
 				81,
+				6,
 				131,
 				14,
 				8,
 				7,
+				137,
+				138,
+				11,
 				26,
 				126,
 				1,
@@ -1583,36 +1592,36 @@ var ZOTERO_TYPE_SCHEMA = {
 			"Book Author"
 		],
 		"30": [
-			"creator",
-			"Creator"
-		],
-		"31": [
 			"originalCreator",
 			"Original Creator"
 		],
-		"32": [
+		"31": [
 			"host",
 			"Host"
 		],
-		"33": [
+		"32": [
 			"narrator",
 			"Narrator"
 		],
-		"34": [
+		"33": [
 			"executiveProducer",
 			"Executive Producer"
 		],
-		"35": [
+		"34": [
 			"seriesCreator",
 			"Series Creator"
 		],
-		"36": [
+		"35": [
 			"chair",
 			"Chair"
 		],
-		"37": [
+		"36": [
 			"organizer",
 			"Organizer"
+		],
+		"37": [
+			"creator",
+			"Creator"
 		]
 	},
 	"fields": {
