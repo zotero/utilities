@@ -796,7 +796,7 @@ var Utilities_Item = {
 
 		var fieldID, itemFieldID;
 		for(var field in item) {
-			if(field === "complete" || field === "itemID" || field === "attachments"
+			if(field === "complete" || field === "itemID"
 				|| field === "seeAlso") continue;
 
 			var val = item[field];
@@ -879,6 +879,23 @@ var Utilities_Item = {
 						parentItem: newItem.key,
 						note: note.toString()
 					});
+				}
+			} else if(field === "attachments") {
+				for(let attachment of val) {
+					if(!attachment.url && !attachment.path) {
+						Zotero.debug("itemToAPIJSON: Discarded attachment without url or path");
+						continue;
+					}
+					let newAttachment = {
+						itemType: "attachment",
+						parentItem: newItem.key
+					};
+					if(attachment.url) newAttachment.url = attachment.url;
+					if(attachment.title) newAttachment.title = attachment.title;
+					if(attachment.mimeType) newAttachment.contentType = attachment.mimeType;
+					if(attachment.path) newAttachment.path = attachment.path;
+					if(attachment.accessDate) newAttachment.accessDate = attachment.accessDate;
+					newItems.push(newAttachment);
 				}
 			} else if((fieldID = Zotero.ItemFields.getID(field))) {
 				// if content is not a string, either stringify it or delete it
