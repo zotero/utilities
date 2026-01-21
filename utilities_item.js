@@ -641,28 +641,39 @@ var Utilities_Item = {
 			case 'archive-place':
 			case 'author':
 			case 'authority':
+			case 'available-date':
 			case 'call-number':
+			case 'chair':
 			case 'chapter-number':
+			case 'citation-key':
 			case 'citation-label':
 			case 'citation-number':
 			case 'collection-editor':
 			case 'collection-number':
 			case 'collection-title':
+			case 'compiler':
 			case 'composer':
-			case 'container':
 			case 'container-author':
 			case 'container-title':
 			case 'container-title-short':
+			case 'contributor':
+			case 'curator':
 			case 'dimensions':
 			case 'director':
+			case 'division':
 			case 'edition':
 			case 'editor':
+			case 'editor-translator':
 			case 'editorial-director':
 			case 'event':
 			case 'event-date':
 			case 'event-place':
+			case 'event-title':
+			case 'executive-producer':
 			case 'first-reference-note-number':
 			case 'genre':
+			case 'guest':
+			case 'host':
 			case 'illustrator':
 			case 'interviewer':
 			case 'issue':
@@ -670,12 +681,15 @@ var Utilities_Item = {
 			case 'jurisdiction':
 			case 'keyword':
 			case 'language':
+			case 'license':
 			case 'locator':
 			case 'medium':
+			case 'narrator':
 			case 'note':
 			case 'number':
 			case 'number-of-pages':
 			case 'number-of-volumes':
+			case 'organizer':
 			case 'original-author':
 			case 'original-date':
 			case 'original-publisher':
@@ -683,23 +697,33 @@ var Utilities_Item = {
 			case 'original-title':
 			case 'page':
 			case 'page-first':
+			case 'part-number':
+			case 'part-title':
+			case 'performer':
+			case 'printing-number':
+			case 'producer':
 			case 'publisher':
 			case 'publisher-place':
 			case 'recipient':
 			case 'references':
 			case 'reviewed-author':
+			case 'reviewed-genre':
 			case 'reviewed-title':
 			case 'scale':
+			case 'script-writer':
 			case 'section':
+			case 'series-creator':
 			case 'source':
 			case 'status':
 			case 'submitted':
+			case 'supplement-number':
 			case 'title':
 			case 'title-short':
 			case 'translator':
 			case 'type':
 			case 'version':
 			case 'volume':
+			case 'volume-title':
 			case 'year-suffix':
 				break;
 
@@ -713,9 +737,10 @@ var Utilities_Item = {
 				field = field.toUpperCase();
 				break;
 
-				// Weirdo
+				// Weirdos
+			case 'archive-collection':
 			case 'archive-location':
-				field = 'archive_location';
+				field = field.replace(/-/g, '_');
 				break;
 
 			default:
