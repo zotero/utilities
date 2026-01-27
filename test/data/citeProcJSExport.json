@@ -93,6 +93,7 @@
 			}
 		],
 		"dimensions": "1:22:33",
+		"event-place": "Place",
 		"id": 39,
 		"issued": {
 			"date-parts": [
@@ -115,7 +116,6 @@
 			}
 		],
 		"publisher": "Publisher",
-		"publisher-place": "Place",
 		"source": "Library catalog",
 		"title": "Title",
 		"title-short": "Short title",
@@ -1940,6 +1940,7 @@
 				"given": "contributorFirst"
 			}
 		],
+		"event-place": "Place",
 		"event-title": "Meeting name",
 		"genre": "Type",
 		"id": 66,
@@ -1961,7 +1962,6 @@
 				"given": "organizerFirst"
 			}
 		],
-		"publisher-place": "Place",
 		"title": "Title",
 		"title-short": "Short title",
 		"translator": [
@@ -2490,6 +2490,7 @@
 				"given": "directorFirst"
 			}
 		],
+		"event-place": "Place",
 		"executive-producer": [
 			{
 				"family": "executiveProducerLast",
@@ -2542,7 +2543,6 @@
 			}
 		],
 		"publisher": "Publisher",
-		"publisher-place": "Place",
 		"script-writer": [
 			{
 				"family": "scriptwriterLast",

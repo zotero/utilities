@@ -77,6 +77,25 @@ var Utilities_Item = {
 		for(var variable in Zotero.Schema.CSL_TEXT_MAPPINGS) {
 			if (variable === "shortTitle") continue; // read both title-short and shortTitle, but write only title-short
 			var fields = Zotero.Schema.CSL_TEXT_MAPPINGS[variable];
+			
+			// TEMP: Hard-code a mapping of Place to `event-place` for some item types until we can
+			// properly migrate data to an `eventPlace` field
+			//
+			// https://github.com/zotero/zotero-bits/issues/6
+			// https://github.com/zotero/zotero-schema/commit/7bb35eb8217d37dd0388e011f65837f7b3893821
+			// https://forums.zotero.org/discussion/129265/location-disappeared-from-presentation-reference-in-apa
+			let eventPlaceTypes = [
+				'audioRecording', 'presentation', 'videoRecording'
+			];
+			if (eventPlaceTypes.includes(zoteroItem.itemType)) {
+				if (variable == 'event-place') {
+					fields = ['place'];
+				}
+				else if (variable == 'publisher-place') {
+					continue;
+				}
+			}
+			
 			for(var i=0, n=fields.length; i<n; i++) {
 				var field = fields[i],
 					value = null;
@@ -225,6 +244,9 @@ var Utilities_Item = {
 	 * @param {Object} cslItem
 	 */
 	itemFromCSLJSON: function(item, cslItem) {
+		// TEMP: Clone cslItem in case we modify it below for event-place hack
+		cslItem = Object.assign({}, cslItem);
+		
 		var isZoteroItem = !!item.setType,
 			zoteroType;
 
@@ -281,7 +303,16 @@ var Utilities_Item = {
 			item.itemID = cslItem.id;
 			item.itemType = zoteroType;
 		}
-
+		
+		// TEMP: See comment for `eventPlaceTypes` above
+		let eventPlaceTypes = [
+			'audioRecording', 'presentation', 'videoRecording'
+		];
+		if (eventPlaceTypes.includes(item.itemType)) {
+			cslItem['publisher-place'] = cslItem['event-place'];
+			delete cslItem['event-place'];
+		}
+		
 		// map text fields
 		for (let variable in Zotero.Schema.CSL_TEXT_MAPPINGS) {
 			if(variable in cslItem) {

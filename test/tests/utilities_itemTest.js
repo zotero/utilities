@@ -76,6 +76,18 @@ describe("Zotero.Utilities.Item", function () {
 			Zotero.Item = Item;
 			assert.doesNotThrow(() => "" instanceof Zotero.Item);
 		})
+		
+		it("should import `event-place` as Place for Presentation item", function () {
+			let data = loadSampleData('citeProcJSExport');
+			var json = data.presentation;
+			assert.property(json, 'event-place');
+			let place = json['event-place'];
+			
+			let item = newItem();
+			Zotero.Utilities.Item.itemFromCSLJSON(item, json);
+			
+			assert.propertyVal(item, 'place', place);
+		});
 	});
 
 	describe("itemToCSLJSON", function () {
@@ -235,6 +247,14 @@ describe("Zotero.Utilities.Item", function () {
 			assert.equal(accessed['date-parts'][0][0], 2019);
 			assert.equal(accessed['date-parts'][0][1], 1);
 			assert.equal(accessed['date-parts'][0][2], 9);
+		});
+		
+		it("should export Place as CSL `event-place` for Presentation item", function () {
+			var item = newItem('presentation');
+			item.place = 'New York';
+			var json = Zotero.Utilities.Item.itemToCSLJSON(item);
+			assert.propertyVal(json, 'event-place', 'New York');
+			assert.notProperty(json, 'publisher-place');
 		});
 	});
 
