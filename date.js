@@ -23,9 +23,9 @@
     ***** END LICENSE BLOCK *****
 */
 
-(function() {
+import Utilities from "./utilities.js";
 
-var Utilities_Date = new function(){
+const Utilities_Date = new function() {
 	this.isSQLDate = isSQLDate;
 	this.isSQLDateTime = isSQLDateTime;
 	this.sqlHasYear = sqlHasYear;
@@ -94,7 +94,7 @@ var Utilities_Date = new function(){
 		let months = _monthsWithEnglish.short.map(m => m.toLowerCase())
 			.concat(_monthsWithEnglish.long.map(m => m.toLowerCase()));
 		// TODO: Switch back to native RegExp in Fx102 when Unicode property escapes are supported
-		_monthRe = Zotero.Utilities.XRegExp("(.*)(?:^|[^\\p{L}])(" + months.join("|") + ")[^ ]*(?: (.*)$|$)", "iu");
+		_monthRe = Utilities.XRegExp("(.*)(?:^|[^\\p{L}])(" + months.join("|") + ")[^ ]*(?: (.*)$|$)", "iu");
 	};
 
 
@@ -183,12 +183,12 @@ var Utilities_Date = new function(){
 				var seconds = date.getSeconds();
 			}
 
-			year = Zotero.Utilities.lpad(year, '0', 4);
-			month = Zotero.Utilities.lpad(month + 1, '0', 2);
-			day = Zotero.Utilities.lpad(day, '0', 2);
-			hours = Zotero.Utilities.lpad(hours, '0', 2);
-			minutes = Zotero.Utilities.lpad(minutes, '0', 2);
-			seconds = Zotero.Utilities.lpad(seconds, '0', 2);
+			year = Utilities.lpad(year, '0', 4);
+			month = Utilities.lpad(month + 1, '0', 2);
+			day = Utilities.lpad(day, '0', 2);
+			hours = Utilities.lpad(hours, '0', 2);
+			minutes = Utilities.lpad(minutes, '0', 2);
+			seconds = Utilities.lpad(seconds, '0', 2);
 
 			return year + '-' + month + '-' + day + ' '
 				+ hours + ':' + minutes + ':' + seconds;
@@ -215,12 +215,12 @@ var Utilities_Date = new function(){
 		var minutes = date.getUTCMinutes();
 		var seconds = date.getUTCSeconds();
 
-		year = Zotero.Utilities.lpad(year, '0', 4);
-		month = Zotero.Utilities.lpad(month + 1, '0', 2);
-		day = Zotero.Utilities.lpad(day, '0', 2);
-		hours = Zotero.Utilities.lpad(hours, '0', 2);
-		minutes = Zotero.Utilities.lpad(minutes, '0', 2);
-		seconds = Zotero.Utilities.lpad(seconds, '0', 2);
+		year = Utilities.lpad(year, '0', 4);
+		month = Utilities.lpad(month + 1, '0', 2);
+		day = Utilities.lpad(day, '0', 2);
+		hours = Utilities.lpad(hours, '0', 2);
+		minutes = Utilities.lpad(minutes, '0', 2);
+		seconds = Utilities.lpad(seconds, '0', 2);
 
 		return year + '-' + month + '-' + day + 'T'
 			+ hours + ':' + minutes + ':' + seconds + 'Z';
@@ -275,7 +275,7 @@ var Utilities_Date = new function(){
 		};
 
 		if (typeof string == 'string' || typeof string == 'number') {
-			string = Zotero.Utilities.trimInternal(string.toString());
+			string = Utilities.trimInternal(string.toString());
 		}
 
 		// skip empty things
@@ -601,11 +601,11 @@ var Utilities_Date = new function(){
 		var date = this.strToDate(str);
 
 		if(date.year) {
-			var dateString = Zotero.Utilities.lpad(date.year, "0", 4);
+			var dateString = Utilities.lpad(date.year, "0", 4);
 			if (parseInt(date.month) == date.month) {
-				dateString += "-"+Zotero.Utilities.lpad(date.month+1, "0", 2);
+				dateString += "-"+Utilities.lpad(date.month+1, "0", 2);
 				if(date.day) {
-					dateString += "-"+Zotero.Utilities.lpad(date.day, "0", 2);
+					dateString += "-"+Utilities.lpad(date.day, "0", 2);
 				}
 			}
 			return dateString;
@@ -654,9 +654,9 @@ var Utilities_Date = new function(){
 
 		parts.month = typeof parts.month != "undefined" ? parts.month + 1 : '';
 
-		var multi = (parts.year ? Zotero.Utilities.lpad(parts.year, '0', 4) : '0000') + '-'
-			+ Zotero.Utilities.lpad(parts.month, '0', 2) + '-'
-			+ (parts.day ? Zotero.Utilities.lpad(parts.day, '0', 2) : '00')
+		var multi = (parts.year ? Utilities.lpad(parts.year, '0', 4) : '0000') + '-'
+			+ Utilities.lpad(parts.month, '0', 2) + '-'
+			+ (parts.day ? Utilities.lpad(parts.day, '0', 2) : '00')
 			+ ' '
 			+ str;
 		return multi;
@@ -946,13 +946,8 @@ var Utilities_Date = new function(){
 			}
 		}
 		return _localeDateOrder;
-	}
-}
+	};
+};
 
-if (typeof module != 'undefined') {
-	module.exports = Utilities_Date;
-} else if (typeof Zotero != 'undefined') {
-	Zotero.Date = Utilities_Date;
-}
-
-})();
+export { Utilities_Date };
+export default Utilities_Date;

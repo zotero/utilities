@@ -27,17 +27,17 @@
  * Emulates very small parts of cachedTypes.js and itemFields.js APIs for use with connector
  */
 
-(function() {
+import Utilities from "./utilities.js";
 
-var TypeSchema;
+let TypeSchema;
 if (typeof ZOTERO_TYPE_SCHEMA != 'undefined') {
 	TypeSchema = ZOTERO_TYPE_SCHEMA;
 }
 
-var CachedTypes = new function() {
+const CachedTypes = new function() {
 	const schemaTypes = ["itemTypes", "creatorTypes", "fields"];
-	var typeData = {};
-	var itemTypes, creatorTypes, fields;
+	let typeData = {};
+	let itemTypes, creatorTypes, fields;
 
 	this.setTypeSchema = function(typeSchema) {
 		TypeSchema = typeSchema;
@@ -46,7 +46,7 @@ var CachedTypes = new function() {
 		// attach IDs and make referenceable by either ID or name
 		for (let i = 0; i < schemaTypes.length; i++) {
 			let schemaType = schemaTypes[i];
-			typeData[schemaType] = Zotero.Utilities.deepCopy(TypeSchema[schemaType]);
+			typeData[schemaType] = Utilities.deepCopy(TypeSchema[schemaType]);
 			for (let id in TypeSchema[schemaType]) {
 				let entry = typeData[schemaType][id];
 				entry.unshift(parseInt(id, 10));
@@ -73,17 +73,17 @@ var CachedTypes = new function() {
 		}
 
 		getID(idOrName) {
-			var type = this.type[idOrName];
+			const type = this.type[idOrName];
 			return (type ? type[0]/* id */ : false);
 		}
 
 		getName(idOrName) {
-			var type = this.type[idOrName];
+			const type = this.type[idOrName];
 			return (type ? type[1]/* name */ : false);
 		}
 
 		getLocalizedString(idOrName) {
-			var type = this.type[idOrName];
+			const type = this.type[idOrName];
 			return (type ? type[2]/* localizedString */ : false);
 		}
 	}
@@ -100,20 +100,20 @@ var CachedTypes = new function() {
 		}
 		
 		getTypesForItemType(idOrName) {
-			var itemType = itemTypes[idOrName];
+			const itemType = itemTypes[idOrName];
 			if(!itemType) return false;
 			
-			var itemCreatorTypes = itemType[3]; // creatorTypes
+			const itemCreatorTypes = itemType[3]; // creatorTypes
 			if (!itemCreatorTypes
 					// TEMP: 'note' and 'attachment' have an array containing false
 					|| (itemCreatorTypes.length == 1 && !itemCreatorTypes[0])) {
 				return [];
 			}
-			var n = itemCreatorTypes.length;
-			var outputTypes = new Array(n);
+			const n = itemCreatorTypes.length;
+			const outputTypes = new Array(n);
 			
-			for(var i=0; i<n; i++) {
-				var creatorType = creatorTypes[itemCreatorTypes[i]];
+			for(let i=0; i<n; i++) {
+				const creatorType = creatorTypes[itemCreatorTypes[i]];
 				outputTypes[i] = {"id":creatorType[0]/* id */,
 					"name":creatorType[1]/* name */};
 			}
@@ -121,13 +121,13 @@ var CachedTypes = new function() {
 		};
 		
 		getPrimaryIDForType(idOrName) {
-			var itemType = itemTypes[idOrName];
+			const itemType = itemTypes[idOrName];
 			if(!itemType) return false;
 			return itemType[3]/* creatorTypes */[0];
 		};
 		
 		isValidForItemType(creatorTypeID, itemTypeID) {
-			let itemType = itemTypes[itemTypeID];
+			const itemType = itemTypes[itemTypeID];
 			return itemType[3]/* creatorTypes */.includes(creatorTypeID);
 		};
 	})();
@@ -138,7 +138,7 @@ var CachedTypes = new function() {
 		}
 		
 		isValidForType(fieldIdOrName, typeIdOrName) {
-			var field = fields[fieldIdOrName], itemType = itemTypes[typeIdOrName];
+			const field = fields[fieldIdOrName], itemType = itemTypes[typeIdOrName];
 			
 			// mimics itemFields.js
 			if(!field || !itemType) return false;
@@ -152,7 +152,7 @@ var CachedTypes = new function() {
 		};
 		
 		getFieldIDFromTypeAndBase(typeIdOrName, fieldIdOrName) {
-			var baseField = fields[fieldIdOrName], itemType = itemTypes[typeIdOrName];
+			let baseField = fields[fieldIdOrName], itemType = itemTypes[typeIdOrName];
 			
 			if(!baseField || !itemType) return false;
 			
@@ -160,8 +160,8 @@ var CachedTypes = new function() {
 			baseField = baseField[0]/* id */;
 			
 			// loop through base fields for item type
-			var baseFields = itemType[5];
-			for(var i in baseFields) {
+			const baseFields = itemType[5];
+			for(let i in baseFields) {
 				if(baseFields[i] === baseField) {
 					return i;
 				}
@@ -171,12 +171,12 @@ var CachedTypes = new function() {
 		};
 		
 		getBaseIDFromTypeAndField(typeIdOrName, fieldIdOrName) {
-			var field = fields[fieldIdOrName], itemType = itemTypes[typeIdOrName];
+			const field = fields[fieldIdOrName], itemType = itemTypes[typeIdOrName];
 			if(!field || !itemType) {
 				throw new Error("Invalid field or type ID");
 			}
 			
-			var baseField = itemType[5]/* baseFields */[field[0]/* id */];
+			const baseField = itemType[5]/* baseFields */[field[0]/* id */];
 			return baseField ? baseField : false;
 		};
 		
@@ -184,10 +184,7 @@ var CachedTypes = new function() {
 			return itemTypes[typeIdOrName][4]/* fields */.slice();
 		};
 	})();
-}
-if (typeof module !== 'undefined') {
-	module.exports = CachedTypes
-} else if (typeof Zotero !== 'undefined') {
-	Object.assign(Zotero, CachedTypes);
-}
-})();
+}();
+
+export { CachedTypes };
+export default CachedTypes;

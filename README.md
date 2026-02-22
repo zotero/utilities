@@ -6,10 +6,12 @@ Zotero translation architecture and others.
 Item utility functions require:
 - Calling `Zotero.Schema.init(json)` with the JSON from `schema.json` from Zotero schema repo
 - Calling `Zotero.Date.init(json)` with the JSON from `resource/dateFormats.json`
-- Loading `resource/zoteroTypeSchemaData.js` before `cachedTypes.js` or in Node.js running
+- Running
   ```js
-    let CachedTypes = require('./cachedTypes')
-    CachedTypes.setTypeSchema(require('./resource/zoteroTypeSchemaData'))
+    import CachedTypes from './cachedTypes.js'
+    import { ZOTERO_TYPE_SCHEMA } from './resource/zoteroTypeSchemaData.js'
+
+    CachedTypes.setTypeSchema(ZOTERO_TYPE_SCHEMA)
   ```
 - Implementing `Zotero.localeCompare()`; a simple implementation would be
   ```js

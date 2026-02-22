@@ -23,9 +23,10 @@
     ***** END LICENSE BLOCK *****
 */
 
-(function() {
+import Utilities from "./utilities";
+import Utilities_Item from "../utilities_item.js";
 
-var OpenURL = new function() {
+const OpenURL = new function() {
 	this.createContextObject = createContextObject;
 	this.parseContextObject = parseContextObject;
 	
@@ -148,7 +149,7 @@ var OpenURL = new function() {
 		
 		if(item.creators && item.creators.length) {
 			// encode first author as first and last
-			let firstCreator = Zotero.Utilities.Item.getFirstCreatorFromItemJSON(item);
+			let firstCreator = Utilities_Item.getFirstCreatorFromItemJSON(item);
 			if(item.itemType == "patent") {
 				_mapTag(firstCreator.firstName, "invfirst");
 				_mapTag(firstCreator.lastName, "invlast");
@@ -348,7 +349,7 @@ var OpenURL = new function() {
 					var type = "author";
 				}
 				
-				item.creators.push(_cloneIfNecessary(Zotero.Utilities.cleanAuthor(value, type, value.indexOf(",") !== -1), item));
+				item.creators.push(_cloneIfNecessary(Utilities.cleanAuthor(value, type, value.indexOf(",") !== -1), item));
 			} else if(key == "rft.aucorp") {
 				complexAu.push(_cloneIfNecessary({lastName:value, isInstitution:true}, item));
 			} else if(key == "rft.isbn" && !item.ISBN) {
@@ -408,7 +409,7 @@ var OpenURL = new function() {
 				}  else if(key == "rft.subject") {
 					item.tags.push(value);
 				} else if(key == "rft.type") {
-					if(Zotero.Utilities.Item.itemTypeExists(value)) item.itemType = value;
+					if(Utilities_Item.itemTypeExists(value)) item.itemType = value;
 				} else if(key == "rft.source") {
 					item.publicationTitle = value;
 				}
@@ -446,13 +447,8 @@ var OpenURL = new function() {
 		}
 		
 		return item;
-	}
-}
+	};
+};
 
-if (typeof module != 'undefined') {
-	module.exports = OpenURL;
-} else if (typeof Zotero != 'undefined') {
-	Zotero.OpenURL = OpenURL;
-}
-
-})();
+export { OpenURL };
+export default OpenURL;

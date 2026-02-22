@@ -1,6 +1,6 @@
 describe("Zotero.Utilities.Item", function () {
 	describe("itemFromCSLJSON", function () {
-		it("should stably perform itemToCSLJSON -> itemFromCSLJSON -> itemToCSLJSON", function () {
+		it("should stably perform itemToCSLJSON -> itemFromCSLJSON -> itemToCSLJSON", async function () {
 			let data = loadSampleData('citeProcJSExport');
 
 			for (let i in data) {
@@ -12,9 +12,9 @@ describe("Zotero.Utilities.Item", function () {
 				}
 
 				let item = newItem();
-				Zotero.Utilities.Item.itemFromCSLJSON(item, json);
+				await Zotero.Utilities.Item.itemFromCSLJSON(item, json);
 
-				let newJSON = Zotero.Utilities.Item.itemToCSLJSON(item);
+				let newJSON = await Zotero.Utilities.Item.itemToCSLJSON(item);
 
 				delete newJSON.id;
 				delete json.id;
@@ -23,7 +23,7 @@ describe("Zotero.Utilities.Item", function () {
 			}
 
 		});
-		it("should recognize the legacy shortTitle key", function () {
+		it("should recognize the legacy shortTitle key", async function () {
 			let data = loadSampleData('citeProcJSExport');
 
 			var json = data.artwork;
@@ -34,28 +34,28 @@ describe("Zotero.Utilities.Item", function () {
 			let item = newItem();
 			Zotero.Utilities.Item.itemFromCSLJSON(item, json);
 
-			let newJSON = Zotero.Utilities.Item.itemToCSLJSON(item);
+			let newJSON = await Zotero.Utilities.Item.itemToCSLJSON(item);
 			assert.hasAllKeys(newJSON, canonicalKeys);
 		});
-		it("should import exported standalone note", function () {
+		it("should import exported standalone note", async function () {
 			let note = newItem('note');
 			note.note = 'Some note longer than 50 characters, which will become the title.';
 
-			let jsonNote = Zotero.Utilities.Item.itemToCSLJSON(note);
+			let jsonNote = await Zotero.Utilities.Item.itemToCSLJSON(note);
 
 			let item = newItem();
 			Zotero.Utilities.Item.itemFromCSLJSON(item, jsonNote);
 
 			assert.equal(item.title, jsonNote.title, 'title imported correctly');
 		});
-		it("should import exported standalone attachment", function () {
+		it("should import exported standalone attachment", async function () {
 			let attachment = newItem('attachment');
 			attachment.title = 'Empty';
 			attachment.accessDate = '2001-02-03 12:13:14';
 			attachment.url = 'http://example.com';
 			attachment.note = 'Note';
 
-			let jsonAttachment = Zotero.Utilities.Item.itemToCSLJSON(attachment);
+			let jsonAttachment = await Zotero.Utilities.Item.itemToCSLJSON(attachment);
 
 			let item = newItem();
 			Zotero.Utilities.Item.itemFromCSLJSON(item, jsonAttachment);
@@ -98,7 +98,7 @@ describe("Zotero.Utilities.Item", function () {
 
 			let fromZoteroItem;
 			try {
-				fromZoteroItem = Zotero.Utilities.Item.itemToCSLJSON(item);
+				fromZoteroItem = await Zotero.Utilities.Item.itemToCSLJSON(item);
 			} catch (e) {
 				assert.fail(e, null, 'accepts Zotero Item');
 			}
@@ -108,7 +108,7 @@ describe("Zotero.Utilities.Item", function () {
 
 			let fromExportItem;
 			try {
-				fromExportItem = Zotero.Utilities.Item.itemToCSLJSON(
+				fromExportItem = await Zotero.Utilities.Item.itemToCSLJSON(
 					Zotero.Utilities.Internal.itemToExportFormat(item)
 				);
 			} catch (e) {
@@ -119,22 +119,22 @@ describe("Zotero.Utilities.Item", function () {
 
 			assert.deepEqual(fromZoteroItem, fromExportItem, 'conversion from Zotero Item and from export item are the same');
 		});
-		it("should convert standalone notes to expected format", function () {
+		it("should convert standalone notes to expected format", async function () {
 			let note = newItem('note');
 			note.note = 'Some note longer than 50 characters, which will become the title.';
 
-			let cslJSONNote = Zotero.Utilities.Item.itemToCSLJSON(note);
+			let cslJSONNote = await Zotero.Utilities.Item.itemToCSLJSON(note);
 			assert.equal(cslJSONNote.type, 'document', 'note is exported as "document"');
-			assert.equal(cslJSONNote.title, Zotero.Utilities.Item.noteToTitle(note.note), 'note title is set to Zotero pseudo-title');
+			assert.equal(cslJSONNote.title, await Zotero.Utilities.Item.noteToTitle(note.note), 'note title is set to Zotero pseudo-title');
 		});
-		it("should convert standalone attachments to expected format", function () {
+		it("should convert standalone attachments to expected format", async function () {
 			let attachment = newItem('attachment');
 			attachment.title = 'Empty';
 			attachment.accessDate = '2001-02-03 12:13:14';
 			attachment.url = 'http://example.com';
 			attachment.note = 'Note';
 
-			let cslJSONAttachment = Zotero.Utilities.Item.itemToCSLJSON(attachment);
+			let cslJSONAttachment = await Zotero.Utilities.Item.itemToCSLJSON(attachment);
 			assert.equal(cslJSONAttachment.type, 'document', 'attachment is exported as "document"');
 			assert.equal(cslJSONAttachment.title, 'Empty', 'attachment title is correct');
 			assert.deepEqual(cslJSONAttachment.accessed, { "date-parts": [["2001", 2, 3]] }, 'attachment access date is mapped correctly');
@@ -147,7 +147,7 @@ describe("Zotero.Utilities.Item", function () {
 			assert.throws(Zotero.Utilities.Item.itemToCSLJSON.bind(Zotero.Utilities, item), /^Unexpected Zotero Item type ".*"$/, 'throws an error when trying to map invalid item types');
 		});
 
-		it("should parse particles in creator names", function () {
+		it("should parse particles in creator names", async function () {
 			let creators = [
 				{
 					// No particles
@@ -216,7 +216,7 @@ describe("Zotero.Utilities.Item", function () {
 
 			let item = newItem('journalArticle');
 			item.creators = creators;
-			let cslCreators = Zotero.Utilities.Item.itemToCSLJSON(item).author;
+			let cslCreators = await Zotero.Utilities.Item.itemToCSLJSON(item).author;
 
 			assert.deepEqual(cslCreators[0], creators[0].expect, 'simple name is not parsed');
 			assert.deepEqual(cslCreators[1], creators[1].expect, 'name with dropping and non-dropping particles is parsed');
@@ -226,7 +226,7 @@ describe("Zotero.Utilities.Item", function () {
 			assert.deepEqual(cslCreators[5], creators[5].expect, 'protected last name prevents parsing');
 		});
 
-		it("should convert UTC access date to local time", function () {
+		it("should convert UTC access date to local time", async function () {
 			var offset = new Date().getTimezoneOffset();
 			var item = newItem('webpage');
 			var localDate;
@@ -242,17 +242,17 @@ describe("Zotero.Utilities.Item", function () {
 			}
 			var utcDate = Zotero.Date.sqlToDate(localDate);
 			item.accessDate = Zotero.Date.dateToSQL(utcDate, true);
-			let accessed = Zotero.Utilities.Item.itemToCSLJSON(item).accessed;
+			let accessed = await Zotero.Utilities.Item.itemToCSLJSON(item).accessed;
 
 			assert.equal(accessed['date-parts'][0][0], 2019);
 			assert.equal(accessed['date-parts'][0][1], 1);
 			assert.equal(accessed['date-parts'][0][2], 9);
 		});
 		
-		it("should export Place as CSL `event-place` for Presentation item", function () {
+		it("should export Place as CSL `event-place` for Presentation item", async function () {
 			var item = newItem('presentation');
 			item.place = 'New York';
-			var json = Zotero.Utilities.Item.itemToCSLJSON(item);
+			var json = await Zotero.Utilities.Item.itemToCSLJSON(item);
 			assert.propertyVal(json, 'event-place', 'New York');
 			assert.notProperty(json, 'publisher-place');
 		});
@@ -260,21 +260,21 @@ describe("Zotero.Utilities.Item", function () {
 
 
 	describe("#noteToTitle()", function () {
-		it("should stop after first block element with content", function () {
+		it("should stop after first block element with content", async function () {
 			var str = "<h1>Foo</h1><p>Bar</p>";
-			var title = Zotero.Utilities.Item.noteToTitle(str, { stopAtLineBreak: true });
+			var title = await Zotero.Utilities.Item.noteToTitle(str, { stopAtLineBreak: true });
 			assert.equal(title, 'Foo');
 		});
 
-		it("should skip first line if no content", function () {
+		it("should skip first line if no content", async function () {
 			var str = "<blockquote>\n<p>Foo</p>\n</blockquote>\n<p>Bar</p>";
-			var title = Zotero.Utilities.Item.noteToTitle(str);
+			var title = await Zotero.Utilities.Item.noteToTitle(str);
 			assert.equal(title, 'Foo');
 		});
 
-		it("should stop at <br/> when options.stopAtLineBreak is true", function () {
+		it("should stop at <br/> when options.stopAtLineBreak is true", async function () {
 			var str = "<h1>Annotations<br/>(2/18/2022, 3:49:43 AM)</h1><p>Foo</p>";
-			var title = Zotero.Utilities.Item.noteToTitle(str, { stopAtLineBreak: true });
+			var title = await Zotero.Utilities.Item.noteToTitle(str, { stopAtLineBreak: true });
 			assert.equal(title, 'Annotations');
 		});
 	});

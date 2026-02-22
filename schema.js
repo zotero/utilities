@@ -55,11 +55,8 @@ const Schema = {
 			let zoteroField = data.csl.fields.date[cslField];
 			Zotero.Schema.CSL_FIELD_MAPPINGS_REVERSE[zoteroField] = cslField;
 		}
-	}
+	},
 };
 
-if (typeof module != 'undefined') {
-	module.exports = Schema;
-} else if (typeof Zotero != 'undefined') {
-	Zotero.Schema = Schema;
-}
+export { Schema };
+export default Schema;
