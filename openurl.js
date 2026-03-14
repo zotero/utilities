@@ -23,7 +23,7 @@
     ***** END LICENSE BLOCK *****
 */
 
-import Utilities from "./utilities";
+import Utilities from "./utilities.js";
 import Utilities_Item from "../utilities_item.js";
 
 const OpenURL = new function() {
