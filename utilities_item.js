@@ -308,7 +308,7 @@ var Utilities_Item = {
 		let eventPlaceTypes = [
 			'audioRecording', 'presentation', 'videoRecording'
 		];
-		if (eventPlaceTypes.includes(item.itemType)) {
+		if (eventPlaceTypes.includes(item.itemType) && cslItem['event-place'] !== undefined) {
 			cslItem['publisher-place'] = cslItem['event-place'];
 			delete cslItem['event-place'];
 		}

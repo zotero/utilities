@@ -88,6 +88,20 @@ describe("Zotero.Utilities.Item", function () {
 			
 			assert.propertyVal(item, 'place', place);
 		});
+		
+		it("should not set Place to undefined for Presentation item without `event-place`", function () {
+			let data = loadSampleData('citeProcJSExport');
+			var json = Object.assign({}, data.presentation);
+			delete json['event-place'];
+			assert.notProperty(json, 'event-place');
+			assert.notProperty(json, 'publisher-place');
+			
+			let item = newItem();
+			assert.doesNotThrow(
+				() => Zotero.Utilities.Item.itemFromCSLJSON(item, json)
+			);
+			assert.notProperty(item, 'place');
+		});
 	});
 
 	describe("itemToCSLJSON", function () {
