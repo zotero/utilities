@@ -1,4 +1,4 @@
-var ZOTERO_TYPE_SCHEMA = {
+export const ZOTERO_TYPE_SCHEMA = {
 	"itemTypes": {
 		"1": [
 			"note",
@@ -2298,6 +2298,3 @@ var ZOTERO_TYPE_SCHEMA = {
 	}
 };
 
-if (typeof module !== 'undefined') {
-	module.exports = ZOTERO_TYPE_SCHEMA;
-}

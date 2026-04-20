@@ -33,7 +33,7 @@ while getopts "g:hj:" opt; do
 	shift $((OPTIND-1)); OPTIND=1
 done
 
-mocha \
+node --experimental-vm-modules node_modules/mocha/bin/mocha \
 	--recursive \
 	--file "$SCRIPT_DIR/init.js" \
 	--grep "$GREP" \

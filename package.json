@@ -2,7 +2,11 @@
   "name": "@zotero/utilities",
   "version": "1.0.0",
   "description": "Zotero Utilities",
+  "type": "module",
   "main": "utilities.js",
+  "exports": {
+    ".": "./utilities.js"
+  },
   "directories": {
     "test": "test"
   },
@@ -19,6 +23,9 @@
     "url": "https://github.com/zotero/utilities/issues"
   },
   "homepage": "https://github.com/zotero/utilities#readme",
+  "dependencies": {
+    "xregexp": "^5.1.1"
+  },
   "devDependencies": {
     "chai": "^4.3.6",
     "jsdom": "^19.0.0",

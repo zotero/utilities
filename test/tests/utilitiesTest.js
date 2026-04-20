@@ -321,10 +321,10 @@ describe("Zotero.Utilities", function() {
 	});
 	
 	describe("walkNoteDOM()", function () {
-		it("should iterate subtrees in depth-first order and allow modifications", function () {
+		it("should iterate subtrees in depth-first order and allow modifications", async function () {
 			let html = loadTestData('note.html');
 			let log = [];
-			let newHTML = Zotero.Utilities.walkNoteDOM(html, {
+			let newHTML = await Zotero.Utilities.walkNoteDOM(html, {
 				visitContainer: () => log.push('container'),
 				visitAnnotation: () => log.push('annotation'),
 				visitCitation: () => log.push('citation'),
@@ -369,9 +369,9 @@ describe("Zotero.Utilities", function() {
 			assert.notInclude(newHTML, '0000000');
 		});
 
-		it("should leave the HTML unchanged if visitors do not make modifications", function () {
+		it("should leave the HTML unchanged if visitors do not make modifications", async function () {
 			let html = loadTestData('note.html');
-			let newHTML = Zotero.Utilities.walkNoteDOM(html, {});
+			let newHTML = await Zotero.Utilities.walkNoteDOM(html, {});
 			assert.equal(newHTML, html);
 		});
 	});

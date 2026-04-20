@@ -26,7 +26,11 @@
     ***** END LICENSE BLOCK *****
 */
 
-(function() {
+import XRegExp from 'xregexp';
+import 'xregexp/lib/addons/unicode-base.js';
+import 'xregexp/lib/addons/unicode-categories.js';
+import 'xregexp/lib/addons/unicode-properties.js';
+import 'xregexp/lib/addons/unicode-scripts.js';
 
 function movedToUtilitiesInternal(fnName) {
 	return function () {
@@ -42,7 +46,7 @@ function movedToUtilitiesInternal(fnName) {
 /**
  * @class Functions for text manipulation and other miscellaneous purposes
  */
-var Utilities = {
+const Utilities = {
 	/**
 	 * Returns a function which will execute `fn` with provided arguments after `delay` milliseconds and not more
 	 * than once, if called multiple times. See
@@ -388,7 +392,7 @@ var Utilities = {
 		var ids = text.split(/[\s\u00A0]+/); // whitespace + non-breaking space
 		var doi;
 		for (let id of ids) {
-			if ((doi = Zotero.Utilities.cleanDOI(id)) && !foundIDs.has(doi)) {
+			if ((doi = Utilities.cleanDOI(id)) && !foundIDs.has(doi)) {
 				identifiers.push({
 					DOI: doi
 				});
@@ -404,7 +408,7 @@ var Utilities = {
 			let ISBN_RE = /(?:\D|^)(97[89]\d{10}|\d{9}[\dX])(?!\d)/g;
 			let isbn;
 			while (isbn = ISBN_RE.exec(ids)) {
-				isbn = Zotero.Utilities.cleanISBN(isbn[1]);
+				isbn = Utilities.cleanISBN(isbn[1]);
 				if (isbn && !foundIDs.has(isbn)) {
 					identifiers.push({
 						ISBN: isbn
@@ -417,7 +421,7 @@ var Utilities = {
 			if (!identifiers.length) {
 				ids = ids.replace(/[ \u00A0]+/g, ""); // space + non-breaking space
 				while (isbn = ISBN_RE.exec(ids)) {
-					isbn = Zotero.Utilities.cleanISBN(isbn[1]);
+					isbn = Utilities.cleanISBN(isbn[1]);
 					if(isbn && !foundIDs.has(isbn)) {
 						identifiers.push({
 							ISBN: isbn
@@ -699,7 +703,7 @@ var Utilities = {
 	"unescapeHTML":new function() {
 		var nsIScriptableUnescapeHTML, node;
 
-		return function(/**String*/ str) {
+		return async function(/**String*/ str) {
 			// If no tags, no need to unescape
 			if(str.indexOf("<") === -1 && str.indexOf("&") === -1) return str;
 
@@ -713,7 +717,7 @@ var Utilities = {
 				node.innerHTML = str;
 				return node.textContent.replace(/ {2,}/g, " ");
 			} else if(Zotero.isNode) {
-				let {JSDOM} = require('jsdom');
+				let {JSDOM} = await import("jsdom");
 				let document = (new JSDOM(str)).window.document;
 				return document.documentElement.textContent.replace(/ {2,}/g, " ");
 			} else {
@@ -1732,31 +1736,17 @@ var Utilities = {
 	 * Generates a valid object key for the server API
 	 */
 	generateObjectKey: function generateObjectKey() {
-		return Zotero.Utilities.randomString(8, Zotero.Utilities.allowedKeyChars);
+		return Utilities.randomString(8, Utilities.allowedKeyChars);
 	},
 
 	/**
 	 * Check if an object key is in a valid format
 	 */
 	isValidObjectKey: function(key) {
-		if (!Zotero.Utilities.objectKeyRegExp) {
-			Zotero.Utilities.objectKeyRegExp = new RegExp('^[' + Zotero.Utilities.allowedKeyChars + ']{8}$');
+		if (!Utilities.objectKeyRegExp) {
+			Utilities.objectKeyRegExp = new RegExp('^[' + Utilities.allowedKeyChars + ']{8}$');
 		}
-		return Zotero.Utilities.objectKeyRegExp.test(key);
-	},
-
-	itemTypeExists: function(type) {
-		Zotero.debug(`Zotero.Utilities.itemTypeExists() is deprecated -- use Zotero.Utilities.Item.itemTypeExists() instead`);
-		return Zotero.Utilities.Item.itemTypeExists(type);
-	},
-	
-	itemToCSLJSON: function(zoteroItem) {
-		Zotero.debug(`Zotero.Utilities.itemToCSLJSON() is deprecated -- use Zotero.Utilities.Item.itemToCSLJSON() instead`);
-		return Zotero.Utilities.Item.itemToCSLJSON(zoteroItem);
-	},
-	itemFromCSLJSON: function(item, cslItem) {
-		Zotero.debug(`Zotero.Utilities.itemFromCSLJSON() is deprecated -- use Zotero.Utilities.Item.itemFromCSLJSON() instead`);
-		return Zotero.Utilities.Item.itemFromCSLJSON(item, cslItem);
+		return Utilities.objectKeyRegExp.test(key);
 	},
 
 	assignProps: movedToUtilitiesInternal("assignProps"),
@@ -1782,7 +1772,7 @@ var Utilities = {
 	 * @param {Function} [visitors.visitURI] Return a replacement for the passed URI
 	 * @return {String} Potentially modified note HTML
 	 */
-	walkNoteDOM: function (note, visitors) {
+	walkNoteDOM: async function (note, visitors) {
 		function visit(elem) {
 			if (elem.hasAttribute('data-schema-version')) {
 				visitors.visitContainer?.(elem);
@@ -1843,7 +1833,7 @@ var Utilities = {
 		let wrappedNote = '<div id="note-body">' + note + '</div>';
 		let doc;
 		if (Zotero.isNode) {
-			let { JSDOM } = require('jsdom');
+			let { JSDOM } = await import('jsdom');
 			doc = new JSDOM(wrappedNote).window.document;
 		}
 		else {
@@ -1870,19 +1860,8 @@ var Utilities = {
 	//  * Provides unicode support and other additional features for regular expressions
 	//  * See https://github.com/slevithan/xregexp for usage
 	//  */
-	XRegExp: typeof XRegExp !== "undefined" ? XRegExp : null
-}
+	XRegExp: XRegExp
+};
 
-if (!Utilities.XRegExp) {
-	if (typeof module != 'undefined') {
-		Utilities.XRegExp = require('./xregexp-all');
-	}
-}
-
-if (typeof module != 'undefined') {
-	module.exports = Utilities;
-} else if (typeof Zotero != 'undefined') {
-	Zotero.Utilities = Utilities;
-}
-
-})();
+export { Utilities }
+export default Utilities

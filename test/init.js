@@ -1,5 +1,18 @@
-const fs = require('fs');
-const path = require('path');
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+import chai from "chai";
+
+import Schema from "../schema.js";
+import Utilities from "../utilities.js";
+import Utilities_Item from "../utilities_item.js";
+import DateUtil from "../date.js";
+import CachedTypes from "../cachedTypes.js";
+import { ZOTERO_TYPE_SCHEMA } from "../resource/zoteroTypeSchemaData.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Very minimal but enough to get existing tests working
 globalThis.Zotero = {
@@ -8,10 +21,10 @@ globalThis.Zotero = {
     isNode: true
 };
 
-Zotero.Schema = require('../schema');
-Zotero.Utilities = require('../utilities');
-Zotero.Utilities.Item = require('../utilities_item');
-Zotero.Date = require('../date');
+Zotero.Schema = Schema;
+Zotero.Utilities = Utilities;
+Zotero.Utilities.Item = Utilities_Item;
+Zotero.Date = DateUtil;
 
 let schemaPath = process.env.UTILITIES_SCHEMA_PATH;
 if (!schemaPath) {
@@ -28,8 +41,7 @@ Zotero.Date.init(
     ).toString("utf-8")
 );
 
-let CachedTypes = require('../cachedTypes')
-CachedTypes.setTypeSchema(require('../resource/zoteroTypeSchemaData'));
+CachedTypes.setTypeSchema(ZOTERO_TYPE_SCHEMA);
 Object.assign(Zotero, CachedTypes);
 
 let collator = new Intl.Collator(['en-US'], {
@@ -38,7 +50,7 @@ let collator = new Intl.Collator(['en-US'], {
 });
 Zotero.localeCompare = (a, b) => collator.compare(a, b);
 
-globalThis.assert = require('chai').assert;
+globalThis.assert = chai.assert;
 
 let testDataDir = path.join(__dirname, 'data');
 

@@ -23,12 +23,9 @@
 	***** END LICENSE BLOCK *****
 */
 
-(function() {
+import Utilities from "./utilities.js";
 
-// Various Utility functions related to Zotero, API, Translation Item formats
-// and their conversion or field access.
-
-var Utilities_Item = {
+const Utilities_Item = {
 	PARTICLE_GIVEN_REGEXP: /^([^ ]+(?:\u02bb |\u2019 | |\' ) *)(.+)$/,
 	PARTICLE_FAMILY_REGEXP: /^([^ ]+(?:\-|\u02bb|\u2019| |\') *)(.+)$/,
 	
@@ -48,14 +45,14 @@ var Utilities_Item = {
 	 * @return {Object|Promise<Object>} A CSL item, or a promise for a CSL item if a Zotero.Item
 	 *     is passed
 	 */
-	itemToCSLJSON: function(zoteroItem) {
+	itemToCSLJSON: async function(zoteroItem) {
 		// If a Zotero.Item was passed, convert it to the proper format (skipping child items) and
 		// call this function again with that object
 		//
 		// (Zotero.Item won't be defined in translation-server)
 		if (typeof Zotero.Item !== 'undefined' && zoteroItem instanceof Zotero.Item) {
-			return Utilities_Item.itemToCSLJSON(
-				Zotero.Utilities.Internal.itemToExportFormat(zoteroItem, {
+			return await Utilities_Item.itemToCSLJSON(
+				Utilities.Internal.itemToExportFormat(zoteroItem, {
 					skipChildItems: true
 				})
 			);
@@ -122,7 +119,7 @@ var Utilities_Item = {
 						if (isbn) value = isbn[0];
 					}
 					else if (field == 'extra') {
-						value = Zotero.Utilities.Item.extraToCSL(value);
+						value = Utilities_Item.extraToCSL(value);
 					}
 
 					// Strip enclosing quotes
@@ -169,7 +166,7 @@ var Utilities_Item = {
 						) {
 							nameObj.family = nameObj.family.substr(1, nameObj.family.length - 2);
 						} else {
-							Zotero.Utilities.Item.parseParticles(nameObj);
+							Utilities_Item.parseParticles(nameObj);
 						}
 					}
 				}
@@ -231,7 +228,7 @@ var Utilities_Item = {
 
 		// Special mapping for note title
 		if (zoteroItem.itemType == 'note' && zoteroItem.note) {
-			cslItem.title = Zotero.Utilities.Item.noteToTitle(zoteroItem.note);
+			cslItem.title = await Utilities_Item.noteToTitle(zoteroItem.note);
 		}
 
 		//this._cache[zoteroItem.id] = cslItem;
@@ -406,7 +403,7 @@ var Utilities_Item = {
 							date = Zotero.Date.strToISO(date);
 						}
 					} else {
-						var newDate = Zotero.Utilities.deepCopy(cslDate);
+						var newDate = Utilities.deepCopy(cslDate);
 						if(cslDate["date-parts"] && typeof cslDate["date-parts"] === "object"
 							&& cslDate["date-parts"] !== null
 							&& typeof cslDate["date-parts"][0] === "object"
@@ -419,11 +416,11 @@ var Utilities_Item = {
 						if(newDate.year) {
 							if(variable === "accessed") {
 								// Need to convert to SQL
-								var date = Zotero.Utilities.lpad(newDate.year, "0", 4);
+								var date = Utilities.lpad(newDate.year, "0", 4);
 								if(newDate.month) {
-									date += "-"+Zotero.Utilities.lpad(newDate.month, "0", 2);
+									date += "-"+Utilities.lpad(newDate.month, "0", 2);
 									if(newDate.day) {
-										date += "-"+Zotero.Utilities.lpad(newDate.day, "0", 2);
+										date += "-"+Utilities.lpad(newDate.day, "0", 2);
 									}
 								}
 							} else {
@@ -620,7 +617,7 @@ var Utilities_Item = {
 	 * @param {Boolean} [options.stopAtLineBreak] - Stop at <br/> instead of converting to space
 	 * @return {String}
 	 */
-	noteToTitle: function (text, options = {}) {
+	noteToTitle: async function (text, options = {}) {
 		var MAX_TITLE_LENGTH = 120;
 		var origText = text;
 		text = text.trim();
@@ -632,7 +629,7 @@ var Utilities_Item = {
 		else {
 			text = text.replace(/<br\s*\/?>/g, ' ');
 		}
-		text = Zotero.Utilities.unescapeHTML(text);
+		text = await Utilities.unescapeHTML(text);
 
 		// If first line is just an opening HTML tag, remove it
 		//
@@ -849,7 +846,7 @@ var Utilities_Item = {
 	 */
 	itemToAPIJSON: function(item) {
 		var newItem = {
-				key: Zotero.Utilities.generateObjectKey(),
+				key: Utilities.generateObjectKey(),
 				version: 0
 			},
 			newItems = [newItem];
@@ -1015,8 +1012,8 @@ var Utilities_Item = {
 		}
 
 		// Meaningless local item ID, but some older export translators depend on it
-		item.itemID = Zotero.Utilities.randomString(6);
-		item.key = Zotero.Utilities.randomString(6); // CSV translator exports this
+		item.itemID = Utilities.randomString(6);
+		item.key = Utilities.randomString(6); // CSV translator exports this
 
 		// "version" is expected to be a field for "computerProgram", which is now
 		// called "versionNumber"
@@ -1137,15 +1134,8 @@ var Utilities_Item = {
 		}
 
 		return Zotero.localeCompare(fieldA, fieldB);
-	}
-}
+	},
+};
 
-if (typeof module != 'undefined') {
-	module.exports = Utilities_Item;
-} else if (typeof Zotero != 'undefined' && typeof Zotero.Utilities != 'undefined') {
-	Zotero.Utilities.Item = Utilities_Item;
-} else {
-	console.log('Could not find a way to expose utilities_item.js. Check your load order.')
-}
-
-})();
+export { Utilities_Item };
+export default Utilities_Item;
