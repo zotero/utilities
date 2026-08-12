@@ -203,10 +203,14 @@ describe("Zotero.Utilities.Item", function () {
 			assert.deepEqual(toCSLDate('500-750 BCE'), { literal: '500-750 BCE' });
 			assert.deepEqual(toCSLDate('1996-1995'), { literal: '1996-1995' });
 			assert.deepEqual(toCSLDate('2026/2021'), { literal: '2026/2021' });
-			// Spelled-out dates keep their months and days
+			// Spelled-out dates keep their months and days, with the era in the year
 			assert.deepEqual(
 				toCSLDate('January 10, 200 BCE'),
-				{ "date-parts": [['200 BCE', 1, 10]] }
+				{ "date-parts": [[-200, 1, 10]] }
+			);
+			assert.deepEqual(
+				toCSLDate('Summer 429 BCE'),
+				{ "date-parts": [[-429]], season: 'Summer' }
 			);
 			// Non-EDTF dates take the existing path, which returns the year as a string
 			assert.deepEqual(

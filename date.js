@@ -724,6 +724,27 @@ var Utilities_Date = new function(){
 	}
 
 	/**
+	 * Convert a year with an era marker ("200 BCE", "AD 200") to a signed year
+	 *
+	 * strToDate() leaves the marker in the year it returns, which citeproc-js reads as
+	 * a CE year, since it runs date parts through parseInt().
+	 *
+	 * @param {String} str
+	 * @return {Number|false} - A signed year, or false if the string isn't a year with
+	 *     an era marker
+	 */
+	this.parseEraYear = function (str) {
+		if (typeof str != 'string') {
+			return false;
+		}
+		var edtf = _eraToEDTF(_normalizeDashes(str.trim()));
+		if (!edtf || edtf.includes('/')) {
+			return false;
+		}
+		return parseInt(edtf, 10);
+	};
+
+	/**
 	 * Check whether a string is written as an EDTF date -- an EDTF-shaped value, a
 	 * negative year, or an era marker
 	 *

@@ -316,8 +316,11 @@ var Utilities_Item = {
 					// otherwise, use date-parts
 					var dateParts = [];
 					if (dateObj.year) {
+						// strToDate() leaves an era marker in the year ("200 BCE"), which
+						// citeproc-js would read as a CE year
+						let eraYear = Zotero.Date.parseEraYear(dateObj.year);
 						// add year, month, and day, if they exist
-						dateParts.push(dateObj.year);
+						dateParts.push(eraYear === false ? dateObj.year : eraYear);
 						if (dateObj.month !== undefined) {
 							// strToDate() returns a JS-style 0-indexed month, so we add 1 to it
 							dateParts.push(dateObj.month + 1);
