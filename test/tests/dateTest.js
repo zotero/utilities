@@ -142,6 +142,13 @@ describe("Zotero.Date", function () {
 			assert.equal(Zotero.Date.strToMultipart('429 CE'), '0429-00-00 429 CE');
 		});
 
+		it("should not give a date with an unusable era a year", function () {
+			assert.equal(Zotero.Date.strToMultipart('-500/-750'), '0000-00-00 -500/-750');
+			assert.equal(Zotero.Date.strToMultipart('500-750 BCE'), '0000-00-00 500-750 BCE');
+			// A reversed CE range still sorts by the year it starts with
+			assert.equal(Zotero.Date.strToMultipart('1996-1995'), '1996-00-00 1996-1995');
+		});
+
 		it("should drop a negative year", function () {
 			assert.equal(Zotero.Date.strToMultipart('-0429'), '0000-00-00 -0429');
 			assert.equal(Zotero.Date.strToMultipart('429 BCE'), '0000-00-00 429 BCE');

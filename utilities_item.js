@@ -301,10 +301,15 @@ var Utilities_Item = {
 					date = Zotero.Date.dateToSQL(localDate);
 				}
 				// Access dates are always SQL or ISO dates, so skip EDTF parsing
-				var edtfDate = Zotero.Schema.CSL_DATE_MAPPINGS[variable] != 'accessDate'
-					&& Zotero.Date.parseEDTF(date);
+				var isAccessDate = Zotero.Schema.CSL_DATE_MAPPINGS[variable] == 'accessDate';
+				var edtfDate = !isAccessDate && Zotero.Date.parseEDTF(date);
 				if (edtfDate) {
 					cslItem[variable] = edtfToCSLDate(edtfDate);
+				}
+				// Pass an unparseable EDTF date through literally, since strToDate() would
+				// read its negative year or era marker as a CE year
+				else if (!isAccessDate && Zotero.Date.looksLikeEDTF(date)) {
+					cslItem[variable] = { "literal": date };
 				}
 				else {
 					var dateObj = Zotero.Date.strToDate(date);

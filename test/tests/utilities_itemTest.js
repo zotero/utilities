@@ -197,6 +197,17 @@ describe("Zotero.Utilities.Item", function () {
 				toCSLDate('2021-22'),
 				{ "date-parts": [[2021], [2022]] }
 			);
+			// An EDTF date that can't be parsed, including a reversed range, is passed
+			// through literally rather than read as a CE date
+			assert.deepEqual(toCSLDate('-500/-750'), { literal: '-500/-750' });
+			assert.deepEqual(toCSLDate('500-750 BCE'), { literal: '500-750 BCE' });
+			assert.deepEqual(toCSLDate('1996-1995'), { literal: '1996-1995' });
+			assert.deepEqual(toCSLDate('2026/2021'), { literal: '2026/2021' });
+			// Spelled-out dates keep their months and days
+			assert.deepEqual(
+				toCSLDate('January 10, 200 BCE'),
+				{ "date-parts": [['200 BCE', 1, 10]] }
+			);
 			// Non-EDTF dates take the existing path, which returns the year as a string
 			assert.deepEqual(
 				toCSLDate('May 13, 2021'),

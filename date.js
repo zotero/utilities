@@ -696,6 +696,52 @@ var Utilities_Date = new function(){
 		return edtf;
 	}
 
+	// A year with an era marker next to it ("429 BCE", "AD 429")
+	var _eraMarkerRE = new RegExp(
+		`[0-9]\\s*(?:${_bceMarker}|${_ceMarker})|(?:${_ceMarker})\\s*[0-9]`, 'i'
+	);
+	// A negative year, at the beginning of a string or after an interval slash
+	var _negativeYearRE = /(?:^|\/)-[0-9]/;
+	var _eraMarkersRE = new RegExp(`${_bceMarker}|${_ceMarker}`, 'gi');
+	// A circa prefix, in EDTF's notation or in words
+	var _circaPrefixRE = /^(?:~|circa |ca\.? ?|c\. ?|about |around )\s*/i;
+	// EDTF punctuation, and nothing a date could be spelled out with
+	var _edtfCharsRE = /^[-0-9T:+Z~?%/\s.]*$/i;
+
+	// Treat en dashes, em dashes, minus signs, and double hyphens as hyphens, since
+	// ranges are written with all of them ("1995–1996", "1995--1996")
+	function _normalizeDashes(str) {
+		return str.replace(/[\u2013\u2014\u2212]/g, '-').replace(/--+/g, '-');
+	}
+
+	// Check whether a string gives a year in a notation strToDate() misreads, either a
+	// negative year or an era marker. An era marker counts only if the rest of the
+	// string is EDTF punctuation, so that spelled-out dates ("January 10 200 BCE") are
+	// left to strToDate(), which reads their months and days.
+	function _hasEraNotation(str) {
+		return _negativeYearRE.test(str)
+			|| (_eraMarkerRE.test(str) && _edtfCharsRE.test(str.replace(_eraMarkersRE, '')));
+	}
+
+	/**
+	 * Check whether a string is written as an EDTF date -- an EDTF-shaped value, a
+	 * negative year, or an era marker
+	 *
+	 * strToDate() reads a year and a season out of such a string, giving a CE year for
+	 * a BCE date and a season for the second half of a range, so a string that
+	 * parseEDTF() rejects is better treated as a literal date than reinterpreted.
+	 *
+	 * @param {String} str
+	 * @return {Boolean}
+	 */
+	this.looksLikeEDTF = function (str) {
+		if (typeof str != 'string') {
+			return false;
+		}
+		str = _normalizeDashes(str.trim()).replace(_circaPrefixRE, '');
+		return _hasEraNotation(str) || _edtfShapeRE.test(str);
+	};
+
 	/**
 	 * Parse a string in EDTF (ISO 8601-2) format
 	 *
@@ -725,10 +771,7 @@ var Utilities_Date = new function(){
 		if (typeof EDTF == 'undefined' || typeof str != 'string') {
 			return false;
 		}
-		str = str.trim();
-		// Treat en dashes, em dashes, minus signs, and double hyphens as hyphens, since
-		// ranges are written with all of them ("1995–1996", "1995--1996")
-		str = str.replace(/[\u2013\u2014\u2212]/g, '-').replace(/--+/g, '-');
+		str = _normalizeDashes(str.trim());
 		// Fast path for plain ISO dates, which don't need the full EDTF parser
 		var iso = str.match(/^([0-9]{4})(?:-(0[1-9]|1[0-2])(?:-(0[1-9]|[12][0-9]|3[01]))?)?$/);
 		if (iso) {
@@ -742,10 +785,9 @@ var Utilities_Date = new function(){
 			return { begin };
 		}
 		// Convert a circa prefix to an approximate qualifier below
-		var circaPrefix = /^(?:~|circa |ca\.? ?|c\. ?|about |around )\s*/i;
-		var circa = circaPrefix.test(str);
+		var circa = _circaPrefixRE.test(str);
 		if (circa) {
-			str = str.replace(circaPrefix, '');
+			str = str.replace(_circaPrefixRE, '');
 		}
 		// Convert era markers to signed years ("429 BCE" to "-0429", "AD 429" to "0429")
 		var eraEDTF = _eraToEDTF(str);
@@ -848,7 +890,18 @@ var Utilities_Date = new function(){
 
 		// For an EDTF date, sort by the start of any range, ignoring qualifiers
 		var edtfDate = this.parseEDTF(str);
-		var parts = edtfDate ? edtfDate.begin : this.strToDate(str);
+		var parts;
+		if (edtfDate) {
+			parts = edtfDate.begin;
+		}
+		// A date whose era strToDate() would drop has no sortable year, since the sort
+		// key can't represent one anyway
+		else if (_hasEraNotation(_normalizeDashes(str.trim()).replace(_circaPrefixRE, ''))) {
+			parts = {};
+		}
+		else {
+			parts = this.strToDate(str);
+		}
 
 		// FIXME: Until we have a better BCE date solution,
 		// remove year value if not between 1 and 9999
