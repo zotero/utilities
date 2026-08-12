@@ -649,7 +649,8 @@ var Utilities_Date = new function(){
 	 * non-EDTF notations are normalized to EDTF equivalents:
 	 *
 	 *   - Dash-separated year ranges ("1995-1996"), including condensed ranges
-	 *     ("1995-96", "2021-22"), become intervals
+	 *     ("1995-96", "2021-22"), become intervals, with en dashes and other dashes
+	 *     treated as hyphens
 	 *   - Circa prefixes ("~1995", "circa 1995", "ca. 1995") become approximate
 	 *     qualifiers
 	 *   - BCE/BC suffixes ("429 BCE") become negative years
@@ -669,6 +670,9 @@ var Utilities_Date = new function(){
 			return false;
 		}
 		str = str.trim();
+		// Treat en dashes, em dashes, minus signs, and double hyphens as hyphens, since
+		// ranges are written with all of them ("1995–1996", "1995--1996")
+		str = str.replace(/[\u2013\u2014\u2212]/g, '-').replace(/--+/g, '-');
 		// Fast path for plain ISO dates, which don't need the full EDTF parser
 		var iso = str.match(/^([0-9]{4})(?:-(0[1-9]|1[0-2])(?:-(0[1-9]|[12][0-9]|3[01]))?)?$/);
 		if (iso) {

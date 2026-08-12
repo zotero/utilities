@@ -33,6 +33,16 @@ describe("Zotero.Date", function () {
 			o = Zotero.Date.parseEDTF('1995-05');
 			assert.deepEqual(o.begin, { year: 1995, month: 4 });
 			assert.isUndefined(o.end);
+
+			// En dash
+			o = Zotero.Date.parseEDTF('1995–1996');
+			assert.deepEqual(o.begin, { year: 1995 });
+			assert.deepEqual(o.end, { year: 1996 });
+
+			// Double hyphen
+			o = Zotero.Date.parseEDTF('1995--96');
+			assert.deepEqual(o.begin, { year: 1995 });
+			assert.deepEqual(o.end, { year: 1996 });
 		});
 
 		it("should convert a circa prefix to a qualifier", function () {
