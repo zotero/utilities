@@ -190,6 +190,10 @@ describe("Zotero.Utilities.Item", function () {
 				{ "date-parts": [[-429]], circa: true }
 			);
 			assert.deepEqual(
+				toCSLDate('1000-900 BCE'),
+				{ "date-parts": [[-1000], [-900]] }
+			);
+			assert.deepEqual(
 				toCSLDate('2021-22'),
 				{ "date-parts": [[2021], [2022]] }
 			);

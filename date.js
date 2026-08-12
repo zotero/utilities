@@ -641,6 +641,61 @@ var Utilities_Date = new function(){
 	// characters
 	var _edtfShapeRE = /^-?[0-9]{4}[-0-9T:+Z~?%]*(\/-?[0-9]{4}[-0-9T:+Z~?%]*)?$/i;
 
+	// Era markers, with optional periods and spaces
+	var _bceMarker = 'B\\.?\\s?C\\.?(?:\\s?E\\.?)?';
+	var _ceMarker = 'C\\.?\\s?E\\.?|A\\.?\\s?D\\.?';
+	var _bceMarkerRE = new RegExp(`^${_bceMarker}$`, 'i');
+	// A year with an era marker after it ("429 BCE") or, for CE, before it ("AD 429")
+	var _eraYearRE = new RegExp(
+		`^(?:(${_ceMarker})\\s*)?([0-9]{1,4})(?:\\s*(${_bceMarker}|${_ceMarker}))?$`, 'i'
+	);
+	// A range of years with an era marker on either year
+	var _eraRangeRE = new RegExp(
+		`^(?:(${_ceMarker})\\s*)?([0-9]{1,4})(?:\\s*(${_bceMarker}|${_ceMarker}))?`
+			+ `\\s*-\\s*([0-9]{1,4})(?:\\s*(${_bceMarker}|${_ceMarker}))?$`, 'i'
+	);
+
+	// Convert a year and an era marker to a signed, zero-padded EDTF year
+	function _toEDTFYear(year, marker) {
+		return (_bceMarkerRE.test(marker) ? '-' : '') + year.padStart(4, '0');
+	}
+
+	/**
+	 * Convert a year or range of years with an era marker to EDTF, with BCE years as
+	 * negative years
+	 *
+	 * On a range, a marker on only one of the years applies to both ("1000-900 BCE",
+	 * "AD 429-500"), so ranges spanning the eras need both ("100 BCE-50 CE").
+	 *
+	 * @param {String} str
+	 * @return {String|false} - An EDTF year or interval, or false if the string isn't
+	 *     a year or range of years with an era marker
+	 */
+	function _eraToEDTF(str) {
+		var match = str.match(_eraRangeRE) || str.match(_eraYearRE);
+		if (!match) {
+			return false;
+		}
+		var [, prefix, beginYear, beginMarker, endYear, endMarker] = match;
+		// A marker both before and after the same year is nonsense
+		if (prefix && beginMarker) {
+			return false;
+		}
+		beginMarker = prefix || beginMarker;
+		if (!beginMarker && !endMarker) {
+			return false;
+		}
+		// Neither era has a year zero
+		if (/^0+$/.test(beginYear) || (endYear && /^0+$/.test(endYear))) {
+			return false;
+		}
+		var edtf = _toEDTFYear(beginYear, beginMarker || endMarker);
+		if (endYear) {
+			edtf += '/' + _toEDTFYear(endYear, endMarker || beginMarker);
+		}
+		return edtf;
+	}
+
 	/**
 	 * Parse a string in EDTF (ISO 8601-2) format
 	 *
@@ -653,7 +708,8 @@ var Utilities_Date = new function(){
 	 *     treated as hyphens
 	 *   - Circa prefixes ("~1995", "circa 1995", "ca. 1995") become approximate
 	 *     qualifiers
-	 *   - BCE/BC suffixes ("429 BCE") become negative years
+	 *   - Era markers become signed years, on a single year ("429 BCE", "AD 429") or
+	 *     on a range, where a marker on only one year applies to both ("1000-900 BCE")
 	 *
 	 * Anything else is rejected, including seasons, whose EDTF notation ("2021-22"
 	 * for Summer 2021) collides with condensed ranges, and strings that only parse
@@ -691,10 +747,10 @@ var Utilities_Date = new function(){
 		if (circa) {
 			str = str.replace(circaPrefix, '');
 		}
-		// Convert a BCE/BC suffix to a negative year
-		var bce = str.match(/^([0-9]{1,4})\s*B\.?\s?C\.?(?:\s?E\.?)?$/i);
-		if (bce) {
-			str = '-' + bce[1].padStart(4, '0');
+		// Convert era markers to signed years ("429 BCE" to "-0429", "AD 429" to "0429")
+		var eraEDTF = _eraToEDTF(str);
+		if (eraEDTF) {
+			str = eraEDTF;
 		}
 		// EDTF contains no spaces and begins with a digit or minus sign
 		if (!/^[-0-9]\S*$/.test(str)) {
