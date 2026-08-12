@@ -28,6 +28,103 @@
 // Various Utility functions related to Zotero, API, Translation Item formats
 // and their conversion or field access.
 
+// CSL date variables parsed as EDTF when they appear in Extra. 'accessed' is excluded,
+// as in the date field mappings.
+var EXTRA_DATE_VARIABLES = [
+	'issued', 'event-date', 'original-date', 'publication-date', 'available-date',
+	'submitted'
+];
+
+// Convert a parseEDTF() result to a CSL date object
+function edtfToCSLDate(edtfDate) {
+	// parseEDTF() returns a JS-style 0-indexed month, so we add 1 to it
+	let toCSLParts = function (edtfParts) {
+		let cslParts = [edtfParts.year];
+		if (edtfParts.month !== undefined) {
+			cslParts.push(edtfParts.month + 1);
+			if (edtfParts.day) {
+				cslParts.push(edtfParts.day);
+			}
+		}
+		return cslParts;
+	};
+	let dateParts = [toCSLParts(edtfDate.begin)];
+	if (edtfDate.end) {
+		dateParts.push(toCSLParts(edtfDate.end));
+	}
+	let cslDate = { "date-parts": dateParts };
+	if (edtfDate.circa) {
+		cslDate.circa = true;
+	}
+	return cslDate;
+}
+
+// Convert a CSL date with a range or circa flag to an EDTF string, or return false for
+// a date that can't be represented in the EDTF subset that parseEDTF() reads back
+function cslDateToEDTF(cslDate) {
+	// Seasons can't be encoded as EDTF, because we override EDTF's season syntax
+	// ("2021-22" == Summer 2021!)
+	if (cslDate.season) {
+		return false;
+	}
+	let dateParts = cslDate["date-parts"];
+	if (!dateParts || !dateParts[0] || !dateParts[0].length) {
+		return false;
+	}
+	let hasEnd = dateParts[1] && dateParts[1].length;
+	if (!hasEnd && !cslDate.circa) {
+		return false;
+	}
+	let toInt = function (val) {
+		if (typeof val == 'string' && /^-?[0-9]+$/.test(val)) {
+			val = parseInt(val, 10);
+		}
+		return Number.isInteger(val) ? val : false;
+	};
+	let toEDTF = function (parts) {
+		let year = toInt(parts[0]);
+		if (year === false || year < -9999 || year > 9999) {
+			return false;
+		}
+		let edtf = (year < 0 ? '-' : '') + Zotero.Utilities.lpad(Math.abs(year), '0', 4);
+		if (parts.length > 1) {
+			let month = toInt(parts[1]);
+			if (month === false || month < 1 || month > 12) {
+				return false;
+			}
+			edtf += '-' + Zotero.Utilities.lpad(month, '0', 2);
+			if (parts.length > 2) {
+				let day = toInt(parts[2]);
+				if (day === false || day < 1 || day > 31) {
+					return false;
+				}
+				edtf += '-' + Zotero.Utilities.lpad(day, '0', 2);
+			}
+		}
+		return edtf;
+	};
+	let date = toEDTF(dateParts[0]);
+	if (date === false) {
+		return false;
+	}
+	if (hasEnd) {
+		let endDate = toEDTF(dateParts[1]);
+		if (endDate === false) {
+			return false;
+		}
+		date += '/' + endDate;
+	}
+	if (cslDate.circa) {
+		date += '~';
+	}
+	// Confirm that parseEDTF() can read the string back, which also rejects reversed
+	// and degenerate ranges and invalid calendar dates
+	if (!Zotero.Date.parseEDTF(date)) {
+		return false;
+	}
+	return date;
+}
+
 var Utilities_Item = {
 	PARTICLE_GIVEN_REGEXP: /^([^ ]+(?:\u02bb |\u2019 | |\' ) *)(.+)$/,
 	PARTICLE_FAMILY_REGEXP: /^([^ ]+(?:\-|\u02bb|\u2019| |\') *)(.+)$/,
@@ -203,30 +300,69 @@ var Utilities_Item = {
 					let localDate = Zotero.Date.sqlToDate(date, true);
 					date = Zotero.Date.dateToSQL(localDate);
 				}
-				var dateObj = Zotero.Date.strToDate(date);
-				// otherwise, use date-parts
-				var dateParts = [];
-				if(dateObj.year) {
-					// add year, month, and day, if they exist
-					dateParts.push(dateObj.year);
-					if(dateObj.month !== undefined) {
-						// strToDate() returns a JS-style 0-indexed month, so we add 1 to it
-						dateParts.push(dateObj.month+1);
-						if(dateObj.day) {
-							dateParts.push(dateObj.day);
+				// Access dates are always SQL or ISO dates, so skip EDTF parsing
+				var edtfDate = Zotero.Schema.CSL_DATE_MAPPINGS[variable] != 'accessDate'
+					&& Zotero.Date.parseEDTF(date);
+				if (edtfDate) {
+					cslItem[variable] = edtfToCSLDate(edtfDate);
+				}
+				else {
+					var dateObj = Zotero.Date.strToDate(date);
+					// otherwise, use date-parts
+					var dateParts = [];
+					if (dateObj.year) {
+						// add year, month, and day, if they exist
+						dateParts.push(dateObj.year);
+						if (dateObj.month !== undefined) {
+							// strToDate() returns a JS-style 0-indexed month, so we add 1 to it
+							dateParts.push(dateObj.month + 1);
+							if (dateObj.day) {
+								dateParts.push(dateObj.day);
+							}
+						}
+						cslItem[variable] = { "date-parts": [dateParts] };
+
+						// if no month, use season as month
+						if (dateObj.part && dateObj.month === undefined) {
+							cslItem[variable].season = dateObj.part;
 						}
 					}
-					cslItem[variable] = {"date-parts":[dateParts]};
-
-					// if no month, use season as month
-					if(dateObj.part && dateObj.month === undefined) {
-						cslItem[variable].season = dateObj.part;
+					else {
+						// if no year, pass date literally
+						cslItem[variable] = { "literal": date };
 					}
-				} else {
-					// if no year, pass date literally
-					cslItem[variable] = {"literal":date};
 				}
 			}
+		}
+
+		// Parse EDTF dates in date variables in Extra, which override regular fields,
+		// as with citeproc's note field hacks, which handle any remaining date lines
+		if (cslItem.note) {
+			let lines = cslItem.note.split('\n');
+			for (let i = 0; i < lines.length; i++) {
+				let line = lines[i];
+				if (!line.trim()) {
+					continue;
+				}
+				let m = line.match(/^([-_a-z]+|[A-Z]+):\s*([^}]+)$/);
+				// As in citeproc, allow a non-field first line, and stop at any other
+				// non-field line
+				if (!m) {
+					if (i === 0) {
+						continue;
+					}
+					break;
+				}
+				if (!EXTRA_DATE_VARIABLES.includes(m[1])) {
+					continue;
+				}
+				let edtfDate = Zotero.Date.parseEDTF(m[2].trim());
+				if (edtfDate) {
+					cslItem[m[1]] = edtfToCSLDate(edtfDate);
+					lines[i] = '';
+				}
+			}
+			cslItem.note = lines.join('\n');
 		}
 
 		// Special mapping for note title
@@ -400,12 +536,19 @@ var Utilities_Item = {
 
 				if(Zotero.ItemFields.isValidForType(fieldID, itemTypeID)) {
 					var date = "";
+					// Preserve ranges and circa dates as EDTF
+					var edtfDate = variable !== "accessed" && !cslDate.literal && !cslDate.raw
+						&& cslDateToEDTF(cslDate);
 					if(cslDate.literal || cslDate.raw) {
 						date = cslDate.literal || cslDate.raw;
 						if(variable === "accessed") {
 							date = Zotero.Date.strToISO(date);
 						}
-					} else {
+					}
+					else if (edtfDate) {
+						date = edtfDate;
+					}
+					else {
 						var newDate = Zotero.Utilities.deepCopy(cslDate);
 						if(cslDate["date-parts"] && typeof cslDate["date-parts"] === "object"
 							&& cslDate["date-parts"] !== null

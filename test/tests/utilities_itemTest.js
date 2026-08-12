@@ -1,5 +1,34 @@
 describe("Zotero.Utilities.Item", function () {
 	describe("itemFromCSLJSON", function () {
+		it("should preserve EDTF ranges and circa dates", function () {
+			let item = newItem('book');
+			Zotero.Utilities.Item.itemFromCSLJSON(item, { type: 'book', issued: { "date-parts": [[2021], [2026]] } });
+			assert.equal(item.date, '2021/2026');
+
+			item = newItem('book');
+			Zotero.Utilities.Item.itemFromCSLJSON(item, { type: 'book', issued: { "date-parts": [[-429]], circa: true } });
+			assert.equal(item.date, '-0429~');
+
+			item = newItem('book');
+			Zotero.Utilities.Item.itemFromCSLJSON(item, { type: 'book', issued: { "date-parts": [[2021, 5], [2021, 6]] } });
+			assert.equal(item.date, '2021-05/2021-06');
+
+			// Year zero is 1 BCE, not a missing year
+			item = newItem('book');
+			Zotero.Utilities.Item.itemFromCSLJSON(item, { type: 'book', issued: { "date-parts": [[-1], [0]] } });
+			assert.equal(item.date, '-0001/0000');
+
+			// Seasons can't be encoded as EDTF, so they take the existing path
+			item = newItem('book');
+			Zotero.Utilities.Item.itemFromCSLJSON(item, { type: 'book', issued: { "date-parts": [[2021]], season: 'Spring', circa: true } });
+			assert.equal(item.date, 'Spring 2021');
+
+			// Reversed ranges fall through to the first date
+			item = newItem('book');
+			Zotero.Utilities.Item.itemFromCSLJSON(item, { type: 'book', issued: { "date-parts": [[2026], [2021]] } });
+			assert.equal(item.date, '2026');
+		});
+
 		it("should stably perform itemToCSLJSON -> itemFromCSLJSON -> itemToCSLJSON", function () {
 			let data = loadSampleData('citeProcJSExport');
 
@@ -140,6 +169,51 @@ describe("Zotero.Utilities.Item", function () {
 			let cslJSONNote = Zotero.Utilities.Item.itemToCSLJSON(note);
 			assert.equal(cslJSONNote.type, 'document', 'note is exported as "document"');
 			assert.equal(cslJSONNote.title, Zotero.Utilities.Item.noteToTitle(note.note), 'note title is set to Zotero pseudo-title');
+		});
+		it("should convert EDTF dates", function () {
+			let toCSLDate = (date) => {
+				let item = newItem('book');
+				item.date = date;
+				return Zotero.Utilities.Item.itemToCSLJSON(item).issued;
+			};
+
+			assert.deepEqual(
+				toCSLDate('2021/2026'),
+				{ "date-parts": [[2021], [2026]] }
+			);
+			assert.deepEqual(
+				toCSLDate('-429?'),
+				{ "date-parts": [[-429]], circa: true }
+			);
+			assert.deepEqual(
+				toCSLDate('~429 BCE'),
+				{ "date-parts": [[-429]], circa: true }
+			);
+			assert.deepEqual(
+				toCSLDate('2021-22'),
+				{ "date-parts": [[2021], [2022]] }
+			);
+			// Non-EDTF dates take the existing path, which returns the year as a string
+			assert.deepEqual(
+				toCSLDate('May 13, 2021'),
+				{ "date-parts": [['2021', 5, 13]] }
+			);
+		});
+		it("should parse EDTF dates in Extra date variables", function () {
+			let item = newItem('book');
+			item.date = '1999';
+			item.extra = 'issued: 2021/2026\noriginal-date: 429 BCE';
+			let cslItem = Zotero.Utilities.Item.itemToCSLJSON(item);
+			assert.deepEqual(cslItem.issued, { "date-parts": [[2021], [2026]] });
+			assert.deepEqual(cslItem['original-date'], { "date-parts": [[-429]] });
+			assert.notInclude(cslItem.note, 'issued');
+
+			// Non-EDTF values are left for citeproc's own parsing
+			item = newItem('book');
+			item.extra = 'issued: Spring 1995';
+			cslItem = Zotero.Utilities.Item.itemToCSLJSON(item);
+			assert.isUndefined(cslItem.issued);
+			assert.include(cslItem.note, 'issued: Spring 1995');
 		});
 		it("should convert standalone attachments to expected format", function () {
 			let attachment = newItem('attachment');

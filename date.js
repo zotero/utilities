@@ -636,12 +636,159 @@ var Utilities_Date = new function(){
 		return date;
 	}
 
+	// A date, optionally followed by a slash and a second date, where each date is a
+	// 4-digit year with an optional minus sign followed by month/day/time/qualifier
+	// characters
+	var _edtfShapeRE = /^-?[0-9]{4}[-0-9T:+Z~?%]*(\/-?[0-9]{4}[-0-9T:+Z~?%]*)?$/i;
+
+	/**
+	 * Parse a string in EDTF (ISO 8601-2) format
+	 *
+	 * Handles the subset of EDTF that maps to other Zotero date handling: dates with
+	 * optional uncertain/approximate qualifiers and closed intervals. Some common
+	 * non-EDTF notations are normalized to EDTF equivalents:
+	 *
+	 *   - Dash-separated year ranges ("1995-1996"), including condensed ranges
+	 *     ("1995-96", "2021-22"), become intervals
+	 *   - Circa prefixes ("~1995", "circa 1995", "ca. 1995") become approximate
+	 *     qualifiers
+	 *   - BCE/BC suffixes ("429 BCE") become negative years
+	 *
+	 * Anything else is rejected, including seasons, whose EDTF notation ("2021-22"
+	 * for Summer 2021) collides with condensed ranges, and strings that only parse
+	 * at EDTF level 2 (e.g., "429", which is a level 2 notation for the decade 429X).
+	 *
+	 * @param {String} str
+	 * @return {Object|false} - Object with 'begin' ({year, month, day} -- month 0-indexed,
+	 *     as in strToDate()), 'end' (same, for intervals), and 'circa' (true if any part
+	 *     is uncertain or approximate); false if the string isn't EDTF, uses unsupported
+	 *     features, or the EDTF library isn't loaded
+	 */
+	this.parseEDTF = function (str) {
+		if (typeof EDTF == 'undefined' || typeof str != 'string') {
+			return false;
+		}
+		str = str.trim();
+		// Fast path for plain ISO dates, which don't need the full EDTF parser
+		var iso = str.match(/^([0-9]{4})(?:-(0[1-9]|1[0-2])(?:-(0[1-9]|[12][0-9]|3[01]))?)?$/);
+		if (iso) {
+			let begin = { year: parseInt(iso[1], 10) };
+			if (iso[2]) {
+				begin.month = parseInt(iso[2], 10) - 1;
+				if (iso[3]) {
+					begin.day = parseInt(iso[3], 10);
+				}
+			}
+			return { begin };
+		}
+		// Convert a circa prefix to an approximate qualifier below
+		var circaPrefix = /^(?:~|circa |ca\.? ?|c\. ?|about |around )\s*/i;
+		var circa = circaPrefix.test(str);
+		if (circa) {
+			str = str.replace(circaPrefix, '');
+		}
+		// Convert a BCE/BC suffix to a negative year
+		var bce = str.match(/^([0-9]{1,4})\s*B\.?\s?C\.?(?:\s?E\.?)?$/i);
+		if (bce) {
+			str = '-' + bce[1].padStart(4, '0');
+		}
+		// EDTF contains no spaces and begins with a digit or minus sign
+		if (!/^[-0-9]\S*$/.test(str)) {
+			return false;
+		}
+		// Allow unpadded negative years (e.g., "-429" for "-0429")
+		str = str.replace(
+			/(^|\/)-([0-9]{1,3})(?=[-~?%/]|$)/g,
+			(m, pre, year) => pre + '-' + year.padStart(4, '0')
+		);
+		// Treat dash-separated years as a range ("1995-1996"), including condensed
+		// ranges ("1995-96", "2021-22") when the second value is greater than the
+		// first and so can't be a month
+		var range = str.match(/^([0-9]{4})-([0-9]{2}|[0-9]{4})$/);
+		if (range) {
+			let begin = parseInt(range[1], 10);
+			let end = parseInt(range[2], 10);
+			if (range[2].length == 2) {
+				end = end > 12 ? Math.floor(begin / 100) * 100 + end : 0;
+			}
+			if (end > begin) {
+				str = range[1] + '/' + String(end).padStart(4, '0');
+			}
+		}
+		if (circa && !/[~?%]$/.test(str)) {
+			str += '~';
+		}
+		// Skip the parser for strings that can't be in the supported EDTF subset,
+		// e.g., other numeric date formats like "5/13/2021" and "13.5.2021"
+		if (!_edtfShapeRE.test(str)) {
+			return false;
+		}
+		var parsed;
+		try {
+			parsed = EDTF.parse(str);
+		}
+		catch (e) {
+			return false;
+		}
+
+		// Only plain dates at level 0-1, without unspecified digits (e.g., "196X")
+		function convertDate(date) {
+			if (!date || date.type != 'Date' || date.level > 1 || date.unspecified) {
+				return false;
+			}
+			let converted = { year: date.values[0] };
+			if (date.values.length > 1) {
+				converted.month = date.values[1];
+			}
+			if (date.values.length > 2) {
+				converted.day = date.values[2];
+			}
+			return converted;
+		}
+
+		let result = {};
+		if (parsed.type == 'Date') {
+			result.begin = convertDate(parsed);
+			if (!result.begin) {
+				return false;
+			}
+			if (parsed.uncertain || parsed.approximate) {
+				result.circa = true;
+			}
+		}
+		else if (parsed.type == 'Interval') {
+			result.begin = convertDate(parsed.values[0]);
+			result.end = convertDate(parsed.values[1]);
+			if (!result.begin || !result.end) {
+				return false;
+			}
+			// Reject reversed and degenerate intervals
+			let toComparable = date => date.year * 10000
+				+ (date.month !== undefined ? (date.month + 1) * 100 : 0)
+				+ (date.day || 0);
+			if (toComparable(result.end) <= toComparable(result.begin)) {
+				return false;
+			}
+			for (let value of parsed.values) {
+				if (value.uncertain || value.approximate) {
+					result.circa = true;
+				}
+			}
+		}
+		else {
+			return false;
+		}
+		return result;
+	};
+
 	this.strToMultipart = function (str) {
 		if (!str){
 			return '';
 		}
 
-		var parts = this.strToDate(str);
+		// For an EDTF date, sort by the start of any range, ignoring qualifiers
+		var edtfDate = this.parseEDTF(str);
+		var parts = edtfDate ? edtfDate.begin : this.strToDate(str);
 
 		// FIXME: Until we have a better BCE date solution,
 		// remove year value if not between 1 and 9999

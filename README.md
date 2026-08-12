@@ -3,6 +3,16 @@
 Zotero utility code common across various codebases such as the Zotero client,
 Zotero translation architecture and others.
 
+EDTF date support (`Zotero.Date.parseEDTF()` and EDTF handling in `strToMultipart()`,
+`itemToCSLJSON()`, and `itemFromCSLJSON()`) requires an `EDTF` global. In script
+environments, load `edtf.js` alongside the other files; in Node.js:
+
+```js
+globalThis.EDTF = require('./edtf');
+```
+
+If it isn't loaded, those functions fall back to their previous behavior.
+
 Item utility functions require:
 - Calling `Zotero.Schema.init(json)` with the JSON from `schema.json` from Zotero schema repo
 - Calling `Zotero.Date.init(json)` with the JSON from `resource/dateFormats.json`
