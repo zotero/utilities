@@ -8,9 +8,6 @@ globalThis.Zotero = {
     isNode: true
 };
 
-// date.js looks up EDTF in the global scope
-globalThis.EDTF = require('../edtf');
-
 Zotero.Schema = require('../schema');
 Zotero.Utilities = require('../utilities');
 Zotero.Utilities.Item = require('../utilities_item');

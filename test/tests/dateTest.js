@@ -98,6 +98,15 @@ describe("Zotero.Date", function () {
 			assert.isTrue(o.circa);
 		});
 
+		it("should validate calendar dates", function () {
+			let o = Zotero.Date.parseEDTF('2024-02-29');
+			assert.deepEqual(o.begin, { year: 2024, month: 1, day: 29 });
+
+			assert.isFalse(Zotero.Date.parseEDTF('2023-02-29'));
+			assert.isFalse(Zotero.Date.parseEDTF('2021-02-30'));
+			assert.isFalse(Zotero.Date.parseEDTF('2021-13'));
+		});
+
 		it("should reject unsupported strings", function () {
 			// Level 2 decade
 			assert.isFalse(Zotero.Date.parseEDTF('429'));

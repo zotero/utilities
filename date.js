@@ -637,9 +637,9 @@ var Utilities_Date = new function(){
 	}
 
 	// A date, optionally followed by a slash and a second date, where each date is a
-	// 4-digit year with an optional minus sign followed by month/day/time/qualifier
+	// 4-digit year with an optional minus sign followed by month/day/qualifier
 	// characters
-	var _edtfShapeRE = /^-?[0-9]{4}[-0-9T:+Z~?%]*(\/-?[0-9]{4}[-0-9T:+Z~?%]*)?$/i;
+	var _edtfShapeRE = /^-?[0-9]{4}[-0-9~?%]*(\/-?[0-9]{4}[-0-9~?%]*)?$/;
 
 	// Era markers, with optional periods and spaces
 	var _bceMarker = 'B\\.?\\s?C\\.?(?:\\s?E\\.?)?';
@@ -714,6 +714,14 @@ var Utilities_Date = new function(){
 		return str.replace(/[\u2013\u2014\u2212]/g, '-').replace(/--+/g, '-');
 	}
 
+	// Days in a 1-indexed month, in the proleptic Gregorian calendar
+	function _daysInMonth(year, month) {
+		if (month == 2) {
+			return (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)) ? 29 : 28;
+		}
+		return [4, 6, 9, 11].includes(month) ? 30 : 31;
+	}
+
 	// Check whether a string gives a year in a notation strToDate() misreads, either a
 	// negative year or an era marker. An era marker counts only if the rest of the
 	// string is EDTF punctuation, so that spelled-out dates ("January 10 200 BCE") are
@@ -785,26 +793,14 @@ var Utilities_Date = new function(){
 	 * @param {String} str
 	 * @return {Object|false} - Object with 'begin' ({year, month, day} -- month 0-indexed,
 	 *     as in strToDate()), 'end' (same, for intervals), and 'circa' (true if any part
-	 *     is uncertain or approximate); false if the string isn't EDTF, uses unsupported
-	 *     features, or the EDTF library isn't loaded
+	 *     is uncertain or approximate); false if the string isn't EDTF or uses unsupported
+	 *     features
 	 */
 	this.parseEDTF = function (str) {
-		if (typeof EDTF == 'undefined' || typeof str != 'string') {
+		if (typeof str != 'string') {
 			return false;
 		}
 		str = _normalizeDashes(str.trim());
-		// Fast path for plain ISO dates, which don't need the full EDTF parser
-		var iso = str.match(/^([0-9]{4})(?:-(0[1-9]|1[0-2])(?:-(0[1-9]|[12][0-9]|3[01]))?)?$/);
-		if (iso) {
-			let begin = { year: parseInt(iso[1], 10) };
-			if (iso[2]) {
-				begin.month = parseInt(iso[2], 10) - 1;
-				if (iso[3]) {
-					begin.day = parseInt(iso[3], 10);
-				}
-			}
-			return { begin };
-		}
 		// Convert a circa prefix to an approximate qualifier below
 		var circa = _circaPrefixRE.test(str);
 		if (circa) {
@@ -841,49 +837,56 @@ var Utilities_Date = new function(){
 		if (circa && !/[~?%]$/.test(str)) {
 			str += '~';
 		}
-		// Skip the parser for strings that can't be in the supported EDTF subset,
+		// Reject strings that can't be in the supported EDTF subset,
 		// e.g., other numeric date formats like "5/13/2021" and "13.5.2021"
 		if (!_edtfShapeRE.test(str)) {
 			return false;
 		}
-		var parsed;
-		try {
-			parsed = EDTF.parse(str);
+
+		// A single date: a signed 4-digit year, an optional month and day, and an
+		// optional trailing uncertain/approximate qualifier ("2004-06~", "-0429?").
+		// A qualifier anywhere else ("2004-06~-11") is rejected, as are month codes
+		// above 12, including seasons, and invalid calendar days.
+		function parseDate(dateStr) {
+			var m = dateStr.match(/^(-?[0-9]{4})(?:-([0-9]{2})(?:-([0-9]{2}))?)?([~?%])?$/);
+			if (!m) {
+				return false;
+			}
+			let date = { year: parseInt(m[1], 10) };
+			if (m[2]) {
+				let month = parseInt(m[2], 10);
+				if (month < 1 || month > 12) {
+					return false;
+				}
+				date.month = month - 1;
+				if (m[3]) {
+					let day = parseInt(m[3], 10);
+					if (day < 1 || day > _daysInMonth(date.year, month)) {
+						return false;
+					}
+					date.day = day;
+				}
+			}
+			return { date, circa: !!m[4] };
 		}
-		catch (e) {
+
+		var [beginStr, endStr] = str.split('/');
+		var begin = parseDate(beginStr);
+		if (!begin) {
 			return false;
 		}
-
-		// Only plain dates at level 0-1, without unspecified digits (e.g., "196X")
-		function convertDate(date) {
-			if (!date || date.type != 'Date' || date.level > 1 || date.unspecified) {
-				return false;
-			}
-			let converted = { year: date.values[0] };
-			if (date.values.length > 1) {
-				converted.month = date.values[1];
-			}
-			if (date.values.length > 2) {
-				converted.day = date.values[2];
-			}
-			return converted;
+		let result = { begin: begin.date };
+		if (begin.circa) {
+			result.circa = true;
 		}
-
-		let result = {};
-		if (parsed.type == 'Date') {
-			result.begin = convertDate(parsed);
-			if (!result.begin) {
+		if (endStr !== undefined) {
+			let end = parseDate(endStr);
+			if (!end) {
 				return false;
 			}
-			if (parsed.uncertain || parsed.approximate) {
+			result.end = end.date;
+			if (end.circa) {
 				result.circa = true;
-			}
-		}
-		else if (parsed.type == 'Interval') {
-			result.begin = convertDate(parsed.values[0]);
-			result.end = convertDate(parsed.values[1]);
-			if (!result.begin || !result.end) {
-				return false;
 			}
 			// Reject reversed and degenerate intervals
 			let toComparable = date => date.year * 10000
@@ -892,14 +895,6 @@ var Utilities_Date = new function(){
 			if (toComparable(result.end) <= toComparable(result.begin)) {
 				return false;
 			}
-			for (let value of parsed.values) {
-				if (value.uncertain || value.approximate) {
-					result.circa = true;
-				}
-			}
-		}
-		else {
-			return false;
 		}
 		return result;
 	};
