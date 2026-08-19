@@ -35,6 +35,10 @@ var EXTRA_DATE_VARIABLES = [
 	'submitted'
 ];
 
+// A date in straight or curly double quotes, cited as a literal string without
+// the quotes
+var QUOTED_DATE_RE = /^["“](.+)["”]$/;
+
 // Convert a parseEDTF() result to a CSL date object
 function edtfToCSLDate(edtfDate) {
 	// parseEDTF() returns a JS-style 0-indexed month, so we add 1 to it
@@ -123,6 +127,15 @@ function cslDateToEDTF(cslDate) {
 		return false;
 	}
 	return date;
+}
+
+// Check whether itemToCSLJSON() passes a date string through unchanged as a CSL
+// literal date
+function dateExportsAsLiteral(str) {
+	str = String(str).trim();
+	return !QUOTED_DATE_RE.test(str)
+		&& !Zotero.Date.parseEDTF(str)
+		&& (Zotero.Date.looksLikeEDTF(str) || !Zotero.Date.strToDate(str).year);
 }
 
 var Utilities_Item = {
@@ -300,10 +313,16 @@ var Utilities_Item = {
 					let localDate = Zotero.Date.sqlToDate(date, true);
 					date = Zotero.Date.dateToSQL(localDate);
 				}
-				// Access dates are always SQL or ISO dates, so skip EDTF parsing
+				// Access dates are always SQL or ISO dates, so skip EDTF and quote parsing
 				var isAccessDate = Zotero.Schema.CSL_DATE_MAPPINGS[variable] == 'accessDate';
-				var edtfDate = !isAccessDate && Zotero.Date.parseEDTF(date);
-				if (edtfDate) {
+				// A quoted date is cited as a literal string without the quotes, as with
+				// quoted date values in Extra
+				var quotedDate = !isAccessDate && date.trim().match(QUOTED_DATE_RE);
+				var edtfDate = !isAccessDate && !quotedDate && Zotero.Date.parseEDTF(date);
+				if (quotedDate) {
+					cslItem[variable] = { "literal": quotedDate[1] };
+				}
+				else if (edtfDate) {
 					cslItem[variable] = edtfToCSLDate(edtfDate);
 				}
 				// Pass an unparseable EDTF date through literally, since strToDate() would
@@ -364,7 +383,15 @@ var Utilities_Item = {
 				if (!EXTRA_DATE_VARIABLES.includes(m[1])) {
 					continue;
 				}
-				let edtfDate = Zotero.Date.parseEDTF(m[2].trim());
+				let value = m[2].trim();
+				// Handle quoted literals, which citeproc-js accepts only with straight quotes
+				let quotedDate = value.match(QUOTED_DATE_RE);
+				if (quotedDate) {
+					cslItem[m[1]] = { "literal": quotedDate[1] };
+					lines[i] = '';
+					continue;
+				}
+				let edtfDate = Zotero.Date.parseEDTF(value);
 				if (edtfDate) {
 					cslItem[m[1]] = edtfToCSLDate(edtfDate);
 					lines[i] = '';
@@ -551,6 +578,11 @@ var Utilities_Item = {
 						date = cslDate.literal || cslDate.raw;
 						if(variable === "accessed") {
 							date = Zotero.Date.strToISO(date);
+						}
+						// Quote a literal date that wouldn't otherwise export as the
+						// same literal value
+						else if (cslDate.literal && !dateExportsAsLiteral(date)) {
+							date = '"' + date + '"';
 						}
 					}
 					else if (edtfDate) {

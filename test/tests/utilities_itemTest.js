@@ -29,6 +29,17 @@ describe("Zotero.Utilities.Item", function () {
 			assert.equal(item.date, '2026');
 		});
 
+		it("should quote a literal date that would otherwise be parsed on export", function () {
+			let item = newItem('book');
+			Zotero.Utilities.Item.itemFromCSLJSON(item, { type: 'book', issued: { literal: '1637 and 1662' } });
+			assert.equal(item.date, '"1637 and 1662"');
+
+			// A literal that already exports as a literal is stored as is
+			item = newItem('book');
+			Zotero.Utilities.Item.itemFromCSLJSON(item, { type: 'book', issued: { literal: 'n.d.' } });
+			assert.equal(item.date, 'n.d.');
+		});
+
 		it("should stably perform itemToCSLJSON -> itemFromCSLJSON -> itemToCSLJSON", function () {
 			let data = loadSampleData('citeProcJSExport');
 
@@ -217,6 +228,25 @@ describe("Zotero.Utilities.Item", function () {
 				toCSLDate('May 13, 2021'),
 				{ "date-parts": [['2021', 5, 13]] }
 			);
+		});
+		it("should pass quoted dates through as literals", function () {
+			let toCSLDate = (date) => {
+				let item = newItem('book');
+				item.date = date;
+				return Zotero.Utilities.Item.itemToCSLJSON(item).issued;
+			};
+
+			assert.deepEqual(toCSLDate('"1637 and 1662"'), { literal: '1637 and 1662' });
+			// Curly quotes, as inserted by smart-punctuation keyboards
+			assert.deepEqual(toCSLDate('“1637 and 1662”'), { literal: '1637 and 1662' });
+			assert.deepEqual(toCSLDate('"2021"'), { literal: '2021' });
+
+			// Quoted dates in Extra date variables
+			let item = newItem('book');
+			item.extra = 'original-date: “1637 and 1662”';
+			let cslItem = Zotero.Utilities.Item.itemToCSLJSON(item);
+			assert.deepEqual(cslItem['original-date'], { literal: '1637 and 1662' });
+			assert.notInclude(cslItem.note, 'original-date');
 		});
 		it("should parse EDTF dates in Extra date variables", function () {
 			let item = newItem('book');
