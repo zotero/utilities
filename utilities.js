@@ -203,11 +203,7 @@ var Utilities = {
 		return string.split(' ')
 			.map((part) => {
 				if (part.toUpperCase() === part || part.toLowerCase() === part) {
-					return Utilities.XRegExp.replace(
-						part.toLowerCase(),
-						Utilities.XRegExp('(^|[^\\pL])\\pL', 'g'),
-						m => m.toUpperCase()
-					);
+					return part.toLowerCase().replace(/(^|[^\p{L}])\p{L}/gu, m => m.toUpperCase());
 				}
 				else {
 					return part;
@@ -257,7 +253,7 @@ var Utilities = {
 				spaceIndex = author.lastIndexOf(" ", spaceIndex-1);
 				var lastName = author.substring(spaceIndex + 1);
 				var firstName = author.substring(0, spaceIndex);
-			} while (!Utilities.XRegExp('\\pL').test(lastName[0]) && spaceIndex > 0)
+			} while (!/\p{L}/u.test(lastName[0] || '') && spaceIndex > 0)
 		}
 
 		if(firstName && allCapsRe.test(firstName) &&
