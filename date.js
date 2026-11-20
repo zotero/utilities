@@ -419,7 +419,7 @@ var Utilities_Date = new function(){
 					parts.splice(
 						i, 1,
 						{ part: m[1], before: "m" },
-						{ part: m[3], after: "m" }
+						{ part: m[3] || "", after: "m" }
 					);
 					//Zotero.debug("DATE: got month (" + date.month + ", " + JSON.stringify(parts) + ")");
 					break;
