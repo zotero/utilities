@@ -235,7 +235,14 @@ var OpenURL = new function() {
 					item.itemType = "patent";
 					break;
 				} else if(format == "info:ofi/fmt:kev:mtx:dc") {
-					item.itemType = "webpage";
+					var format_type = "webpage";
+					var book_formats = ["book", "print", "text", "e_book", "ebook", "e-book"];
+					for(let j=0; j < book_formats.length; j++) {
+						if(coParts.indexOf("rft.format=" + book_formats[j]) !== -1) {
+							format_type = "book";
+						}
+					}
+					item.itemType = format_type;
 					break;
 				}
 			}
