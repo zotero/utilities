@@ -405,6 +405,8 @@ var Utilities_Item = {
 			cslItem.title = Zotero.Utilities.Item.noteToTitle(zoteroItem.note);
 		}
 
+		cslItem.seeAlso = zoteroItem.seeAlso;
+
 		//this._cache[zoteroItem.id] = cslItem;
 		return cslItem;
 	},
@@ -627,6 +629,7 @@ var Utilities_Item = {
 				}
 			}
 		}
+		item.seeAlso = cslItem.seeAlso;
 	},
 
 	/**
