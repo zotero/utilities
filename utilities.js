@@ -40,6 +40,20 @@ function movedToUtilitiesInternal(fnName) {
 }
 
 /**
+ * Remove characters from the end of a string while they match charRe, in linear time
+ *
+ * charRe is tested against one character at a time, so it should be a character class
+ * such as /[\s,]/
+ */
+function trimEndMatching(str, charRe) {
+	let end = str.length;
+	while (end > 0 && charRe.test(str[end - 1])) {
+		end--;
+	}
+	return str.slice(0, end);
+}
+
+/**
  * @class Functions for text manipulation and other miscellaneous purposes
  */
 var Utilities = {
@@ -235,8 +249,7 @@ var Utilities = {
 			throw new Error("cleanAuthor: author must be a string");
 		}
 
-		author = author.replace(/^[\s\u00A0\.\,\/\[\]\:]+/, '')
-			.replace(/[\s\u00A0\.\,\/\[\]\:]+$/, '')
+		author = trimEndMatching(author.replace(/^[\s\u00A0\.\,\/\[\]\:]+/, ''), /[\s\u00A0\.\,\/\[\]\:]/)
 			.replace(/[\s\u00A0]+/, ' ');
 
 		if(useComma) {
@@ -273,11 +286,14 @@ var Utilities = {
 
 		//add periods after all the initials
 		if(firstName) {
-			var names = firstName.replace(/^[\s\.]+/,'')
-				.replace(/[\s\,]+$/,'')
-				//remove spaces surronding any dashes
-				.replace(/\s*([\u002D\u00AD\u2010-\u2015\u2212\u2E3A\u2E3B])\s*/,'-')
-				.split(/(?:[\s\.]+|(?=-))/);
+			var names = trimEndMatching(firstName.replace(/^[\s\.]+/,''), /[\s\,]/);
+			//remove spaces surrounding the first dash
+			var dashIndex = names.search(/[\u002D\u00AD\u2010-\u2015\u2212\u2E3A\u2E3B]/);
+			if (dashIndex != -1) {
+				names = trimEndMatching(names.slice(0, dashIndex), /\s/)
+					+ '-' + names.slice(dashIndex + 1).replace(/^\s+/, '');
+			}
+			names = names.split(/(?:[\s\.]+|(?=-))/);
 			var newFirstName = '';
 			for(var i=0, n=names.length; i<n; i++) {
 				newFirstName += names[i];
@@ -299,8 +315,7 @@ var Utilities = {
 			throw new Error("trim: argument must be a string");
 		}
 
-		s = s.replace(/^\s+/, "");
-		return s.replace(/\s+$/, "");
+		return s.trim();
 	},
 
 	/**
@@ -326,7 +341,7 @@ var Utilities = {
 		}
 
 		var x = x.replace(/^[\x00-\x27\x29-\x2F\x3A-\x40\x5B-\x60\x7B-\x7F\s]+/, "");
-		return x.replace(/[\x00-\x28\x2A-\x2F\x3A-\x40\x5B-\x60\x7B-\x7F\s]+$/, "");
+		return trimEndMatching(x, /[\x00-\x28\x2A-\x2F\x3A-\x40\x5B-\x60\x7B-\x7F\s]/);
 	},
 
 	isHTTPURL: function (url, allowNoScheme = false) {
